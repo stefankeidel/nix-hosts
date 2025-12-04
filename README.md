@@ -12,3 +12,18 @@ I decided to start fresh using
 and a blank slate, copy & pasting only what I really need and understand.
 
 Let's see how it goes.
+
+
+## Building & Switching Darwin
+
+``` shell
+nix run nix-darwin -- build --flake .#lichtblick
+HOME=/var/root sudo darwin-rebuild switch --keep-going -v --flake ~/code/nix-hosts#lichtblick
+```
+
+## Running VM
+
+``` shell
+sudo launchctl start org.nixos.linux-builder
+nix run .#nixosConfigurations.minimal-vm.config.system.build.vm -L
+```
