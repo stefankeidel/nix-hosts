@@ -15,8 +15,6 @@
     inputs.self.nixosModules.host-shared
   ];
 
-  nixpkgs.hostPlatform.system = "aarch64-linux";
-
   services.tailscale.enable = true;
   services.tailscale.useRoutingFeatures = "server";
 
