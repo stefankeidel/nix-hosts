@@ -21,7 +21,9 @@ nix run nix-darwin -- build --flake .#lichtblick
 HOME=/var/root sudo darwin-rebuild switch --keep-going -v --flake ~/code/nix-hosts#lichtblick
 ```
 
-## Running VM
+## Virtual machines
+
+Rig courtesy of [this weekend project](https://github.com/phaer/nixos-vm-on-macos).
 
 ``` shell
 sudo launchctl start org.nixos.linux-builder
