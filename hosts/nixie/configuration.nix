@@ -11,6 +11,8 @@
   imports = [
     # the default agenix module
     inputs.agenix.nixosModules.default
+    # our shared stuff
+    inputs.self.nixosModules.host-shared
     # Include the results of the hardware scan.
     ./hardware-configuration.nix
     ./nextcloud.nix
