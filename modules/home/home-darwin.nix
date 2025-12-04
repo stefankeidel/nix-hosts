@@ -136,7 +136,7 @@
       shellAliases = {
         ll = "eza -la";
         l = "eza -l";
-        update-nix = "sudo -H nix run nix-darwin -- switch --flake ~/code/nix-cfg";
+        update-nix = "HOME=/var/root sudo darwin-rebuild switch --keep-going -v --flake ~/code/nix-hosts#lichtblick";
         k = "kubectl -n data";
         h = "helm --namespace data";
         dl = "cd ~/Downloads";
