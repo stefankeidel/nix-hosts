@@ -4,5 +4,6 @@
   environment.systemPackages = [
     pkgs.btop
     pkgs.htop
+    pkgs.inetutils
   ]; # ++ (pkgs.lib.optionals pkgs.stdenv.isDarwin [ pkgs.xbar ]);
 }

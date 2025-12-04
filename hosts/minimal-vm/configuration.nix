@@ -2,6 +2,7 @@
   flake,
   lib,
   modulesPath,
+  inputs,
   ...
 }:
 {
@@ -11,6 +12,7 @@
     # size and bandwidth.
     "${modulesPath}/profiles/minimal.nix"
     flake.modules.nixos.vm-base
+    inputs.self.nixosModules.host-shared
   ];
 
   # Set how many  CPU cores and MB of memory to allocate
