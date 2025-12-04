@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: desc
+# key: desc
+# --
+when description ilike '$1' then 'Expenses:$2'

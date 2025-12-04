@@ -1,0 +1,10 @@
+# -*- mode: snippet -*-
+# name: query_dev
+# key: qd
+# expand-env: ((yas-indent-line 'fixed) (yas-wrap-around-region nil))
+# --
+#+begin_src sql
+select *
+from dev_stefan.$0
+limit 20
+#+end_src

@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: conf
+# key: c
+# --
+{{ config(materialized='$0') }}

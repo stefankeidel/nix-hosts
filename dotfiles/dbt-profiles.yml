@@ -1,0 +1,233 @@
+accounting:
+  outputs:
+    dev:
+      dbname: accounting
+      host: nixie
+      user: postgres
+      pass: unicorn
+      port: 5432
+      schema: analytics
+      threads: 4
+      type: postgres
+  target: dev
+
+lb_dwh:
+  outputs:
+    dev:
+      account: "{{ env_var('SNOWFLAKE_ACCOUNT') }}"
+      client_session_keep_alive: false
+      connect_retries: 3
+      connect_timeout: 30
+      database: DEV_DWH
+      private_key_passphrase: '{{ env_var(''SNOWFLAKE_KEYFILE_PASSWORD'') }}'
+      private_key_path: '{{ env_var(''SNOWFLAKE_KEYFILE_PATH'') }}'
+      query_tag: dev_dbt
+      role: DEV_TRANSFORMER
+      schema: LB
+      threads: 4
+      type: snowflake
+      user: '{{ env_var(''SNOWFLAKE_USER'') }}'
+      warehouse: '{{ env_var(''SNOWFLAKE_WAREHOUSE'', ''COMPUTE_WH'') }}'
+    local_dev:
+      account: "{{ env_var('SNOWFLAKE_ACCOUNT') }}"
+      client_session_keep_alive: false
+      database: '{{ env_var(''SNOWFLAKE_DATABASE'') }}'
+      private_key_passphrase: '{{ env_var(''SNOWFLAKE_KEYFILE_PASSWORD'') }}'
+      private_key_path: '{{ env_var(''SNOWFLAKE_KEYFILE_PATH'') }}'
+      query_tag: dev_dbt
+      role: '{{ env_var(''SNOWFLAKE_ROLE'', ''DEV_TRANSFORMER'') }}'
+      schema: LB
+      threads: 4
+      type: snowflake
+      user: '{{ env_var(''SNOWFLAKE_USER'') }}'
+      warehouse: '{{ env_var(''SNOWFLAKE_WAREHOUSE'', ''COMPUTE_WH'') }}'
+    test:
+      account: "{{ env_var('SNOWFLAKE_ACCOUNT') }}"
+      client_session_keep_alive: false
+      database: TEST_DWH
+      private_key_passphrase: '{{ env_var(''SNOWFLAKE_KEYFILE_PASSWORD'') }}'
+      private_key_path: '{{ env_var(''SNOWFLAKE_KEYFILE_PATH'') }}'
+      query_tag: test_dbt
+      role: DEV_TRANSFORMER
+      schema: LB
+      threads: 4
+      type: snowflake
+      user: '{{ env_var(''SNOWFLAKE_USER'') }}'
+      warehouse: TEST_WH
+  target: local_dev
+
+data_platform:
+  target: local_dev
+  outputs:
+    local_dev:
+      type: snowflake
+      account: "{{ env_var('SNOWFLAKE_ACCOUNT') }}"
+
+      # Keypair config
+      user: "{{ env_var('SNOWFLAKE_USER') }}"
+      private_key_path: "{{ env_var('SNOWFLAKE_KEYFILE_PATH') }}"
+      private_key_passphrase: "{{ env_var('SNOWFLAKE_KEYFILE_PASSWORD') }}"
+
+      database: DATA_PLATFORM_DEV
+      warehouse: "{{ env_var('SNOWFLAKE_WAREHOUSE', 'COMPUTE_WH') }}"
+      role: DEV_TRANSFORMER
+      schema: INTERMEDIATE
+      threads: 4
+      client_session_keep_alive: False
+      query_tag: dev_dbt
+      connect_retries: 2
+
+
+    dev: &dev-platform
+      type: snowflake
+      account: "{{ env_var('SNOWFLAKE_ACCOUNT') }}"
+
+      # Keypair config
+      user: "{{ env_var('SNOWFLAKE_USER') }}"
+      private_key_path: "{{ env_var('SNOWFLAKE_KEYFILE_PATH') }}"
+      private_key_passphrase: "{{ env_var('SNOWFLAKE_KEYFILE_PASSWORD') }}"
+
+      database: DATA_PLATFORM_DEV
+      warehouse: "{{ env_var('SNOWFLAKE_WAREHOUSE', 'COMPUTE_WH') }}"
+      role: DEV_TRANSFORMER
+      schema: INTERMEDIATE
+      threads: 4
+      client_session_keep_alive: False
+      query_tag: dev_dbt
+      connect_retries: 2
+
+
+    # for now, we need an env with this name because of our devops pipeline
+    # so let's just copy it over from dev
+    test_key: *dev-platform
+
+b2c:
+  target: local_dev
+  outputs:
+    local_dev:
+      type: snowflake
+      account: "{{ env_var('SNOWFLAKE_ACCOUNT') }}"
+
+      # Keypair config
+      user: "{{ env_var('SNOWFLAKE_USER') }}"
+      private_key_path: "{{ env_var('SNOWFLAKE_KEYFILE_PATH') }}"
+      private_key_passphrase: "{{ env_var('SNOWFLAKE_KEYFILE_PASSWORD') }}"
+
+      database: B2C_DEV_DWH
+      warehouse: "{{ env_var('SNOWFLAKE_WAREHOUSE', 'COMPUTE_WH') }}"
+      role: DEV_TRANSFORMER
+      schema: INTERMEDIATE
+      threads: 4
+      client_session_keep_alive: False
+      query_tag: dev_dbt
+
+    dev:
+      type: snowflake
+      account: "{{ env_var('SNOWFLAKE_ACCOUNT') }}"
+
+      # Keypair config
+      user: "{{ env_var('SNOWFLAKE_USER') }}"
+      private_key_path: "{{ env_var('SNOWFLAKE_KEYFILE_PATH') }}"
+      private_key_passphrase: "{{ env_var('SNOWFLAKE_KEYFILE_PASSWORD') }}"
+
+      database: B2C_DEV_DWH
+      warehouse: "{{ env_var('SNOWFLAKE_WAREHOUSE', 'COMPUTE_WH') }}"
+      role: DEV_TRANSFORMER
+      schema: INTERMEDIATE
+      threads: 4
+      client_session_keep_alive: False
+      query_tag: dev_dbt
+
+pricing:
+  target: local_dev
+  outputs:
+    local_dev:
+      type: snowflake
+      account: xr33368.west-europe.azure
+
+      user: "{{ env_var('SNOWFLAKE_USER') }}"
+      private_key_path: "{{ env_var('SNOWFLAKE_KEYFILE_PATH') }}"
+      private_key_passphrase: "{{ env_var('SNOWFLAKE_KEYFILE_PASSWORD') }}"
+
+      database: "PRICING_DEV"
+      warehouse: "{{ env_var('SNOWFLAKE_WAREHOUSE', 'COMPUTE_WH') }}"
+      role: DEV_TRANSFORMER
+      schema: INTERMEDIATE
+      threads: 4
+      client_session_keep_alive: False
+      query_tag: dev_dbt
+
+b2b:
+  target: local_dev
+  outputs:
+    local_dev:
+      type: snowflake
+      account: xr33368.west-europe.azure
+
+      user: "{{ env_var('SNOWFLAKE_USER') }}"
+      private_key_path: "{{ env_var('SNOWFLAKE_KEYFILE_PATH') }}"
+      private_key_passphrase: "{{ env_var('SNOWFLAKE_KEYFILE_PASSWORD') }}"
+
+      database: "B2B_DEV_DWH"
+      warehouse: COMPUTE_WH
+      role: DEV_TRANSFORMER
+      schema: INTERMEDIATE
+      threads: 4
+      client_session_keep_alive: False
+      query_tag: dev_dbt
+
+marketing:
+  target: local_dev
+  outputs:
+    local_dev:
+      type: snowflake
+      account: xr33368.west-europe.azure
+
+      user: "{{ env_var('SNOWFLAKE_USER') }}"
+      private_key_path: "{{ env_var('SNOWFLAKE_KEYFILE_PATH') }}"
+      private_key_passphrase: "{{ env_var('SNOWFLAKE_KEYFILE_PASSWORD') }}"
+
+      database: "MARKETING_DEV_DWH"  # change as needed, or get from env var
+      warehouse: COMPUTE_WH
+      role: DEV_TRANSFORMER
+      schema: INTERMEDIATE
+      threads: 4
+      client_session_keep_alive: False
+      query_tag: dev_dbt
+
+emobility:
+  target: local_dev
+  outputs:
+    local_dev:
+      type: snowflake
+      account: xr33368.west-europe.azure
+
+      user: "{{ env_var('SNOWFLAKE_USER') }}"
+      private_key_path: "{{ env_var('SNOWFLAKE_KEYFILE_PATH') }}"
+      private_key_passphrase: "{{ env_var('SNOWFLAKE_KEYFILE_PASSWORD') }}"
+
+      database: "EMOBILITY_DEV_DWH"  # change as needed, or get from env var
+      warehouse: COMPUTE_WH
+      role: DEV_TRANSFORMER
+      schema: INTERMEDIATE
+      threads: 4
+      client_session_keep_alive: False
+
+integration:
+  target: local_dev
+  outputs:
+    local_dev:
+      type: snowflake
+      account: xr33368.west-europe.azure
+
+      user: "{{ env_var('SNOWFLAKE_USER') }}"
+      private_key_path: "{{ env_var('SNOWFLAKE_KEYFILE_PATH') }}"
+      private_key_passphrase: "{{ env_var('SNOWFLAKE_KEYFILE_PASSWORD') }}"
+
+      database: "INTEGRATION_DEV_DWH"
+      warehouse: COMPUTE_WH
+      role: DEV_TRANSFORMER
+      schema: INTERMEDIATE
+      threads: 4
+      client_session_keep_alive: False
+      query_tag: dev_dbt

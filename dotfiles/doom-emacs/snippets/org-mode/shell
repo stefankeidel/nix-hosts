@@ -1,0 +1,8 @@
+# -*- mode: snippet -*-
+# name: shell
+# key: s
+# expand-env: ((yas-indent-line 'fixed) (yas-wrap-around-region nil))
+# --
+#+begin_src shell :eval yes :results verbatim
+echo $1
+#+end_src

@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: http
+# key: h
+# --
+#+begin_src http :pretty
+GET $0
+#+end_src

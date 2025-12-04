@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: export
+# key: csv
+# --
+#+begin_src emacs-lisp :var orgtable=A
+(write-region (orgtbl-to-csv orgtable nil) nil "/Users/stefan/Downloads/org-export.csv")
+#+end_src

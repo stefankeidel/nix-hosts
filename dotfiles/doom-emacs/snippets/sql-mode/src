@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: src
+# key: s
+# --
+{{ source('$0', '') }}

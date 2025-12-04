@@ -1,0 +1,28 @@
+{
+  "[jinja-sql]": {
+    "editor.defaultFormatter": "innoverio.vscode-dbt-power-user",
+    "editor.formatOnSave": true
+  },
+  "dbt.hideWalkthrough": true,
+  "editor.fontFamily": "Hack Nerd Font",
+  "editor.fontSize": 15,
+  "editor.formatOnSave": true,
+  "editor.renderWhitespace": "trailing",
+  "files.associations": {
+    "*.sql": "jinja-sql"
+  },
+  "git.openRepositoryInParentFolders": "always",
+  "workbench.colorTheme": "Bearded Theme Arc",
+  "chat.agent.enabled": true,
+  "files.trimTrailingWhitespace": true,
+  "github.copilot.selectedCompletionModel": "gpt-41-copilot",
+  "window.zoomLevel": 0,
+  "docker.extension.dockerEngineAvailabilityPrompt": false,
+  "containers.containerClient": "com.microsoft.visualstudio.containers.docker",
+  "github.copilot.chat.agent.thinkingTool": true,
+  "altimate.disableMcpServer": true,
+  "vs-kubernetes": {
+    "vs-kubernetes.crd-code-completion": "disabled"
+  },
+  "python.analysis.typeCheckingMode": "standard"
+}

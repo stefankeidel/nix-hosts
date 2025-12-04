@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: group
+# key: g
+# --
+{{ dbt_utils.group_by(n=$0) }}

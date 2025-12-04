@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: dev
+# key: d
+# --
+{% if target.name == 'dev' %}
+$0
+{% endif %}
