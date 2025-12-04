@@ -9,21 +9,23 @@
     # install the heavier stuff we may not need
     # on minimal boxes here
     packages = with pkgs; [
+      #colima
       alejandra
       basedpyright
-      #colima
       docker-buildx
       docker-client
       doctl
       emacs-lsp-booster
-      tree-sitter
       kalker
       mise
+      nixd
       nodejs
+      nvd
       postgresql
       pre-commit
       pwgen
       tidy-viewer
+      tree-sitter
       uv
       yarn
       yq
