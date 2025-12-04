@@ -27,5 +27,5 @@ Rig courtesy of [this weekend project](https://github.com/phaer/nixos-vm-on-maco
 
 ``` shell
 sudo launchctl start org.nixos.linux-builder
-nix run .#nixosConfigurations.minimal-vm.config.system.build.vm -L
+nix run .#nixosConfigurations.nextcloud.config.system.build.vm -L
 ```

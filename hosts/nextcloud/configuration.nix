@@ -14,12 +14,34 @@
     inputs.self.nixosModules.host-shared
   ];
 
+  services.tailscale.enable = true;
+  services.tailscale.useRoutingFeatures = "server";
+
+  users.users.stefan = {
+    isNormalUser = true;
+    extraGroups = ["wheel" "podman"];
+
+    openssh.authorizedKeys.keys = [''ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEAwU52M/vXuUkthu481OGKYMzFGwc9GfjvVwDLt7yQGeDXUZHx5tpL2NEKSS3imnTfOJp25wFTOAJdF63eznIOUEc+5dCZe8xeZ7IMASGlNQJy51sNUlx986BIjYxLbCl0tykkySs82ZNaog9BapjxiHm2tXb1LFR2CsGOg9mLqRVNxQkOj8KkX5+r/NhVxQRFFW8OJn7rgqsyJtA7vKRwEP+nUsokO3cr/+sWeW7APgrnnkh9iYr/ZG6ibZH/m1+t4yW1kcENVy2X8Gyrs0GWMYQCLrBB+zJYBdwxBdeWSt76QlZnOpdwWcaZEC5PUVzTiKtyUok2NjBoqdpnLezrDw=='' ];
+  };
+
+  # it's just me :shrug:
+  security.sudo.wheelNeedsPassword = false;
+
+  services.openssh = {
+    enable = true;
+    openFirewall = true;
+    settings = {
+      StrictModes = false;
+      PasswordAuthentication = false;
+    };
+  };
+
   # Set how many  CPU cores and MB of memory to allocate
   # to this VM. Depending on your machine and the amount of VMs
   # you want to run, those might be good to adapt.
   virtualisation = {
-    cores = lib.mkDefault 2;
-    memorySize = lib.mkDefault (4 * 1024);
+    cores = lib.mkDefault 1;
+    memorySize = lib.mkDefault (2 * 1024);
     sharedDirectories = {
       persistent = {
         source = ''"$PWD/persistent"'';
@@ -30,10 +52,7 @@
   # Set a static MAC address to get the same IP every time.
   # This is an optional, non-upstream option defined in this repo.
   virtualisation.macAddress = "f6:25:e2:48:58:1e";
-
-  # Automatically log in as root on the console. # This makes it
-  # unecessary to configure any credentials for simple ephmeral VM.
-  services.getty.autologinUser = lib.mkDefault "root";
+  services.getty.autologinUser = lib.mkDefault "stefan";
 
   # Enable a password-less root console in initrd if it fails
   # to switch to stage2 for any reason. This severely inpacts
