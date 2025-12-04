@@ -1,5 +1,4 @@
-{ pkgs, ... }:
-{
+{pkgs, ...}: {
   # you can check if host is darwin by using pkgs.stdenv.isDarwin
   environment.systemPackages = [
     pkgs.btop

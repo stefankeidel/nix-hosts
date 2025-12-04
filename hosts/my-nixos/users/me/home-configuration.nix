@@ -1,5 +1,7 @@
-{ pkgs, inputs, ... }:
 {
-
-  imports = [ inputs.self.homeModules.home-shared ];
+  pkgs,
+  inputs,
+  ...
+}: {
+  imports = [inputs.self.homeModules.home-shared];
 }

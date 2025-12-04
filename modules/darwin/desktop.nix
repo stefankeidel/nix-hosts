@@ -1,11 +1,12 @@
 #
 # Baseline module for common MacOS desktop functionality I use,
 # including system-wide packages (rare, basically just emacs and fonts)
-# 
-
-{ pkgs, lib, ... }:
-
+#
 {
+  pkgs,
+  lib,
+  ...
+}: {
   # Necessary for using flakes on this system.
   nix.settings.experimental-features = "nix-command flakes";
 
@@ -26,7 +27,6 @@
     KeepAlive = lib.mkForce false;
     RunAtLoad = lib.mkForce false;
   };
-
 
   # trackpad stuff
   system.defaults.trackpad.TrackpadRightClick = true;
@@ -90,12 +90,12 @@
   programs.zsh.enable = true;
 
   environment.systemPackages = with pkgs; [
-    (emacs.override { withNativeCompilation = false; })
+    (emacs.override {withNativeCompilation = false;})
     #emacs
     #inputs.agenix.packages.${stdenv.hostPlatform.system}.default
   ];
 
   fonts.packages = with pkgs; [
     nerd-fonts.hack
-  ]; 
+  ];
 }

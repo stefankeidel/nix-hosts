@@ -3,26 +3,23 @@
   config,
   pkgs,
   ...
-}:
-{
+}: {
   imports = [
     ./from-qemu-vm.nix
   ];
 
-  options =
-    let
-      inherit (lib) mkOption types;
-    in
-    {
-      virtualisation.macAddress = mkOption {
-        default = null;
-        example = "00:11:22:33:44:55";
-        type = types.nullOr (types.str);
-        description = ''
-          MAC address of the virtual machine. Leave empty to generate a random one.
-        '';
-      };
+  options = let
+    inherit (lib) mkOption types;
+  in {
+    virtualisation.macAddress = mkOption {
+      default = null;
+      example = "00:11:22:33:44:55";
+      type = types.nullOr (types.str);
+      description = ''
+        MAC address of the virtual machine. Leave empty to generate a random one.
+      '';
     };
+  };
 
   # Instantiate our nixpkgs version once more, this time for darwin.
   # This is needed so that we get binaries for darwin, not linux for
@@ -33,38 +30,37 @@
     system = "${config.nixpkgs.hostPlatform.qemuArch}-darwin";
   };
 
-  config.system.build.vm =
-    let
-      cfg = config.virtualisation;
+  config.system.build.vm = let
+    cfg = config.virtualisation;
 
-      hostPkgs = cfg.host.pkgs;
+    hostPkgs = cfg.host.pkgs;
 
-      kernel = "${config.system.build.toplevel}/kernel";
-      initrd = "${config.system.build.toplevel}/initrd";
-      cmdline = lib.concatStringsSep " " (
-        config.boot.kernelParams or [ ] ++ [ "init=${config.system.build.toplevel}/init" ]
-      );
-      rosetta = lib.optionalString cfg.rosetta.enable "--device rosetta,mountTag=rosetta";
-      macAddress = lib.optionalString (cfg.macAddress != null) ",mac=${cfg.macAddress}";
-      sharedDirectories = lib.optionalString (cfg.sharedDirectories != null) (
-        lib.concatStringsSep " \\\n" (
-          lib.mapAttrsToList (
-            name: value: "--device virtio-fs,sharedDir=${value.source},mountTag=${name}"
-          ) cfg.sharedDirectories
+    kernel = "${config.system.build.toplevel}/kernel";
+    initrd = "${config.system.build.toplevel}/initrd";
+    cmdline = lib.concatStringsSep " " (
+      config.boot.kernelParams or [] ++ ["init=${config.system.build.toplevel}/init"]
+    );
+    rosetta = lib.optionalString cfg.rosetta.enable "--device rosetta,mountTag=rosetta";
+    macAddress = lib.optionalString (cfg.macAddress != null) ",mac=${cfg.macAddress}";
+    sharedDirectories = lib.optionalString (cfg.sharedDirectories != null) (
+      lib.concatStringsSep " \\\n" (
+        lib.mapAttrsToList (
+          name: value: "--device virtio-fs,sharedDir=${value.source},mountTag=${name}"
         )
-      );
-      graphics = lib.optionalString cfg.graphics ''
-        --device virtio-gpu,width=${toString cfg.resolution.x},height=${toString cfg.resolution.y} \
-        --device virtio-input,pointing \
-        --device virtio-input,keyboard \
-        --gui \
-      '';
+        cfg.sharedDirectories
+      )
+    );
+    graphics = lib.optionalString cfg.graphics ''
+      --device virtio-gpu,width=${toString cfg.resolution.x},height=${toString cfg.resolution.y} \
+      --device virtio-input,pointing \
+      --device virtio-input,keyboard \
+      --gui \
+    '';
 
-      regInfo = hostPkgs.closureInfo { rootPaths = config.virtualisation.additionalPaths; };
+    regInfo = hostPkgs.closureInfo {rootPaths = config.virtualisation.additionalPaths;};
 
-      useWritableStoreImage = cfg.writableStore && !cfg.writableStoreUseTmpfs;
-
-    in
+    useWritableStoreImage = cfg.writableStore && !cfg.writableStoreUseTmpfs;
+  in
     hostPkgs.writeShellApplication {
       name = "vfkit-vm";
       runtimeInputs = [
@@ -99,13 +95,13 @@
              --transform 'flags=rSh;s|/nix/store/||' \
              --transform 'flags=rSh;s|~nix~case~hack~[[:digit:]]\+||g' \
              --files-from ${
-               hostPkgs.closureInfo {
-                 rootPaths = [
-                   config.system.build.toplevel
-                   regInfo
-                 ];
-               }
-             }/store-paths \
+            hostPkgs.closureInfo {
+              rootPaths = [
+                config.system.build.toplevel
+                regInfo
+              ];
+            }
+          }/store-paths \
              | ${hostPkgs.erofs-utils}/bin/mkfs.erofs \
                --quiet \
                --force-uid=0 \

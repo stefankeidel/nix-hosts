@@ -4,8 +4,7 @@
   modulesPath,
   inputs,
   ...
-}:
-{
+}: {
   imports = [
     # Start out with a minimal config. This disables much of the
     # generated documentation and so on by default, but saves

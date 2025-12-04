@@ -3,14 +3,12 @@
   pkgs,
   config,
   ...
-}:
-{
+}: {
   imports = [
     ./build.nix
   ];
 
   config = lib.mkMerge [
-
     ## Nix
     {
       # Let nix know which system to build this for
@@ -96,7 +94,7 @@
       # value for the `fileSystems' attribute should be disregarded (since those
       # filesystems don't necessarily exist in the VM). You can disable this
       # override by setting `virtualisation.fileSystems = lib.mkForce { };`.
-      fileSystems = lib.mkIf (config.virtualisation.fileSystems != { }) (
+      fileSystems = lib.mkIf (config.virtualisation.fileSystems != {}) (
         lib.mkVMOverride config.virtualisation.fileSystems
       );
 
@@ -133,11 +131,11 @@
           # by default. We only use a tmpfs, so we persist the writeable /nix/store overlay part manually
           "/nix/.rw-store" =
             lib.mkIf (config.virtualisation.writableStore && !config.virtualisation.writableStoreUseTmpfs)
-              {
-                fsType = "ext4";
-                device = "/dev/disk/by-label/nix-store-write";
-                neededForBoot = true;
-              };
+            {
+              fsType = "ext4";
+              device = "/dev/disk/by-label/nix-store-write";
+              neededForBoot = true;
+            };
         }
         # Mount point from rosetta.nix gets deleted when we override
         # fileSystems with virtualisation.fileSystems, so we re-add it.
@@ -147,14 +145,15 @@
             fsType = "virtiofs";
           };
         })
-        (lib.optionalAttrs (config.virtualisation.sharedDirectories != { }) (
+        (lib.optionalAttrs (config.virtualisation.sharedDirectories != {}) (
           lib.mapAttrs' (name: value: {
             name = value.target;
             value = {
               device = name;
               fsType = "virtiofs";
             };
-          }) config.virtualisation.sharedDirectories
+          })
+          config.virtualisation.sharedDirectories
         ))
       ];
     }
@@ -173,6 +172,5 @@
         };
       };
     })
-
   ];
 }

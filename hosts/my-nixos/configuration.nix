@@ -1,7 +1,9 @@
-{ pkgs, inputs, ... }:
 {
-
-  imports = [ inputs.self.nixosModules.host-shared ];
+  pkgs,
+  inputs,
+  ...
+}: {
+  imports = [inputs.self.nixosModules.host-shared];
 
   nixpkgs.hostPlatform = "x86_64-linux";
 

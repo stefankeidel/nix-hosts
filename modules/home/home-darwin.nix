@@ -1,9 +1,11 @@
-{ pkgs, osConfig, ... }:
-
 {
+  pkgs,
+  osConfig,
+  ...
+}: {
   home = {
     # enableNixpkgsReleaseCheck = false;
-    
+
     # common darwin pkgs
     # they're all somewhat dev machines, right!?
     # install the heavier stuff we may not need

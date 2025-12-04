@@ -1,36 +1,38 @@
-{ pkgs, osConfig, ... }:
 {
-
+  pkgs,
+  osConfig,
+  ...
+}: {
   # only available on linux, disabled on macos
   # (this is from the examples)
-  # 
+  #
   # services.ssh-agent.enable = pkgs.stdenv.isLinux;
 
   home.packages = [
-      pkgs.coreutils
-      pkgs.curl
-      pkgs.dua
-      pkgs.eza
-      pkgs.git
-      pkgs.httpie
-      pkgs.netcat-gnu
-      pkgs.nix-direnv
-      pkgs.nmap
-      pkgs.pv
-      pkgs.rclone
-      pkgs.restic
-      pkgs.ripgrep
-      pkgs.rsync
-      pkgs.spaceship-prompt
-      pkgs.speedtest-go
-      pkgs.unixtools.watch
-      pkgs.vim
-      pkgs.wget
+    pkgs.coreutils
+    pkgs.curl
+    pkgs.dua
+    pkgs.eza
+    pkgs.git
+    pkgs.httpie
+    pkgs.netcat-gnu
+    pkgs.nix-direnv
+    pkgs.nmap
+    pkgs.pv
+    pkgs.rclone
+    pkgs.restic
+    pkgs.ripgrep
+    pkgs.rsync
+    pkgs.spaceship-prompt
+    pkgs.speedtest-go
+    pkgs.unixtools.watch
+    pkgs.vim
+    pkgs.wget
   ];
-    # ++ (
-    #   # you can access the host configuration using osConfig.
-    #   pkgs.lib.optionals (osConfig.programs.vim.enable && pkgs.stdenv.isDarwin) [ pkgs.skhd ]
-    # );
+  # ++ (
+  #   # you can access the host configuration using osConfig.
+  #   pkgs.lib.optionals (osConfig.programs.vim.enable && pkgs.stdenv.isDarwin) [ pkgs.skhd ]
+  # );
 
   programs.fzf = {
     enable = true;
@@ -44,10 +46,10 @@
     enable = true;
 
     settings = {
-       user.name = "Stefan Keidel";
-       user.email = "stefan.keidel@lichtblick.de";
+      user.name = "Stefan Keidel";
+      user.email = "stefan.keidel@lichtblick.de";
 
-       init = {
+      init = {
         defaultBranch = "main";
       };
       merge = {

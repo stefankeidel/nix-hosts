@@ -1,6 +1,10 @@
-{ config, lib, pkgs, inputs, ... }:
-
 {
+  config,
+  lib,
+  pkgs,
+  inputs,
+  ...
+}: {
   virtualisation.oci-containers.containers = {
     actual = {
       image = "actualbudget/actual-server:25.11.0";
@@ -17,20 +21,19 @@
   };
 
   services.nginx.virtualHosts."finance.keidel.me" = {
-      enableACME = true;
-      forceSSL = true;
-      locations = {
-        "/" = {
-          proxyPass = "http://127.0.0.1:5006";
-          proxyWebsockets = true;
+    enableACME = true;
+    forceSSL = true;
+    locations = {
+      "/" = {
+        proxyPass = "http://127.0.0.1:5006";
+        proxyWebsockets = true;
 
-          # extraConfig = ''
-          #   allow 10.0.0.0/8;
-          #   allow 127.0.0.1;
-          #   deny all;
-          # '';
-        };
+        # extraConfig = ''
+        #   allow 10.0.0.0/8;
+        #   allow 127.0.0.1;
+        #   deny all;
+        # '';
       };
     };
+  };
 }
-

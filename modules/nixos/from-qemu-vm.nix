@@ -6,12 +6,10 @@
   options,
   modulesPath,
   ...
-}:
-let
+}: let
   inherit (lib) mkOption types;
   cfg = config.virtualisation;
-in
-{
+in {
   imports = [
     "${modulesPath}/virtualisation/disk-size-option.nix"
   ];
@@ -25,11 +23,11 @@ in
   config = {
     warnings =
       lib.optionals
-        # TODO: support at least the SSH forwarding from host 22 -> guest cfg.darwin-builder.hostPort
-        (cfg.forwardPorts != [ ])
-        [
-          "virtualisation.forwardPorts is currently not implemented with vfkit. Full networking via IP is available."
-        ];
+      # TODO: support at least the SSH forwarding from host 22 -> guest cfg.darwin-builder.hostPort
+      (cfg.forwardPorts != [])
+      [
+        "virtualisation.forwardPorts is currently not implemented with vfkit. Full networking via IP is available."
+      ];
 
     security.pki.installCACerts = lib.mkIf cfg.useHostCerts false;
 
@@ -55,29 +53,34 @@ in
 
     virtualisation.fileSystems = {
       "/nix/store" = lib.mkIf (cfg.useNixStoreImage || cfg.mountHostNixStore) (
-        if cfg.writableStore then
-          {
-            overlay = {
-              lowerdir = [ "/nix/.ro-store" ];
-              upperdir = "/nix/.rw-store/upper";
-              workdir = "/nix/.rw-store/work";
-            };
-          }
-        else
-          {
-            device = "/nix/.ro-store";
-            options = [ "bind" ];
-          }
+        if cfg.writableStore
+        then {
+          overlay = {
+            lowerdir = ["/nix/.ro-store"];
+            upperdir = "/nix/.rw-store/upper";
+            workdir = "/nix/.rw-store/work";
+          };
+        }
+        else {
+          device = "/nix/.ro-store";
+          options = ["bind"];
+        }
       );
       "/nix/.ro-store" = lib.mkIf (cfg.useNixStoreImage || cfg.mountHostNixStore) {
-        device = if cfg.mountHostNixStore then "nix-store" else "/dev/disk/by-label/nix-store";
-        fsType = if cfg.mountHostNixStore then "virtiofs" else "erofs";
+        device =
+          if cfg.mountHostNixStore
+          then "nix-store"
+          else "/dev/disk/by-label/nix-store";
+        fsType =
+          if cfg.mountHostNixStore
+          then "virtiofs"
+          else "erofs";
         neededForBoot = true;
-        options = [ "ro" ];
+        options = ["ro"];
       };
       "/nix/.rw-store" = lib.mkIf (cfg.writableStore && cfg.writableStoreUseTmpfs) {
         fsType = "tmpfs";
-        options = [ "mode=0755" ];
+        options = ["mode=0755"];
         neededForBoot = true;
       };
     };
@@ -147,7 +150,7 @@ in
           };
         }
       );
-      default = { };
+      default = {};
       example = {
         my-share = {
           source = "/path/to/be/shared";
@@ -162,7 +165,7 @@ in
 
     virtualisation.additionalPaths = mkOption {
       type = types.listOf types.path;
-      default = [ ];
+      default = [];
       description = ''
           A list of paths whose closure should be made available to
         the VM.
@@ -319,7 +322,7 @@ in
           };
         }
       );
-      default = [ ];
+      default = [];
       example = lib.literalExpression ''
           [ # forward local port 2222 -> 22, to ssh into the VM
           { from = "host"; host.port = 2222; guest.port = 22; }
