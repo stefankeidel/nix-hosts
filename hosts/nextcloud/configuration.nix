@@ -3,6 +3,8 @@
   lib,
   modulesPath,
   inputs,
+  config,
+  pkgs,
   ...
 }: {
   imports = [
@@ -15,7 +17,7 @@
     inputs.self.nixosModules.host-shared
   ];
 
-  networking.hostName = "nextcloud.vm";
+  networking.hostName = "nextcloud-mini";
 
   services.tailscale.enable = true;
   services.tailscale.useRoutingFeatures = "server";
@@ -75,6 +77,25 @@
   # an VM, defence against attackers with access to the console
   # seems to be point-less anyway.
   boot.initrd.systemd.emergencyAccess = lib.mkDefault true;
+
+  services.nextcloud = {
+    enable = true;
+    package = pkgs.nextcloud32;
+    hostName = "nextcloud-mini";
+    #dataDir = "/var/lib/nextcloud";
+    config = {
+      dbtype = "sqlite";      # no dbhost/dbuser/dbpass needed
+      dbname = "nextcloud";   # SQLite file will be under dataDir (nextcloud.db)
+      adminuser = "admin";
+      adminpassFile = "/var/lib/nextcloud/nextcloud-admin-pass-file";
+    };
+    #settings.trusted_domains = [ "nextcloud.local" ];
+  };
+
+  services.nginx.virtualHosts.${config.services.nextcloud.hostName} = {
+    forceSSL = false;
+    enableACME = false;
+  };
 
   # Required for some NixOS modules. See it's description at
   # https://search.nixos.org/options?channel=unstable&show=system.stateVersion
