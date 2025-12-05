@@ -11,6 +11,7 @@
     # size and bandwidth.
     "${modulesPath}/profiles/minimal.nix"
     flake.modules.nixos.vm-base
+    ../../modules/nixos/vfkit-vz.nix
     inputs.self.nixosModules.host-shared
   ];
 
@@ -39,19 +40,31 @@
   # Set how many  CPU cores and MB of memory to allocate
   # to this VM. Depending on your machine and the amount of VMs
   # you want to run, those might be good to adapt.
+  # old rig
   virtualisation = {
     cores = lib.mkDefault 1;
     memorySize = lib.mkDefault (2 * 1024);
+    macAddress = "f6:25:e2:48:58:1e";
+
+    # host-side persistence via virtio-fs; guest otherwise stays ephemeral
     sharedDirectories = {
       persistent = {
-        source = ''"$PWD/persistent"'';
-        target = "/persistent";
+        source = "/Users/stefan/vms/nextcloud-persistent";
+        target = "/var/lib/nextcloud";
+        securityModel = "none";
       };
     };
+
+    vfkit-vz = {
+      enable = true;
+      name = "nextcloud";
+      bridgeInterface = "en0"; # currently unused; vfkit runs nat mode
+    };
   };
+
+
   # Set a static MAC address to get the same IP every time.
   # This is an optional, non-upstream option defined in this repo.
-  virtualisation.macAddress = "f6:25:e2:48:58:1e";
   services.getty.autologinUser = lib.mkDefault "stefan";
 
   # Enable a password-less root console in initrd if it fails

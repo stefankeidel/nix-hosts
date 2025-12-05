@@ -31,6 +31,7 @@
       uv
       yarn
       yq
+      codex
     ];
 
     sessionVariables = {
