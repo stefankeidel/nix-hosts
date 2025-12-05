@@ -15,6 +15,8 @@
     inputs.self.nixosModules.host-shared
   ];
 
+  networking.hostName = "nextcloud.vm";
+
   services.tailscale.enable = true;
   services.tailscale.useRoutingFeatures = "server";
 
