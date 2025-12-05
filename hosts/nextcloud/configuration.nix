@@ -10,8 +10,7 @@
     # generated documentation and so on by default, but saves
     # size and bandwidth.
     "${modulesPath}/profiles/minimal.nix"
-    flake.modules.nixos.vfkit-vm
-    #flake.modules.nixos.vm-base
+    flake.modules.nixos.vm-base
     inputs.self.nixosModules.host-shared
   ];
 
@@ -41,28 +40,16 @@
   # to this VM. Depending on your machine and the amount of VMs
   # you want to run, those might be good to adapt.
   # old rig
-  # virtualisation = {
-  #   cores = lib.mkDefault 1;
-  #   memorySize = lib.mkDefault (2 * 1024);
-  #   macAddress = "f6:25:e2:48:58:1e";
-  #   sharedDirectories = {
-  #     persistent = {
-  #       source = ''"$PWD/persistent"'';
-  #       target = "/persistent";
-  #     };
-  #   };
-  # };
-
-  # chatgpt module
-  virtualisation.vfkit = {
-    enable = true;
-    name = "nixos-vm";
-    memoryMB = 4096;
-    cpus = 2;
-    diskImagePath = /Users/stefan/nixos-root.qcow2; # existing qcow2
-    macAddress = "52:54:00:12:34:56";                   # locally administered MAC
-    networking.mode = "bridged";                        # own IP via DHCP
-    #networking.interface = "en0";                       # optional; macOS device to bridge
+  virtualisation = {
+    cores = lib.mkDefault 1;
+    memorySize = lib.mkDefault (2 * 1024);
+    macAddress = "f6:25:e2:48:58:1e";
+    sharedDirectories = {
+      persistent = {
+        source = ''"$PWD/persistent"'';
+        target = "/persistent";
+      };
+    };
   };
 
 
