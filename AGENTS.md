@@ -9,7 +9,6 @@
 ## Build, Test, and Development Commands
 - Build a macOS host: `nix run nix-darwin -- build --flake .#<darwin-host>`; switch locally with `HOME=/var/root sudo darwin-rebuild switch --keep-going -v --flake ~/code/nix-hosts#<darwin-host>`.  
 - Build a NixOS VM system: `nix run .#nixosConfigurations.<host>.config.system.build.vm -L`.  
-- Build vfkit runner: `nix build .#nixosConfigurations.<host>.config.system.build.vfkit-runner` then run `./result/bin/vfkit-<name>`.  
 - General validation: `nix flake check` for evaluation sanity before pushing changes.
 
 ## Coding Style & Naming Conventions
