@@ -20,5 +20,43 @@
     home = "/Users/stefan";
   };
 
-  system.stateVersion = 6; # initial nix-darwin state
+  age.secrets = {
+    rclone = {
+      file = ../../secrets/rclone.conf.age;
+      path = "/Users/stefan/.config/rclone/rclone.conf";
+      owner = "stefan";
+      group = "staff";
+      mode = "600";
+    };
+    restic = {
+      file = ../../secrets/restic.age;
+      path = "/Users/stefan/.config/restic-pw";
+      owner = "stefan";
+      group = "staff";
+      mode = "600";
+    };
+    hcloud_token = {
+      file = ../../secrets/hcloud_token.age;
+      path = "/Users/stefan/.config/hcloud_token";
+      owner = "stefan";
+      group = "staff";
+      mode = "600";
+    };
+    pgpass = {
+      file = ../../secrets/pgpass.age;
+      path = "/Users/stefan/.pgpass";
+      owner = "stefan";
+      group = "staff";
+      mode = "600";
+    };
+    authinfo = {
+      file = ../../secrets/authinfo.age;
+      path = "/Users/stefan/.authinfo";
+      owner = "stefan";
+      group = "staff";
+      mode = "600";
+    };
+  };
+
+  system.stateVersion = 6;# initial nix-darwin state
 }

@@ -5,8 +5,14 @@
 {
   pkgs,
   lib,
+  inputs,
   ...
 }: {
+  imports = [
+    # the default agenix module
+    inputs.agenix.nixosModules.default
+  ];
+
   # Necessary for using flakes on this system.
   nix.settings.experimental-features = "nix-command flakes";
 
@@ -92,7 +98,7 @@
   environment.systemPackages = with pkgs; [
     (emacs.override {withNativeCompilation = false;})
     #emacs
-    #inputs.agenix.packages.${stdenv.hostPlatform.system}.default
+    inputs.agenix.packages.${stdenv.hostPlatform.system}.default
   ];
 
   fonts.packages = with pkgs; [
