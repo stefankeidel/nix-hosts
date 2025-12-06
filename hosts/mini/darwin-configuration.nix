@@ -62,6 +62,7 @@
       owner = "stefan";
       group = "staff";
       mode = "600";
+      symlink = false;
     };
   };
 

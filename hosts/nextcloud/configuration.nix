@@ -22,7 +22,7 @@
   services.tailscale = {
     enable = true;
     useRoutingFeatures = "server";
-    authKeyFile = "/run/host-secrets/tailscale_auth";
+    authKeyFile = "/run/host-secrets/tailscale-authkey";
     extraUpFlags = [
       "--hostname=nextcloud-mini"
       "--accept-routes"
@@ -64,8 +64,8 @@
         target = "/var/lib/nextcloud";
         securityModel = "none";
       };
-      tailscale-authkey = {
-        source = "/run/agenix/";
+      vm-secrets = {
+        source = "/Users/stefan/vms/secrets/";
         target = "/run/host-secrets";
         securityModel = "none";
       };
