@@ -192,7 +192,7 @@ in {
     (lib.mkIf cfg.stefanUser.enable {
       users.users.stefan = {
         isNormalUser = true;
-        extraGroups = ["wheel"];
+        extraGroups = ["wheel" "podman"];
         openssh.authorizedKeys.keys = cfg.stefanUser.authorizedKeys;
       };
 

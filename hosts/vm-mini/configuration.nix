@@ -15,9 +15,11 @@
     flake.modules.nixos.vm-base
     flake.modules.nixos.vfkit-vz
     inputs.self.nixosModules.host-shared
+    inputs.self.nixosModules.actualbudget
   ];
 
   networking.hostName = "vm-mini";
+  networking.firewall.enable = false;
 
   vmBase = {
     stefanUser.enable = true;
@@ -48,12 +50,17 @@
         target = "/var/lib/nextcloud";
         securityModel = "none";
       };
+      actualbudget = {
+        source = "/Users/stefan/vms/actualbudget-persistent";
+        target = "/var/lib/actualbudget";
+        securityModel = "none";
+      };
     };
 
     vfkit-vz = {
       enable = true;
       name = config.networking.hostName;
-      stdioConsole = false;
+      stdioConsole = true;
     };
   };
 
@@ -67,7 +74,7 @@
   services.nextcloud = {
     enable = true;
     package = pkgs.nextcloud32;
-    hostName = config.networking.hostName;
+    hostName = "sync.keidel.me";
 
     config = {
       dbtype = "sqlite";      # no dbhost/dbuser/dbpass needed
@@ -75,10 +82,14 @@
       adminuser = "admin";
       adminpassFile = "/var/lib/nextcloud/nextcloud-admin-pass-file";
     };
-    #settings.trusted_domains = [ "nextcloud.local" ];
+
+    settings.trusted_domains = [
+      "keidel.me"
+      "vm-mini"
+    ];
   };
 
-  services.nginx.virtualHosts.${config.services.nextcloud.hostName} = {
+  services.nginx.virtualHosts."sync.keidel.me" = {
     forceSSL = false;
     enableACME = false;
   };
