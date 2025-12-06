@@ -1,5 +1,4 @@
 {
-  flake,
   lib,
   modulesPath,
   inputs,
@@ -12,8 +11,8 @@
     # generated documentation and so on by default, but saves
     # size and bandwidth.
     "${modulesPath}/profiles/minimal.nix"
-    flake.modules.nixos.vm-base
-    flake.modules.nixos.vfkit-vz
+    inputs.self.nixosModules.vm-base
+    inputs.self.nixosModules.vfkit-vz
     inputs.self.nixosModules.host-shared
     inputs.self.nixosModules.actualbudget
   ];
