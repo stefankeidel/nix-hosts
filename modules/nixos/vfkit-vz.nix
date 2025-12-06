@@ -25,6 +25,7 @@
       base.sharedDirectories
     )
   );
+  stdioConsole = optionalString cfg.stdioConsole "--device virtio-serial,stdio";
   graphics = optionalString base.graphics ''
     --device virtio-gpu,width=${toString base.resolution.x},height=${toString base.resolution.y} \
     --device virtio-input,pointing \
@@ -55,6 +56,12 @@ in {
         Placeholder for future bridging; currently unused. Networking always uses NAT
         with virtio-net in vfkit v0.6.x.
       '';
+    };
+
+    stdioConsole = mkOption {
+      type = types.bool;
+      default = true;
+      description = "Attach the virtio console to vfkit stdio (disable when running headless via launchd).";
     };
   };
 
@@ -139,7 +146,7 @@ in {
           vfkit \
             --bootloader "linux,kernel=${kernel},initrd=${initrd},cmdline=\"${cmdline}\"" \
             --device "virtio-net,nat${macAddress}" \
-            --device virtio-serial,stdio \
+            ${stdioConsole} \
             --device virtio-rng \
             ${optionalString base.mountHostNixStore "--device virtio-fs,sharedDir=/nix/store/,mountTag=nix-store"} \
             ${optionalString base.useNixStoreImage "--device nvme,path=\"$TMPDIR\"/store.img"} \

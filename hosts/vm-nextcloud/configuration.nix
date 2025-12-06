@@ -53,6 +53,7 @@
     vfkit-vz = {
       enable = true;
       name = config.networking.hostName;
+      stdioConsole = false;
     };
   };
 
