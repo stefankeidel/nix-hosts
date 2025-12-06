@@ -14,6 +14,7 @@
       #colima
       alejandra
       basedpyright
+      codex
       docker-buildx
       docker-client
       doctl
@@ -26,12 +27,12 @@
       postgresql
       pre-commit
       pwgen
+      python313
       tidy-viewer
       tree-sitter
       uv
       yarn
       yq
-      codex
     ];
 
     sessionVariables = {

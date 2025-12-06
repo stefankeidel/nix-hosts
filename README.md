@@ -27,7 +27,7 @@ HOME=/var/root sudo darwin-rebuild switch --keep-going -v --flake ~/code/nix-hos
 - Define your NixOS host under `hosts/<name>` (see `hosts/nextcloud/configuration.nix` for layout).
 - Build the VM derivation for a host:
 ``` shell
-nix build .#nixosConfigurations.nextcloud.config.system.build.vfkit-vz-runner
+nix build .#nixosConfigurations.vm-mini.config.system.build.vfkit-vz-runner
 ```
 - Boot the resulting VM script (created under `./result/bin`):
 ``` shell
@@ -40,14 +40,15 @@ nix build .#nixosConfigurations.nextcloud.config.system.build.vfkit-vz-runner
 ```nix
 virtualisation.vfkit-vms = {
   enable = true;
-  instances.vm-nextcloud = {
-    host = "vm-nextcloud";
+  instances.vm-mini = {
+    host = "vm-mini";
     runAtLoad = false;
     keepAlive = false;
-    workDir = "/Users/stefan/vms/vfkit-nextcloud";
+    workDir = "/Users/stefan/vms/vfkit-mini";
   };
 };
 ```
 - Switch: `HOME=/var/root sudo darwin-rebuild switch --keep-going -v --flake ~/code/nix-hosts#mini`.
-- Start/stop: `sudo launchctl kickstart -k system/org.nixos.vfkit-vm-nextcloud` / `sudo launchctl stop org.nixos.vfkit-vm-nextcloud`.
+- Start: `sudo launchctl kickstart -k system/org.nixos.vfkit-vm-mini`
+- Stop: `sudo launchctl stop org.nixos.vfkit-vm-mini`
 - Logs: `/var/log/vfkit-<instance>.log`; service name is `org.nixos.vfkit-<instance>`. Adjust `runAtLoad`, `keepAlive`, `workDir`, and `logPath` per VM.

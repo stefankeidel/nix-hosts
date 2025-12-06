@@ -17,7 +17,7 @@
     inputs.self.nixosModules.host-shared
   ];
 
-  networking.hostName = "vm-nextcloud";
+  networking.hostName = "vm-mini";
 
   vmBase = {
     stefanUser.enable = true;
@@ -26,7 +26,7 @@
       enable = true;
       useRoutingFeatures = "server";
       extraUpFlags = [
-        "--hostname=vm-nextcloud"
+        "--hostname=vm-mini"
         "--accept-routes"
       ];
     };

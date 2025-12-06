@@ -23,11 +23,11 @@
 
   virtualisation.vfkit-vms = {
     enable = true;
-    instances.vm-nextcloud = {
-      host = "vm-nextcloud";
+    instances.vm-mini = {
+      host = "vm-mini";
       runAtLoad = false;
       keepAlive = false;
-      workDir = "/Users/stefan/vms/vfkit-nextcloud";
+      workDir = "/Users/stefan/vms/vfkit-mini";
     };
   };
 
