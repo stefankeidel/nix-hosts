@@ -19,8 +19,15 @@
 
   networking.hostName = "nextcloud-mini";
 
-  services.tailscale.enable = true;
-  services.tailscale.useRoutingFeatures = "server";
+  services.tailscale = {
+    enable = true;
+    useRoutingFeatures = "server";
+    authKeyFile = "/run/host-secrets/tailscale_auth";
+    extraUpFlags = [
+      "--hostname=nextcloud-mini"
+      "--accept-routes"
+    ];
+  };
 
   users.users.stefan = {
     isNormalUser = true;
@@ -55,6 +62,11 @@
       persistent = {
         source = "/Users/stefan/vms/nextcloud-persistent";
         target = "/var/lib/nextcloud";
+        securityModel = "none";
+      };
+      tailscale-authkey = {
+        source = "/run/agenix/";
+        target = "/run/host-secrets";
         securityModel = "none";
       };
     };
@@ -96,6 +108,10 @@
     forceSSL = false;
     enableACME = false;
   };
+
+  environment.systemPackages = with pkgs; [
+    inputs.agenix.packages.${stdenv.hostPlatform.system}.default
+  ];
 
   # Required for some NixOS modules. See it's description at
   # https://search.nixos.org/options?channel=unstable&show=system.stateVersion

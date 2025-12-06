@@ -56,6 +56,13 @@
       group = "staff";
       mode = "600";
     };
+    tailscale_auth = {
+      file = ../../secrets/tailscale-authkey.age;
+      path = "/Users/stefan/vms/secrets/tailscale-authkey";
+      owner = "stefan";
+      group = "staff";
+      mode = "600";
+    };
   };
 
   system.stateVersion = 6;# initial nix-darwin state
