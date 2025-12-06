@@ -14,7 +14,6 @@
     inputs.self.nixosModules.vm-base
     inputs.self.nixosModules.vfkit-vz
     inputs.self.nixosModules.host-shared
-    inputs.self.nixosModules.actualbudget
   ];
 
   networking.hostName = "vm-mini";
@@ -59,7 +58,7 @@
     vfkit-vz = {
       enable = true;
       name = config.networking.hostName;
-      stdioConsole = true;
+      stdioConsole = false;
     };
   };
 
