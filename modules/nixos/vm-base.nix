@@ -24,10 +24,83 @@ in {
         description = "Authorized SSH keys to place on the stefan user when enabled.";
       };
 
+      sudo.passwordlessWheel = mkOption {
+        type = types.bool;
+        default = cfg.stefanUser.enable;
+        description = "Allow wheel users (including stefan) to sudo without a password.";
+      };
+
       openssh.enable = mkOption {
         type = types.bool;
         default = false;
         description = "Enable a minimal OpenSSH server setup for remote access to the VM.";
+      };
+
+      tailscale = {
+        enable = mkOption {
+          type = types.bool;
+          default = false;
+          description = "Enable the Tailscale service with defaults suited for VMs.";
+        };
+
+        useRoutingFeatures = mkOption {
+          type = types.enum [
+            "client"
+            "server"
+            "both"
+          ];
+          default = "server";
+          description = "Value passed to services.tailscale.useRoutingFeatures.";
+        };
+
+        authKeyFile = mkOption {
+          type = types.path;
+          default = "/run/host-secrets/tailscale-authkey";
+          description = "Path to the auth key file inside the VM.";
+        };
+
+        extraUpFlags = mkOption {
+          type = types.listOf types.str;
+          default = [];
+          description = "Additional flags passed to tailscale up.";
+        };
+
+        shareHostSecrets = {
+          enable = mkOption {
+            type = types.bool;
+            default = true;
+            description = "Share a host directory containing secrets into the VM.";
+          };
+
+          name = mkOption {
+            type = types.str;
+            default = "vm-secrets";
+            description = "Name of the virtualisation.sharedDirectories entry for secrets.";
+          };
+
+          source = mkOption {
+            type = types.str;
+            default = "/Users/stefan/vms/secrets/";
+            description = "Host path containing secrets to mount into the VM.";
+          };
+
+          target = mkOption {
+            type = types.path;
+            default = "/run/host-secrets";
+            description = "Mount point inside the VM for the shared secrets.";
+          };
+
+          securityModel = mkOption {
+            type = types.enum [
+              "passthrough"
+              "mapped-xattr"
+              "mapped-file"
+              "none"
+            ];
+            default = "none";
+            description = "Security model to use for the secrets share.";
+          };
+        };
       };
     };
   };
@@ -123,8 +196,8 @@ in {
         openssh.authorizedKeys.keys = cfg.stefanUser.authorizedKeys;
       };
 
-      services.getty.autologinUser = lib.mkDefault "stefan";
       security.sudo.wheelNeedsPassword = false;
+      services.getty.autologinUser = lib.mkDefault "stefan";
     })
 
     (lib.mkIf cfg.openssh.enable {
@@ -134,6 +207,25 @@ in {
         settings = {
           StrictModes = false;
           PasswordAuthentication = false;
+        };
+      };
+    })
+
+    (lib.mkIf cfg.tailscale.enable {
+      services.tailscale = {
+        enable = true;
+        useRoutingFeatures = cfg.tailscale.useRoutingFeatures;
+        authKeyFile = cfg.tailscale.authKeyFile;
+        extraUpFlags = cfg.tailscale.extraUpFlags;
+      };
+    })
+
+    (lib.mkIf (cfg.tailscale.enable && cfg.tailscale.shareHostSecrets.enable) {
+      virtualisation.sharedDirectories = {
+        "${cfg.tailscale.shareHostSecrets.name}" = {
+          source = cfg.tailscale.shareHostSecrets.source;
+          target = cfg.tailscale.shareHostSecrets.target;
+          securityModel = cfg.tailscale.shareHostSecrets.securityModel;
         };
       };
     })

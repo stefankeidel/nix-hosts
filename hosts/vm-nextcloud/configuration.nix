@@ -17,21 +17,19 @@
     inputs.self.nixosModules.host-shared
   ];
 
-  networking.hostName = "nextcloud-mini";
-
-  services.tailscale = {
-    enable = true;
-    useRoutingFeatures = "server";
-    authKeyFile = "/run/host-secrets/tailscale-authkey";
-    extraUpFlags = [
-      "--hostname=nextcloud-mini"
-      "--accept-routes"
-    ];
-  };
+  networking.hostName = "vm-nextcloud";
 
   vmBase = {
     stefanUser.enable = true;
     openssh.enable = true;
+    tailscale = {
+      enable = true;
+      useRoutingFeatures = "server";
+      extraUpFlags = [
+        "--hostname=vm-nextcloud"
+        "--accept-routes"
+      ];
+    };
   };
 
   # Set how many  CPU cores and MB of memory to allocate
@@ -50,16 +48,11 @@
         target = "/var/lib/nextcloud";
         securityModel = "none";
       };
-      vm-secrets = {
-        source = "/Users/stefan/vms/secrets/";
-        target = "/run/host-secrets";
-        securityModel = "none";
-      };
     };
 
     vfkit-vz = {
       enable = true;
-      name = "vm-nextcloud";
+      name = config.networking.hostName;
     };
   };
 
@@ -73,8 +66,8 @@
   services.nextcloud = {
     enable = true;
     package = pkgs.nextcloud32;
-    hostName = "nextcloud-mini";
-    #dataDir = "/var/lib/nextcloud";
+    hostName = config.networking.hostName;
+
     config = {
       dbtype = "sqlite";      # no dbhost/dbuser/dbpass needed
       dbname = "nextcloud";   # SQLite file will be under dataDir (nextcloud.db)
