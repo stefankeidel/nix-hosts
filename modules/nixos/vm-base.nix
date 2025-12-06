@@ -3,7 +3,35 @@
   pkgs,
   config,
   ...
-}: {
+}: let
+  cfg = config.vmBase;
+in {
+  options = let
+    inherit (lib) mkOption types;
+  in {
+    vmBase = {
+      stefanUser.enable = mkOption {
+        type = types.bool;
+        default = false;
+        description = "Create the stefan user with SSH access and wheel membership for VM test systems.";
+      };
+
+      stefanUser.authorizedKeys = mkOption {
+        type = types.listOf types.str;
+        default = [
+          ''ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEAwU52M/vXuUkthu481OGKYMzFGwc9GfjvVwDLt7yQGeDXUZHx5tpL2NEKSS3imnTfOJp25wFTOAJdF63eznIOUEc+5dCZe8xeZ7IMASGlNQJy51sNUlx986BIjYxLbCl0tykkySs82ZNaog9BapjxiHm2tXb1LFR2CsGOg9mLqRVNxQkOj8KkX5+r/NhVxQRFFW8OJn7rgqsyJtA7vKRwEP+nUsokO3cr/+sWeW7APgrnnkh9iYr/ZG6ibZH/m1+t4yW1kcENVy2X8Gyrs0GWMYQCLrBB+zJYBdwxBdeWSt76QlZnOpdwWcaZEC5PUVzTiKtyUok2NjBoqdpnLezrDw==''
+        ];
+        description = "Authorized SSH keys to place on the stefan user when enabled.";
+      };
+
+      openssh.enable = mkOption {
+        type = types.bool;
+        default = false;
+        description = "Enable a minimal OpenSSH server setup for remote access to the VM.";
+      };
+    };
+  };
+
   imports = [
     ./build.nix
   ];
@@ -86,6 +114,29 @@
         dhcpV4Config.ClientIdentifier = lib.mkDefault "mac";
       };
     }
+
+    ## Common users & access
+    (lib.mkIf cfg.stefanUser.enable {
+      users.users.stefan = {
+        isNormalUser = true;
+        extraGroups = ["wheel"];
+        openssh.authorizedKeys.keys = cfg.stefanUser.authorizedKeys;
+      };
+
+      services.getty.autologinUser = lib.mkDefault "stefan";
+      security.sudo.wheelNeedsPassword = false;
+    })
+
+    (lib.mkIf cfg.openssh.enable {
+      services.openssh = {
+        enable = true;
+        openFirewall = true;
+        settings = {
+          StrictModes = false;
+          PasswordAuthentication = false;
+        };
+      };
+    })
 
     ## Filesystem Layout
     {

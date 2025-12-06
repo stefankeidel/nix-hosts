@@ -13,7 +13,7 @@
     # size and bandwidth.
     "${modulesPath}/profiles/minimal.nix"
     flake.modules.nixos.vm-base
-    ../../modules/nixos/vfkit-vz.nix
+    flake.modules.nixos.vfkit-vz
     inputs.self.nixosModules.host-shared
   ];
 
@@ -29,23 +29,9 @@
     ];
   };
 
-  users.users.stefan = {
-    isNormalUser = true;
-    extraGroups = ["wheel"];
-
-    openssh.authorizedKeys.keys = [''ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEAwU52M/vXuUkthu481OGKYMzFGwc9GfjvVwDLt7yQGeDXUZHx5tpL2NEKSS3imnTfOJp25wFTOAJdF63eznIOUEc+5dCZe8xeZ7IMASGlNQJy51sNUlx986BIjYxLbCl0tykkySs82ZNaog9BapjxiHm2tXb1LFR2CsGOg9mLqRVNxQkOj8KkX5+r/NhVxQRFFW8OJn7rgqsyJtA7vKRwEP+nUsokO3cr/+sWeW7APgrnnkh9iYr/ZG6ibZH/m1+t4yW1kcENVy2X8Gyrs0GWMYQCLrBB+zJYBdwxBdeWSt76QlZnOpdwWcaZEC5PUVzTiKtyUok2NjBoqdpnLezrDw=='' ];
-  };
-
-  # it's just me :shrug:
-  security.sudo.wheelNeedsPassword = false;
-
-  services.openssh = {
-    enable = true;
-    openFirewall = true;
-    settings = {
-      StrictModes = false;
-      PasswordAuthentication = false;
-    };
+  vmBase = {
+    stefanUser.enable = true;
+    openssh.enable = true;
   };
 
   # Set how many  CPU cores and MB of memory to allocate
@@ -73,15 +59,9 @@
 
     vfkit-vz = {
       enable = true;
-      name = "nextcloud";
-      bridgeInterface = "en0"; # currently unused; vfkit runs nat mode
+      name = "vm-nextcloud";
     };
   };
-
-
-  # Set a static MAC address to get the same IP every time.
-  # This is an optional, non-upstream option defined in this repo.
-  services.getty.autologinUser = lib.mkDefault "stefan";
 
   # Enable a password-less root console in initrd if it fails
   # to switch to stage2 for any reason. This severely inpacts
