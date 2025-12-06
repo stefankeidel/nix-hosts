@@ -6,6 +6,7 @@
   imports = [
     inputs.self.nixosModules.host-shared
     inputs.self.darwinModules.desktop
+    inputs.self.darwinModules.vfkit-vms
   ];
 
   nixpkgs.hostPlatform = "aarch64-darwin";
@@ -18,6 +19,16 @@
 
   users.users."stefan" = {
     home = "/Users/stefan";
+  };
+
+  virtualisation.vfkit-vms = {
+    enable = true;
+    instances.vm-nextcloud = {
+      host = "vm-nextcloud";
+      runAtLoad = false;
+      keepAlive = false;
+      workDir = "/Users/stefan/vms/vfkit-nextcloud";
+    };
   };
 
   age.secrets = {
