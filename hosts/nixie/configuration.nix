@@ -18,7 +18,6 @@
     ./nextcloud.nix
     ./website.nix
     ./backup.nix
-    ./actualbudget.nix
   ];
 
   # secrets
