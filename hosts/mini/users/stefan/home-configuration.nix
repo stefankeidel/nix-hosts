@@ -30,4 +30,29 @@
       '')
     ];
   };
+
+  # note this annyingly different from the NixOS service, urgh.
+  # who thought of this.
+  services.syncthing = {
+      enable = true;
+
+      # Optional: GUI credentials (can be set in the browser instead)
+      settings.gui = {
+        user = "stefan";
+        password = "stefan";
+      };
+
+      guiAddress = "127.0.0.1:8384";
+
+      settings.devices = {
+        "vault" = { id = "5BWMPKR-DBAEUCJ-A4F7WCQ-O5GLRTT-YJRCFMC-36E3RPY-JGIHRKV-XHEQBQ3"; };
+      };
+
+      settings.folders = {
+        "Vault" = {
+          path = "/Users/stefan/Vault";
+          devices = [ "vault" ];
+        };
+      };
+  };
 }

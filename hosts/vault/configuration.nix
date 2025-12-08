@@ -1,4 +1,4 @@
-{ inputs, lib, pkgs, ... }: {
+{ config, inputs, lib, pkgs, ... }: {
   imports = [
     inputs.agenix.nixosModules.default
     inputs.self.nixosModules.host-shared
@@ -45,6 +45,30 @@
     enable = true;
     useRoutingFeatures = "server";
     extraSetFlags = ["--advertise-exit-node"];
+    permitCertUid = "caddy";
+  };
+
+  # nextcloud
+  services.syncthing = {
+    enable = true;
+    openDefaultPorts = false; # only tailnet
+    # Optional: GUI credentials (can be set in the browser instead)
+    settings.gui = {
+      user = "stefan";
+      password = "stefan";
+    };
+
+    guiAddress = "0.0.0.0:8384";
+
+    devices = {
+      "mini" = { id = "JU7KAPL-2RCNFV4-S4QLXAZ-46R5DZJ-OVO34RS-6MALUQE-5F4L4AA-ZCCZIAJ"; };
+    };
+    folders = {
+      "Vault" = {
+        path = "/var/lib/syncthing/Vault";
+        devices = [ "mini" ];
+      };
+    };
   };
 
   # Open ports in the firewall.
