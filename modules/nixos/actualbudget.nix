@@ -14,6 +14,10 @@
       volumes = [
         "/var/lib/actualbudget:/data"
       ];
+
+      environment = {
+        ACTUAL_WEB_ROOT = "/budget"; 
+      };
     };
   };
 
