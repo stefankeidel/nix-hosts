@@ -6,7 +6,7 @@
   imports = [
     inputs.self.nixosModules.host-shared
     inputs.self.darwinModules.desktop
-    inputs.self.darwinModules.vfkit-vms
+    #inputs.self.darwinModules.vfkit-vms
   ];
 
   nixpkgs.hostPlatform = "aarch64-darwin";
@@ -21,15 +21,15 @@
     home = "/Users/stefan";
   };
 
-  virtualisation.vfkit-vms = {
-    enable = true;
-    instances.vm-mini = {
-      host = "vm-mini";
-      runAtLoad = false;
-      keepAlive = false;
-      workDir = "/Users/stefan/vms/vfkit-mini";
-    };
-  };
+  # virtualisation.vfkit-vms = {
+  #   enable = true;
+  #   instances.vm-mini = {
+  #     host = "vm-mini";
+  #     runAtLoad = false;
+  #     keepAlive = false;
+  #     workDir = "/Users/stefan/vms/vfkit-mini";
+  #   };
+  # };
 
   age.secrets = {
     rclone = {

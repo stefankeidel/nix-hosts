@@ -2,6 +2,7 @@
   imports = [
     inputs.agenix.nixosModules.default
     inputs.self.nixosModules.host-shared
+    inputs.self.nixosModules.actualbudget
     ./hardware-configuration.nix
     ./networking.nix
   ];
@@ -48,7 +49,7 @@
     permitCertUid = "caddy";
   };
 
-  # nextcloud
+  # syncthing
   services.syncthing = {
     enable = true;
     openDefaultPorts = false; # only tailnet
@@ -60,10 +61,10 @@
 
     guiAddress = "0.0.0.0:8384";
 
-    devices = {
+    settings.devices = {
       "mini" = { id = "JU7KAPL-2RCNFV4-S4QLXAZ-46R5DZJ-OVO34RS-6MALUQE-5F4L4AA-ZCCZIAJ"; };
     };
-    folders = {
+    settings.folders = {
       "Vault" = {
         path = "/var/lib/syncthing/Vault";
         devices = [ "mini" ];
