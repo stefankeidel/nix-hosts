@@ -14,19 +14,13 @@
       volumes = [
         "/var/lib/actualbudget:/data"
       ];
-
-      environment = {
-        ACTUAL_WEB_ROOT = "/budget"; 
-      };
     };
   };
 
   services.caddy = {
     enable = true;
     virtualHosts."vault.beago-ordinal.ts.net".extraConfig = ''
-      handle /budget* {
-        reverse_proxy http://127.0.0.1:5006
-      }
+      reverse_proxy http://127.0.0.1:5006
     '';
   };
 
