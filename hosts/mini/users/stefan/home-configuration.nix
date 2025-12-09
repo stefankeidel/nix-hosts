@@ -44,6 +44,7 @@
 
       settings.devices = {
         "vault" = { id = "5BWMPKR-DBAEUCJ-A4F7WCQ-O5GLRTT-YJRCFMC-36E3RPY-JGIHRKV-XHEQBQ3"; };
+        "lichtblick" = { id = "ZOOJ533-GWZLWPA-EPW5AOT-F327BKZ-6DAQRCC-6D5G7PV-C63SGX4-A53R4AS"; };
       };
 
       settings.folders = {

@@ -63,6 +63,7 @@
 
     settings.devices = {
       "mini" = { id = "JU7KAPL-2RCNFV4-S4QLXAZ-46R5DZJ-OVO34RS-6MALUQE-5F4L4AA-ZCCZIAJ"; };
+      "lichtblick" = { id = "ZOOJ533-GWZLWPA-EPW5AOT-F327BKZ-6DAQRCC-6D5G7PV-C63SGX4-A53R4AS"; };
     };
     settings.folders = {
       "Vault" = {
