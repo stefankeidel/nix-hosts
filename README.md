@@ -33,22 +33,3 @@ nix build .#nixosConfigurations.vm-mini.config.system.build.vfkit-vz-runner
 ``` shell
 ./result/bin/vfkit-nextcloud
 ```
-
-### launchd services (vfkit-vms)
-- The darwin module `virtualisation.vfkit-vms` exposes vfkit runners as launchd daemons (default off).
-- Configure instances in your host, e.g. `hosts/mini/darwin-configuration.nix`:
-```nix
-virtualisation.vfkit-vms = {
-  enable = true;
-  instances.vm-mini = {
-    host = "vm-mini";
-    runAtLoad = false;
-    keepAlive = false;
-    workDir = "/Users/stefan/vms/vfkit-mini";
-  };
-};
-```
-- Switch: `HOME=/var/root sudo darwin-rebuild switch --keep-going -v --flake ~/code/nix-hosts#mini`.
-- Start: `sudo launchctl kickstart -k system/org.nixos.vfkit-vm-mini`
-- Stop: `sudo launchctl stop org.nixos.vfkit-vm-mini`
-- Logs: `/var/log/vfkit-<instance>.log`; service name is `org.nixos.vfkit-<instance>`. Adjust `runAtLoad`, `keepAlive`, `workDir`, and `logPath` per VM.
