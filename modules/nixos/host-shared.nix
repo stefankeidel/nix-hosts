@@ -5,5 +5,6 @@
     pkgs.htop
     pkgs.git
     pkgs.inetutils
+    pkgs.ripgrep
   ]; # ++ (pkgs.lib.optionals pkgs.stdenv.isDarwin [ pkgs.xbar ]);
 }
