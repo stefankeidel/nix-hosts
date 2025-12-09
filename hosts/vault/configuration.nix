@@ -1,6 +1,7 @@
 { config, inputs, lib, pkgs, ... }: {
   imports = [
     inputs.agenix.nixosModules.default
+    inputs.comin.nixosModules.comin
     inputs.self.nixosModules.host-shared
     inputs.self.nixosModules.actualbudget
     ./hardware-configuration.nix
@@ -71,6 +72,16 @@
         devices = [ "mini" "lichtblick" ];
       };
     };
+  };
+
+  # gitops
+  services.comin = {
+    enable = true;
+    remotes = [{
+      name = "origin";
+      url = "https://github.com/stefankeidel/nix-hosts.git";
+      branches.main.name = "main";
+    }];
   };
 
   # Open ports in the firewall.
