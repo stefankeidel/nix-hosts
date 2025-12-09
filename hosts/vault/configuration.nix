@@ -68,7 +68,7 @@
     settings.folders = {
       "Vault" = {
         path = "/var/lib/syncthing/Vault";
-        devices = [ "mini" ];
+        devices = [ "mini" "lichtblick" ];
       };
     };
   };

@@ -50,7 +50,7 @@
       settings.folders = {
         "Vault" = {
           path = "/Users/stefan/Vault";
-          devices = [ "vault" ];
+          devices = [ "vault" "lichtblick" ];
         };
       };
   };

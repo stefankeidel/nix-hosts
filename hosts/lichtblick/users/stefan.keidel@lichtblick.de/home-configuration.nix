@@ -45,7 +45,7 @@
       settings.folders = {
         "Vault" = {
           path = "/Users/stefan.keidel@lichtblick.de/Vault";
-          devices = [ "vault" ];
+          devices = [ "vault" "mini" ];
         };
       };
   };
