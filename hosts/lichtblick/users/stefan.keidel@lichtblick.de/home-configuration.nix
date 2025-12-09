@@ -25,4 +25,28 @@
       '')
     ];
   };
+
+  services.syncthing = {
+      enable = true;
+
+      # Optional: GUI credentials (can be set in the browser instead)
+      settings.gui = {
+        user = "stefan";
+        password = "stefan";
+      };
+
+      guiAddress = "127.0.0.1:8384";
+
+      settings.devices = {
+        "vault" = { id = "5BWMPKR-DBAEUCJ-A4F7WCQ-O5GLRTT-YJRCFMC-36E3RPY-JGIHRKV-XHEQBQ3"; };
+        "mini" = { id = "JU7KAPL-2RCNFV4-S4QLXAZ-46R5DZJ-OVO34RS-6MALUQE-5F4L4AA-ZCCZIAJ"; };
+      };
+
+      settings.folders = {
+        "Vault" = {
+          path = "/Users/stefan.keidel@lichtblick.de/Vault";
+          devices = [ "vault" ];
+        };
+      };
+  };
 }

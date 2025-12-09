@@ -31,8 +31,6 @@
     ];
   };
 
-  # note this annyingly different from the NixOS service, urgh.
-  # who thought of this.
   services.syncthing = {
       enable = true;
 
