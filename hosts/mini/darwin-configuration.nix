@@ -46,13 +46,6 @@
       group = "staff";
       mode = "600";
     };
-    hcloud_token = {
-      file = ../../secrets/hcloud_token.age;
-      path = "/Users/stefan/.config/hcloud_token";
-      owner = "stefan";
-      group = "staff";
-      mode = "600";
-    };
     pgpass = {
       file = ../../secrets/pgpass.age;
       path = "/Users/stefan/.pgpass";
@@ -67,13 +60,12 @@
       group = "staff";
       mode = "600";
     };
-    tailscale_auth = {
-      file = ../../secrets/tailscale-authkey.age;
-      path = "/Users/stefan/vms/secrets/tailscale-authkey";
+    zsh-extra = {
+      file = ../../secrets/zsh-extra.age;
+      path = "/Users/stefan/.extra";
       owner = "stefan";
       group = "staff";
       mode = "600";
-      symlink = false;
     };
   };
 
