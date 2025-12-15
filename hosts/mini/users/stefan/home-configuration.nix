@@ -28,6 +28,18 @@
         restic --password-file ~/.config/restic-pw --repo rclone:sb:mini-bak backup --tag mini-2025-12 ~/code ~/Documents ~/Desktop ~/Nextcloud /Volumes/West/Photos\ Library.photoslibrary/ ~/Vault --skip-if-unchanged
         restic --password-file ~/.config/restic-pw --repo rclone:sb:mini-bak forget --tag mini-2025-12 --keep-daily 7 --keep-weekly 2 --keep-monthly 3 --prune
       '')
+      (writeShellScriptBin "gonix" ''
+        #!/usr/bin/env zsh
+        set -e
+        HOME=/var/root sudo darwin-rebuild switch --keep-going -v --flake ~/code/nix-hosts#mini
+        current=$(HOME=/var/root sudo nix-env --profile "/nix/var/nix/profiles/system" --list-generations | awk '/current/{print $1}')
+        prev=$((current - 1))
+        if [[ -e "/nix/var/nix/profiles/system-$current-link" ]]; then
+            if [[ -e "/nix/var/nix/profiles/system-$prev-link" ]]; then
+                nvd diff /nix/var/nix/profiles/system-{$prev,$current}-link/
+            fi
+        fi
+      '')
     ];
   };
 
