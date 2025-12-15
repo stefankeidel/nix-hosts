@@ -6,7 +6,23 @@
     inputs.self.nixosModules.actualbudget
     ./hardware-configuration.nix
     ./networking.nix
+    ./backup.nix
   ];
+
+  # secrets
+  age.secrets = {
+    rclone = {
+      file = ../../secrets/rclone.conf.age;
+      path = "/root/.config/rclone/rclone.conf";
+      owner = "root";
+      mode = "600";
+    };
+    restic = {
+      file = ../../secrets/restic.age;
+      owner = "root";
+      mode = "600";
+    };
+  };
 
   # boot stuff
   boot.tmp.cleanOnBoot = true;
@@ -73,6 +89,13 @@
       };
     };
   };
+
+  environment.systemPackages = with pkgs; [
+    vnstat
+    rclone
+    restic
+    inputs.agenix.packages.${stdenv.hostPlatform.system}.default
+  ];
 
   # gitops
   services.comin = {
