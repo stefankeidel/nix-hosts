@@ -13,6 +13,8 @@
     inputs.agenix.nixosModules.default
     # our shared stuff
     inputs.self.nixosModules.host-shared
+    # gitops via nix
+    inputs.comin.nixosModules.comin
     # Include the results of the hardware scan.
     ./hardware-configuration.nix
     ./nextcloud.nix
@@ -186,6 +188,16 @@
   security.acme = {
     acceptTerms = true;
     defaults.email = "1188614+stefankeidel@users.noreply.github.com";
+  };
+
+  # gitops
+  services.comin = {
+    enable = true;
+    remotes = [{
+      name = "origin";
+      url = "https://github.com/stefankeidel/nix-hosts.git";
+      branches.main.name = "main";
+    }];
   };
 
   # metabase
