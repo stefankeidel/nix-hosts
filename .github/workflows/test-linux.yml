@@ -1,0 +1,39 @@
+name: Test Nixie Build on Linux
+
+on:
+  pull_request:
+
+jobs:
+  build-nixie:
+    name: Build Nix Flake Nixie
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Install Nix
+        uses: DeterminateSystems/nix-installer-action@main
+
+      - name: Check Flake Inputs
+        uses: DeterminateSystems/flake-checker-action@main
+
+      - name: Build Nix Flake
+        run: nix build '.#nixosConfigurations.nixie.config.system.build.toplevel'
+
+  build-vault:
+    name: Build Nix Flake Vault
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Install Nix
+        uses: DeterminateSystems/nix-installer-action@main
+
+      - name: Check Flake Inputs
+        uses: DeterminateSystems/flake-checker-action@main
+
+      - name: Build Nix Flake
+        run: nix build '.#nixosConfigurations.vault.config.system.build.toplevel'
