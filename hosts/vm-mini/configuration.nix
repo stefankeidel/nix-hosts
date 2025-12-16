@@ -14,7 +14,6 @@
     inputs.self.nixosModules.vm-base
     inputs.self.nixosModules.vfkit-vz
     inputs.self.nixosModules.host-shared
-    inputs.self.nixosModules.actualbudget
   ];
 
   networking.hostName = "vm-mini";
@@ -45,13 +44,8 @@
     # host-side persistence via virtio-fs; guest otherwise stays ephemeral
     sharedDirectories = {
       persistent = {
-        source = "/Users/stefan/vms/nextcloud-persistent";
-        target = "/var/lib/nextcloud";
-        securityModel = "none";
-      };
-      actualbudget = {
-        source = "/Users/stefan/vms/actualbudget-persistent";
-        target = "/var/lib/actualbudget";
+        source = "/Users/stefan/vms/paperless";
+        target = "/var/lib/paperless";
         securityModel = "none";
       };
     };
@@ -69,34 +63,6 @@
   # an VM, defence against attackers with access to the console
   # seems to be point-less anyway.
   boot.initrd.systemd.emergencyAccess = lib.mkDefault true;
-
-  services.nextcloud = {
-    enable = true;
-    package = pkgs.nextcloud32;
-    hostName = "sync.keidel.me";
-
-    config = {
-      dbtype = "sqlite";      # no dbhost/dbuser/dbpass needed
-      dbname = "nextcloud";   # SQLite file will be under dataDir (nextcloud.db)
-      adminuser = "admin";
-      adminpassFile = "/var/lib/nextcloud/nextcloud-admin-pass-file";
-    };
-
-    settings.trusted_domains = [
-      "keidel.me"
-      "vm-mini"
-    ];
-  };
-
-  services.nginx.virtualHosts."sync.keidel.me" = {
-    forceSSL = false;
-    enableACME = false;
-  };
-
-  security.acme = {
-    acceptTerms = true;
-    defaults.email = "1188614+stefankeidel@users.noreply.github.com";
-  };
 
   environment.systemPackages = with pkgs; [
     inputs.agenix.packages.${stdenv.hostPlatform.system}.default
