@@ -7,6 +7,7 @@
     ./hardware-configuration.nix
     ./networking.nix
     ./backup.nix
+    ./paperless.nix
   ];
 
   # secrets

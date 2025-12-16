@@ -17,7 +17,7 @@
         --password-file /run/agenix/restic \
         --repo rclone:sb:vault-bak backup \
         --tag vault-2025-12 \
-        /var/lib/syncthing /var/lib/actualbudget
+        /var/lib/syncthing /var/lib/actualbudget /var/lib/paperless
 
       /run/current-system/sw/bin/restic \
         --password-file /run/agenix/restic \
