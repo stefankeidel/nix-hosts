@@ -12,7 +12,6 @@ in {
   "restic.age".publicKeys = users ++ systems;
   "pgpass.age".publicKeys = users ++ systems;
   "authinfo.age".publicKeys = users ++ systems;
-  "hcloud_token.age".publicKeys = users ++ systems;
   "tailscale-authkey.age".publicKeys = users ++ systems;
   "zsh-extra.age".publicKeys = users ++ systems;
 }
