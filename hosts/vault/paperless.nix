@@ -19,9 +19,7 @@
     # and other services
     virtualHosts."paperless.vault.keidel.me".extraConfig = ''
       reverse_proxy localhost:28981
-      tls internal {
-        lifetime 720h
-      }
+      tls internal
     '';
   };
 }
