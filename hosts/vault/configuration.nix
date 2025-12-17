@@ -115,8 +115,13 @@
   ];
 
   nix.settings.experimental-features = ["nix-command" "flakes"];
-    # gc
+  # gc stuff
   nix.optimise.automatic = true;
+  nix.gc = {
+    automatic = true;
+    dates = "daily";
+    options = "--delete-older-than 5d";
+  };
 
   system.stateVersion = "25.05";
 }
