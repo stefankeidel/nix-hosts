@@ -1,8 +1,8 @@
-name: Update Darwin Flake Lockfile
+name: Update Flake
 on:
   workflow_dispatch:
   schedule:
-    - cron: '0 8 * * SAT'
+    - cron: '0 6 * * *'
 
 jobs:
   lockfile:
