@@ -20,6 +20,7 @@
     ./nextcloud.nix
     ./website.nix
     ./backup.nix
+    ./wanderer.nix
   ];
 
   # secrets
