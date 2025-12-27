@@ -4,6 +4,7 @@
     inputs.comin.nixosModules.comin
     inputs.self.nixosModules.host-shared
     inputs.self.nixosModules.actualbudget
+    inputs.self.nixosModules.storagebox
     ./hardware-configuration.nix
     ./networking.nix
     ./backup.nix
