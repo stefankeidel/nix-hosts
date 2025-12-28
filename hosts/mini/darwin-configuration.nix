@@ -86,7 +86,7 @@
 
     # Casks = `brew install --cask`
     casks = [
-      "libreoffice"
+      "musicbrainz-picard"
     ];
 
     # Optional: Mac App Store apps
