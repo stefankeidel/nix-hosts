@@ -9,6 +9,13 @@
     path = "/var/lib/navidrome/navidrome.env";
   };
 
+  age.secrets.rclone-navidrome = {
+    file = ../../secrets/rclone.conf.age;
+    path = "/var/lib/navidrome/.config/rclone/rclone.conf";
+    owner = "navidrome";
+    mode = "600";
+  };
+
   # mount storage box
   # this is the old hacky way requiring me to put ssh keys in place by hand
   # 
@@ -53,13 +60,30 @@
 
     settings = {
       # Tailscale only for now
-      Address = "100.107.111.21";
+      Address = "127.0.0.1";
       Port = 4533;
       #MusicFolder = "/home/stefan/music/";
       MusicFolder = "/var/lib/navidrome/music/";
       # EnableSharing = true;
-      LogLevel = "DEBUG";
+      LogLevel = "INFO";
       Scanner.Schedule = "@every 1h";
+    };
+  };
+
+  services.nginx.virtualHosts."navidrome.keidel.me" = {
+    forceSSL = true;
+    enableACME = true;
+
+    locations."/" = {
+      proxyPass = "http://127.0.0.1:4533";
+      proxyWebsockets = true;
+      extraConfig = ''
+        proxy_set_header Host $host;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection "upgrade";
+      '';
     };
   };
 }

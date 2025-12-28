@@ -8,7 +8,6 @@
     ./networking.nix
     ./backup.nix
     ./paperless.nix
-    ./navidrome.nix
   ];
 
   # secrets
@@ -17,12 +16,6 @@
       file = ../../secrets/rclone.conf.age;
       path = "/root/.config/rclone/rclone.conf";
       owner = "root";
-      mode = "600";
-    };
-    rclone-navidrome = {
-      file = ../../secrets/rclone.conf.age;
-      path = "/var/lib/navidrome/.config/rclone/rclone.conf";
-      owner = "navidrome";
       mode = "600";
     };
     restic = {
