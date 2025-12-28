@@ -10,13 +10,14 @@
 
   home = {
     packages = with pkgs; [
+      colima
       duckdb
+      feishin
       k9s
       kubectl
       kubectx
-      kubernetes-helm
       kubelogin
-      colima
+      kubernetes-helm
       (writeShellScriptBin "do_bak" ''
         #!/usr/bin/env zsh
         set -e
