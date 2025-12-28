@@ -13,6 +13,7 @@
       beets
       colima
       duckdb
+      feishin
       ffmpeg
       ghostscript
       k9s

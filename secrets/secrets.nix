@@ -14,4 +14,5 @@ in {
   "authinfo.age".publicKeys = users ++ systems;
   "tailscale-authkey.age".publicKeys = users ++ systems;
   "zsh-extra.age".publicKeys = users ++ systems;
+  "navidrome.env.age".publicKeys = users ++ systems;
 }

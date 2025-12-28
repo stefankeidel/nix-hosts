@@ -1,6 +1,14 @@
-{ pkgs, ... }:
+{ config, pkgs, ... }:
 
 {
+  age.secrets.navidrome-env = {
+    file = ../../secrets/navidrome.env.age;
+    owner = "navidrome";
+    group = "navidrome";
+    mode = "600";
+    path = "/var/lib/navidrome/navidrome.env";
+  };
+
   # mount storage box
   # this is the old hacky way requiring me to put ssh keys in place by hand
   # 
@@ -16,7 +24,7 @@
   #   ];
   # };
   # boot.supportedFilesystems."fuse.sshfs" = true;
-  # programs.fuse.userAllowOther = true;
+  programs.fuse.userAllowOther = true;
 
   systemd.services.rclone-hetzner-sb-music = {
     # Ensure the service starts after the network is up
@@ -40,6 +48,8 @@
 
   services.navidrome = {
     enable = true;
+
+    environmentFile = "/var/lib/navidrome/navidrome.env"; 
 
     settings = {
       # Tailscale only for now
