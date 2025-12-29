@@ -406,6 +406,7 @@
         ("https://hnrss.org/frontpage" hn maybe) ; spammy custom tag for Hacker News
         ("https://netzpolitik.org/ticker/feed" maybe)
         ("https://netzpolitik.org/feed/" blog)
+        ("https://fragdenstaat.de/artikel/feed/" blog)
 
         ("https://events.ccc.de/feed/" events security)
         ("https://www.ccc.de/rss/updates.rdf" security)
