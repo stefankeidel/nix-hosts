@@ -24,6 +24,7 @@
       nixd
       nodejs
       nvd
+      obsidian
       postgresql
       pre-commit
       pwgen
