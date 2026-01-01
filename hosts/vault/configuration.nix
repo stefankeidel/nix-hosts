@@ -81,11 +81,12 @@
     settings.devices = {
       "mini" = { id = "JU7KAPL-2RCNFV4-S4QLXAZ-46R5DZJ-OVO34RS-6MALUQE-5F4L4AA-ZCCZIAJ"; };
       "lichtblick" = { id = "ZOOJ533-GWZLWPA-EPW5AOT-F327BKZ-6DAQRCC-6D5G7PV-C63SGX4-A53R4AS"; };
+      "iphone" = { id = "IIZEPXC-IV4QQZ7-CLY5U36-EF7WSJ4-2LY3QTL-VGA3YCA-NJOKNVO-G6HLMQO"; };
     };
     settings.folders = {
       "Vault" = {
         path = "/var/lib/syncthing/Vault";
-        devices = [ "mini" "lichtblick" ];
+        devices = [ "mini" "lichtblick" "iphone" ];
       };
     };
   };
