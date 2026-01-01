@@ -342,7 +342,7 @@
     (map! "s-b g" #'org-roam-graph)
     (map! "s-b i" #'org-roam-node-insert)
     (map! "s-b c" #'org-roam-capture)
-    )
+  )
 
   (use-package! org-present
   :config

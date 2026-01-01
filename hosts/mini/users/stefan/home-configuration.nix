@@ -21,6 +21,8 @@
       kubectx
       kubernetes-helm
       mosh
+      tesseract4
+      ocrmypdf
       streamlink
       vfkit
       yt-dlp
