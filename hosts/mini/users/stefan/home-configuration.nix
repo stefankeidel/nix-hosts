@@ -21,6 +21,7 @@
       kubectx
       kubernetes-helm
       mosh
+      obsidian
       streamlink
       vfkit
       yt-dlp
