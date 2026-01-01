@@ -25,6 +25,7 @@
       nodejs
       nvd
       obsidian
+      raycast
       postgresql
       pre-commit
       pwgen
