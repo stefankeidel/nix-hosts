@@ -1,6 +1,10 @@
 { pkgs, ... }:
 
 {
+  # note this module is currently unused/unimported
+  # and just kept as reference for maybe later
+  # :shrug:
+  #
   environment.etc."paperless-admin-pass".text = "admin";
 
   services.tika = {
