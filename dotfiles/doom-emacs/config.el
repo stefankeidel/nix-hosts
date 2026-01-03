@@ -278,9 +278,9 @@
                         (org-deadline-warning-days 4)
                         ))
             (todo "NEXT")
-            (tags-todo "inbox")
-            (tags-todo "work")
-            (tags-todo "home")
+            (tags-todo "@inbox")
+            (tags-todo "@work")
+            (tags-todo "@home")
             ))
           ("r" "Reading list"
            (
