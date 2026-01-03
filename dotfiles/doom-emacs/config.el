@@ -255,7 +255,7 @@
                   )))
 
     (setq org-refile-targets
-      '(("projects.org" :regexp . "\\(?:\\(?:Note\\|Task\\)s\\)")))
+      '(("projects.org" :regexp . "\\(?:Tasks\\)")))
 
   ;; one big archive for everything [file-specific rules still apply and override]
   (setq org-archive-location '"archive.org::")
@@ -279,8 +279,8 @@
                         ))
             (todo "NEXT")
             (tags-todo "inbox")
-            (tags "DONE>=\"<today>\""
-                ((org-agenda-overriding-header "Completed today\n")))
+            (tags-todo "work")
+            (tags-todo "home")
             ))
           ("r" "Reading list"
            (
