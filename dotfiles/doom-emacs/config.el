@@ -260,8 +260,9 @@
   ;; one big archive for everything [file-specific rules still apply and override]
   (setq org-archive-location '"archive.org::")
 
-  (setq org-agenda-skip-scheduled-if-deadline-is-shown t)
   (setq org-agenda-skip-deadline-if-done t)
+  (setq org-agenda-skip-scheduled-if-done t)
+  (setq org-agenda-skip-scheduled-if-deadline-is-shown t)
   (setq org-agenda-include-diary t)
 
   (org-babel-do-load-languages
