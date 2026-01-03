@@ -242,11 +242,10 @@
 
   (setq org-todo-keyword-faces
         (quote (("TODO" :foreground "indian red" :weight bold)
-                  ("SOMEDAY" :foreground "LightSalmon1" :weight bold)
                   ("PROGRESS" :foreground "sky blue" :weight bold)
                   ("DONE" :foreground "forest green" :weight bold)
                   ("HOLD" :foreground "orange" :weight bold)
-                  ("NEXT" :foreground "magenta" :weight bold)
+                  ("NEXT" :foreground "LightSalmon1" :weight bold)
                   ("CANCELLED" :foreground "forest green" :weight bold)
                   ("MEETING" :foreground "forest green" :weight bold)
                   ;; For my reading list
@@ -255,21 +254,8 @@
                   ("SAVED" :foreground "sky blue" :weight bold)
                   )))
 
-    ;; (setq org-tag-alist (quote ((:startgroup)
-    ;;                             ("@errand" . ?e)
-    ;;                             ("@work" . ?w)
-    ;;                             ("@move" . ?m)
-    ;;                             ("@home" . ?h)
-    ;;                             ("@routine" . ?t)
-    ;;                             ("@bike" . ?b)
-    ;;                             ("@reading" . ?r)
-    ;;                             (:endgroup)
-    ;;                             )))
-
-    (setq org-refile-targets '(("~/org/stefan.org" :maxlevel . 2)
-                             ("~/org/reading.org" :maxlevel . 1)
-                             ("~/org/lichtblick.org" :maxlevel . 2)
-                             ))
+    (setq org-refile-targets
+      '(("projects.org" :regexp . "\\(?:\\(?:Note\\|Task\\)s\\)")))
 
   ;; one big archive for everything [file-specific rules still apply and override]
   (setq org-archive-location '"archive.org::")
@@ -294,7 +280,7 @@
             (todo "NEXT")
             (tags-todo "inbox")
             (tags "DONE>=\"<today>\""
-                ((org-agenda-overriding-header "\nCompleted today\n")))
+                ((org-agenda-overriding-header "Completed today\n")))
             ))
           ("r" "Reading list"
            (
