@@ -275,13 +275,14 @@
         '(
           ("a" "Agenda and tasks"
            ((agenda "" (
-                        (org-agenda-span 7)
+                        (org-agenda-span 'week)
+                        (org-agenda-start-on-weekday 1)
                         (org-deadline-warning-days 4)
                         ))
             (todo "NEXT")
             (tags-todo "@inbox")
             (tags-todo "@work")
-            (tags-todo "@home")
+            (tags-todo "@home-@habit")
             ))
           ("r" "Reading list"
            (
