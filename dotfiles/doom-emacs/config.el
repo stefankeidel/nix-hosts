@@ -40,7 +40,7 @@
 
 ;; If you use `org' and don't want your org files in the default location below,
 ;; change `org-directory'. It must be set before org loads!
-(setq org-directory "~/org/")
+(setq org-directory "~/Vault/orgmode/")
 
 
 ;; Whenever you reconfigure a package, make sure to wrap your config in an
@@ -231,21 +231,22 @@
 (after! org
   (use-package! german-holidays)
   (use-package! ob-http)
-  (setq org-agenda-files (list "~/org/stefan.org"
-                             "~/org/reading.org"
-                             "~/org/lichtblick.org"))
+
+  (setq org-agenda-files (list "inbox.org"
+                               "projects.org"
+                               "reading.org"))
 
   (setq org-todo-keywords
-        (quote ((sequence "TODO(t)" "SOMEDAY(s)" "PROGRESS(p!)" "|" "DONE(d!)")
-                (sequence "WAITING(w@/!)" "HOLD(h@/!)" "|" "CANCELLED(c@/!)" "MEETING(m)"))))
+        (quote ((sequence "TODO(t)" "NEXT(n)" "PROGRESS(p!)" "|" "DONE(d!)")
+                (sequence "HOLD(h@/!)" "|" "CANCELLED(c@/!)"))))
 
   (setq org-todo-keyword-faces
         (quote (("TODO" :foreground "indian red" :weight bold)
-                  ("SOMEDAY" :foreground "LightSalmon1" :weight bold)a
+                  ("SOMEDAY" :foreground "LightSalmon1" :weight bold)
                   ("PROGRESS" :foreground "sky blue" :weight bold)
                   ("DONE" :foreground "forest green" :weight bold)
-                  ("WAITING" :foreground "orange" :weight bold)
-                  ("HOLD" :foreground "magenta" :weight bold)
+                  ("HOLD" :foreground "orange" :weight bold)
+                  ("NEXT" :foreground "magenta" :weight bold)
                   ("CANCELLED" :foreground "forest green" :weight bold)
                   ("MEETING" :foreground "forest green" :weight bold)
                   ;; For my reading list
@@ -254,16 +255,16 @@
                   ("SAVED" :foreground "sky blue" :weight bold)
                   )))
 
-    (setq org-tag-alist (quote ((:startgroup)
-                                ("@errand" . ?e)
-                                ("@work" . ?w)
-                                ("@move" . ?m)
-                                ("@home" . ?h)
-                                ("@routine" . ?t)
-                                ("@bike" . ?b)
-                                ("@reading" . ?r)
-                                (:endgroup)
-                                )))
+    ;; (setq org-tag-alist (quote ((:startgroup)
+    ;;                             ("@errand" . ?e)
+    ;;                             ("@work" . ?w)
+    ;;                             ("@move" . ?m)
+    ;;                             ("@home" . ?h)
+    ;;                             ("@routine" . ?t)
+    ;;                             ("@bike" . ?b)
+    ;;                             ("@reading" . ?r)
+    ;;                             (:endgroup)
+    ;;                             )))
 
     (setq org-refile-targets '(("~/org/stefan.org" :maxlevel . 2)
                              ("~/org/reading.org" :maxlevel . 1)
@@ -286,10 +287,14 @@
   (setq org-agenda-custom-commands
         '(
           ("a" "Agenda and tasks"
-           ((agenda "" ((org-agenda-span 7)))
-            (tags-todo "@work")
-            (tags-todo "@home")
-            ;(tags-todo "@reading")
+           ((agenda "" (
+                        (org-agenda-span 7)
+                        (org-deadline-warning-days 4)
+                        ))
+            (todo "NEXT")
+            (tags-todo "inbox")
+            (tags "DONE>=\"<today>\""
+                ((org-agenda-overriding-header "\nCompleted today\n")))
             ))
           ("r" "Reading list"
            (
@@ -300,49 +305,13 @@
           ))
 
   (setq org-capture-templates '(
-   ("t" "Todo Lichtblick" entry
-    (file+headline "~/org/lichtblick.org" "Tasks")
-    "* TODO %i%?")
-   ("s" "Todo Stefan" entry
-    (file+headline "~/org/stefan.org" "tasks")
-    "* TODO %i%?")
-   ;; ("c" "Calendar" entry
-   ;;  (file+headline "~/org/stefan.org" "calendar")
-   ;;  "* %i%? \n   %t")
-   ;; ;; ("s" "Standup" entry
-   ;; ;;  (file+headline "~/org/idagio.org" "standups")
-   ;; ;;  "** Standup %t\n*** yesterday\n-%?\n*** today\n-\n")
+   ("i" "Inbox" entry
+    (file "inbox.org")
+          "* TODO %?\n/Entered on/ %U")
    ("r" "Reading List" entry
     (file+headline "~/org/reading.org" "from template")
     "** QUEUE %?")
    ))
-
-  (use-package! org-roam
-    :custom
-    (org-roam-directory (file-truename "~/org-roam/"))
-    (org-roam-capture-templates
-     '(
-     ("d" "default" plain
-        "%?"
-        :if-new (file+head "%<%Y-%m-%d--%H-%M-%S>-${slug}.org" "#+title: ${title}\n#+filetags:")
-        :unnarrowed t)
-     ("t" "ticket" plain
-      "* https://lichtblick.atlassian.net/browse/${title}\n\n%?\n"
-      :if-new (file+head "lichtblick-tickets/%<%Y-%m-%d--%H-%M-%S>-${slug}.org"
-                         "#+title: ${title}\n#+FILETAGS: ticket:lichtblick"
-                         )
-      :unnarrowed t)
-      )
-     )
-    :config
-    (setq org-roam-node-display-template (concat "${title:*} " (propertize "${tags:60}" 'face 'org-tag)))
-    (setq org-roam-completion-everywhere t)
-    (org-roam-db-autosync-mode)
-    (map! "s-b f" #'org-roam-node-find)
-    (map! "s-b g" #'org-roam-graph)
-    (map! "s-b i" #'org-roam-node-insert)
-    (map! "s-b c" #'org-roam-capture)
-  )
 
   (use-package! org-present
   :config
