@@ -33,6 +33,8 @@
       uv
       yarn
       yq
+      beamMinimal28Packages.elixir-ls
+      beamMinimal28Packages.elixir
     ];
 
     sessionVariables = {
