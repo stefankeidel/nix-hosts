@@ -296,7 +296,7 @@
     (file "inbox.org")
           "* TODO %?\n/Entered on/ %U")
    ("r" "Reading List" entry
-    (file+headline "~/org/reading.org" "from template")
+    (file+headline "reading.org" "from template")
     "** QUEUE %?")
    ))
 
