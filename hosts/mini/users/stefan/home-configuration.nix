@@ -11,7 +11,6 @@
   home = {
     packages = with pkgs; [
       beets
-      colima
       duckdb
       feishin
       ffmpeg

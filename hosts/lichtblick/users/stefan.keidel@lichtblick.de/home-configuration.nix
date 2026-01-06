@@ -10,7 +10,6 @@
 
   home = {
     packages = with pkgs; [
-      colima
       duckdb
       feishin
       k9s

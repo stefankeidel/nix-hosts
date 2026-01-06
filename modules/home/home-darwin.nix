@@ -11,7 +11,7 @@
     # install the heavier stuff we may not need
     # on minimal boxes here
     packages = with pkgs; [
-      #colima
+      colima
       alejandra
       basedpyright
       codex
@@ -30,6 +30,7 @@
       python313
       tidy-viewer
       tree-sitter
+      ty
       uv
       yarn
       yq
