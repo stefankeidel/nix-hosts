@@ -347,6 +347,16 @@
 (with-eval-after-load 'eglot
   (setq eglot-ignored-server-capabilities '(:inlayHintProvider))
 
+  (defun my-project-find-python-project (dir)
+    (when-let ((root (locate-dominating-file dir "pyproject.toml")))
+      (cons 'python-project root)))
+
+  (with-eval-after-load "project"
+    (cl-defmethod project-root ((project (head python-project)))
+      (cdr project))
+
+    (add-hook 'project-find-functions #'my-project-find-python-project))
+
   (add-to-list 'eglot-server-programs
                '(elixir-mode "elixir-ls"))
 
