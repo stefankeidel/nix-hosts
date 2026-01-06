@@ -348,7 +348,14 @@
   (setq eglot-ignored-server-capabilities '(:inlayHintProvider))
 
   (add-to-list 'eglot-server-programs
-               '(elixir-mode "elixir-ls")))
+               '(elixir-mode "elixir-ls"))
+
+  (add-to-list 'eglot-server-programs
+               '((python-ts-mode python-mode)
+                 . ("ty" "server")))
+  (add-hook 'python-ts-mode-hook #'eglot-ensure)
+  (add-to-list 'major-mode-remap-alist '(python-mode . python-ts-mode))
+)
 
 ;; newsreader
 (use-package! elfeed
@@ -509,21 +516,4 @@
 
 (after! python
   (global-mise-mode t)
-
-  (defun my-project-find-python-project (dir)
-    (when-let ((root (locate-dominating-file dir "pyproject.toml")))
-      (cons 'python-project root)))
-
-  (with-eval-after-load "project"
-    (cl-defmethod project-root ((project (head python-project)))
-      (cdr project))
-
-    (add-hook 'project-find-functions #'my-project-find-python-project))
-
-  (add-to-list 'auto-mode-alist '("/uv\\.lock\\'" . toml-ts-mode))
-  (add-to-list 'major-mode-remap-alist '(python-mode . python-ts-mode))
-  (add-to-list 'eglot-server-programs
-               '((python-ts-mode python-mode)
-                 . ("ty" "server")))
-  (add-hook 'python-ts-mode-hook #'eglot-ensure)
 )
