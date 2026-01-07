@@ -20,11 +20,10 @@
       kubectx
       kubernetes-helm
       mosh
-      tesseract4
-      ocrmypdf
       streamlink
       vfkit
       yt-dlp
+      utm
       (writeShellScriptBin "do_bak" ''
         #!/usr/bin/env zsh
         set -e
