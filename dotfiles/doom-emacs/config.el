@@ -185,13 +185,27 @@
 (after! gptel
   (gptel-make-gh-copilot "Copilot")
   (setq gptel-model 'gpt-5-mini
+        gptel-default-mode 'org-mode
         gptel-backend (gptel-make-gh-copilot "Copilot"))
 
   (use-package! macher
       :custom
       ;; The org UI has structured navigation and nice content folding.
       (macher-action-buffer-ui 'org)
+
+      :config
+      ;; Recommended - register macher tools and presets with gptel.
+      (macher-install)
+
+      ;; Recommended - enable macher infrastructure for tools/prompts in
+      ;; any buffer.  (Actions and presets will still work without this.)
+      (macher-enable)
     )
+
+  (use-package! gptel)
+    ;; :config
+    ;; ;; Optional - set up macher as soon as gptel is loaded.
+    ;; (require 'macher))
 
   (use-package! gptel-autocomplete
     :config
@@ -200,10 +214,6 @@
     (setq gptel-autocomplete-temperature 0.1)
     (setq gptel-autocomplete-use-context t)
     )
-
-  (use-package! gptel
-      :config
-      (macher-install))
 
   ;; (gptel-make-preset 'gpt5coding                       ;preset name, a symbol
   ;;     :description "A preset optimized for coding tasks" ;for your reference
