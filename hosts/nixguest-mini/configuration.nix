@@ -46,12 +46,23 @@
     LC_TIME = "de_DE.UTF-8";
   };
 
-  # Enable the X11 windowing system.
+  # Enable the display manager stack (required for GDM).
   services.xserver.enable = true;
 
-  # Enable the GNOME Desktop Environment.
+  # Enable the gnome-keyring secrets vault. 
+  # Will be exposed through DBus to programs willing to store secrets.
+  services.gnome.gnome-keyring.enable = true;
+
+  # Enable a Wayland compositor (Sway) with GDM.
   services.xserver.displayManager.gdm.enable = true;
-  services.xserver.desktopManager.gnome.enable = true;
+  services.displayManager.gdm.autoSuspend = false;
+  services.xserver.displayManager.gdm.wayland = true;
+  
+  # enable Sway window manager
+  programs.sway = {
+    enable = true;
+    wrapperFeatures.gtk = true;
+  };
 
   # Configure keymap in X11
   services.xserver.xkb = {
@@ -88,13 +99,6 @@
     description = "Stefan";
     extraGroups = [ "networkmanager" "wheel" ];
     openssh.authorizedKeys.keys = [''ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEAwU52M/vXuUkthu481OGKYMzFGwc9GfjvVwDLt7yQGeDXUZHx5tpL2NEKSS3imnTfOJp25wFTOAJdF63eznIOUEc+5dCZe8xeZ7IMASGlNQJy51sNUlx986BIjYxLbCl0tykkySs82ZNaog9BapjxiHm2tXb1LFR2CsGOg9mLqRVNxQkOj8KkX5+r/NhVxQRFFW8OJn7rgqsyJtA7vKRwEP+nUsokO3cr/+sWeW7APgrnnkh9iYr/ZG6ibZH/m1+t4yW1kcENVy2X8Gyrs0GWMYQCLrBB+zJYBdwxBdeWSt76QlZnOpdwWcaZEC5PUVzTiKtyUok2NjBoqdpnLezrDw=='' ];
-
-    packages = with pkgs; [
-    #  thunderbird
-       vim
-       git
-       htop
-    ];
   };
 
   # Install firefox.
@@ -106,8 +110,12 @@
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
-  #  vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
-  #  wget
+    # …
+    foot          # terminal emulator
+    wtype         # replacement for xdotool type
+    fuzzel        # fuzzy matching program starter
+    wayland-utils # for wayland-info(1)
+    gammastep     # redshift replacement
   ];
 
   # Some programs need SUID wrappers, can be configured further or are
