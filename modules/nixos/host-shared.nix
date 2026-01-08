@@ -7,5 +7,6 @@
     pkgs.inetutils
     pkgs.nh
     pkgs.ripgrep
+    pkgs.vim
   ]; # ++ (pkgs.lib.optionals pkgs.stdenv.isDarwin [ pkgs.xbar ]);
 }
