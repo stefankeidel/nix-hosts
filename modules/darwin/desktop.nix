@@ -9,19 +9,19 @@
   ...
 }:
 
-let
-  emacs = pkgs.emacs.override {
-    withNativeCompilation = false;
-    withSQLite3 = true;
-    withTreeSitter = true;
-    withWebP = true;
-  };
+# let
+#   emacs = pkgs.emacs.override {
+#     withNativeCompilation = false;
+#     withSQLite3 = true;
+#     withTreeSitter = true;
+#     withWebP = true;
+#   };
 
-  emacs-with-packages = (pkgs.emacsPackagesFor emacs).emacsWithPackages (epkgs: with epkgs; [
-    vterm
-    treesit-grammars.with-all-grammars
-  ]);
-in
+#   emacs-with-packages = (pkgs.emacsPackagesFor emacs).emacsWithPackages (epkgs: with epkgs; [
+#     vterm
+#     treesit-grammars.with-all-grammars
+#   ]);
+# in
 {
   imports = [
     # the default agenix module
@@ -111,7 +111,7 @@ in
   programs.zsh.enable = true;
 
   environment.systemPackages = with pkgs; [
-    emacs-with-packages
+    #emacs-with-packages
     inputs.agenix.packages.${stdenv.hostPlatform.system}.default
   ];
 

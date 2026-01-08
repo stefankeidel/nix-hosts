@@ -1,6 +1,5 @@
 {
   pkgs,
-  osConfig,
   ...
 }: {
   # only available on linux, disabled on macos
@@ -28,6 +27,7 @@
     pkgs.unixtools.watch
     pkgs.vim
     pkgs.wget
+    pkgs.fd
   ];
   # ++ (
   #   # you can access the host configuration using osConfig.
@@ -63,6 +63,16 @@
       signByDefault = false;
       format = "openpgp";
     };
+  };
+
+  programs.doom-emacs = {
+    enable = true;
+    doomDir = ../../dotfiles/doom-emacs;
+
+    extraPackages = epkgs: with epkgs; [
+      treesit-grammars.with-all-grammars
+      vterm
+    ];
   };
 
   home.stateVersion = "24.11"; # initial home-manager state

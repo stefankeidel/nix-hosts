@@ -60,9 +60,9 @@
 (package! ob-sql-mode)
 (package! undo-fu :disable t)
 (package! elfeed)
-(package! copilot
-  :recipe (:host github :repo "copilot-emacs/copilot.el" :files ("*.el"))
-  :disable t)
+;; (package! copilot
+;;   :recipe (:host github :repo "copilot-emacs/copilot.el" :files ("*.el"))
+;;   :disable t)
 ;; (package! org-ql
 ;;   :recipe (:host github :repo "alphapapa/org-ql" :files ("*.el")))
 ;; (package! org-roam-ql)
@@ -70,10 +70,11 @@
 (package! easy-kill)
 (package! yasnippet)
 (package! mise)
-(package! center-content-mode :recipe (:host nil :type git :repo "https://git.larstvei.no/larstvei/center-content-mode.git"))
-(package! macher
+(package! center-content-mode :pin "6527a1c8148c69b730d8d5517ee48fede5720f21"
+  :recipe (:host nil :type git :repo "https://git.larstvei.no/larstvei/center-content-mode.git"))
+(package! macher :pin "d447e262a336498b64e49afc04b76263955bbee7"
   :recipe (:host github :repo "kmontag/macher" :files ("*.el")))
-(package! gptel-autocomplete
+(package! gptel-autocomplete :pin "8ace326a6e7b8a3a4df7a6e80272b472e7fbd167"
   :recipe (:host github :repo "JDNdeveloper/gptel-autocomplete" :files ("*.el")))
 (package! org-modern)
 (package! org-present)

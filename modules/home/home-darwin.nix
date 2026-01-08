@@ -1,8 +1,12 @@
 {
   pkgs,
-  osConfig,
+  inputs,
   ...
 }: {
+  imports = [
+    inputs.nix-doom-emacs-unstraightened.homeModule
+  ];
+  
   home = {
     # enableNixpkgsReleaseCheck = false;
 
@@ -66,10 +70,10 @@
     # at some point(tm)
     #
     # emacs config
-    file.".config/doom" = {
-      source = ../../dotfiles/doom-emacs;
-      recursive = true;
-    };
+    # file.".config/doom" = {
+    #   source = ../../dotfiles/doom-emacs;
+    #   recursive = true;
+    # };
 
     file.".vimrc".source = ../../dotfiles/vim_config;
     file.".wezterm.lua".source = ../../dotfiles/weztermconfig.lua;
