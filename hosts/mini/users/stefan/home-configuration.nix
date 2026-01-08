@@ -12,7 +12,6 @@
     packages = with pkgs; [
       beets
       duckdb
-      feishin
       ffmpeg
       ghostscript
       k9s
@@ -23,7 +22,6 @@
       streamlink
       vfkit
       yt-dlp
-      utm
       (writeShellScriptBin "do_bak" ''
         #!/usr/bin/env zsh
         set -e

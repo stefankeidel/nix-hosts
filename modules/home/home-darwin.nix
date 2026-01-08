@@ -11,14 +11,13 @@
     # install the heavier stuff we may not need
     # on minimal boxes here
     packages = with pkgs; [
-      colima
       alejandra
-      basedpyright
       codex
+      colima
       docker-buildx
       docker-client
-      doctl
       emacs-lsp-booster
+      feishin
       kalker
       mise
       nixd
@@ -31,6 +30,7 @@
       tidy-viewer
       tree-sitter
       ty
+      utm
       uv
       yarn
       yq

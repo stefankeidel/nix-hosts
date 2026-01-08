@@ -11,7 +11,6 @@
   home = {
     packages = with pkgs; [
       duckdb
-      feishin
       k9s
       kubectl
       kubectx
