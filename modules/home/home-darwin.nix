@@ -34,7 +34,6 @@
       tidy-viewer
       tree-sitter
       ty
-      utm
       uv
       yarn
       yq
