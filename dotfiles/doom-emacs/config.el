@@ -406,6 +406,9 @@
         ("https://climatedrift.substack.com/feed" blog)
         ("https://craphound.com/feed" blog) ; his long form blog
         ("https://pagedout.institute/rss.xml" blog)
+        ("https://hannahritchie.substack.com/feed" blog)
+        ("https://ourworldindata.org/atom-data-insights.xml" blog)
+        ("https://ourworldindata.org/atom.xml" blog)
 
         ; econ and random stuff
         ("https://www.lesswrong.com/feed.xml?view=curated-rss" blog)
