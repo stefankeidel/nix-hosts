@@ -58,36 +58,5 @@
     };
   };
 
-  # Let nix-darwin manage Homebrew itself
-  homebrew = {
-    enable = true;
-
-    # Apple Silicon vs Intel handled automatically
-    onActivation = {
-      autoUpdate = false;
-      upgrade = false;
-      cleanup = "zap";
-    };
-
-    taps = [
-      "dawidpereira/quetty"
-    ];
-
-    # Formulae = `brew install`
-    brews = [
-      "quetty"
-    ];
-
-    # Casks = `brew install --cask`
-    # casks = [
-    #   "soulseek"
-    # ];
-
-    # Optional: Mac App Store apps
-    # masApps = {
-    #   Xcode = 497799835;
-    # };
-  };
-
   system.stateVersion = 6; # initial nix-darwin state
 }
