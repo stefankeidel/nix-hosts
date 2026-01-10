@@ -19,7 +19,7 @@
 
   services.caddy = {
     enable = true;
-    virtualHosts."vault.beago-ordinal.ts.net".extraConfig = ''
+    virtualHosts."${config.networking.hostName}.beago-ordinal.ts.net".extraConfig = ''
       reverse_proxy http://127.0.0.1:5006
     '';
   };
