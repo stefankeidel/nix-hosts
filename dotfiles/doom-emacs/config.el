@@ -244,7 +244,8 @@
 
   (setq org-agenda-files (list "inbox.org"
                                "projects.org"
-                               "reading.org"))
+                               "reading.org"
+                               "bikes.org"))
 
   (setq org-todo-keywords
         (quote ((sequence "TODO(t)" "NEXT(n)" "PROGRESS(p!)" "|" "DONE(d!)")
@@ -297,6 +298,12 @@
            (
             (todo "STARTED")
             (todo "QUEUE")
+            (todo "SAVED")
+            ))
+          ("b" "Bikes"
+           (
+            (todo "TODO")
+            (todo "WIP")
             (todo "SAVED")
             ))
           ))
