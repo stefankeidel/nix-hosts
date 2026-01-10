@@ -3,7 +3,7 @@
     inputs.agenix.nixosModules.default
     inputs.comin.nixosModules.comin
     inputs.self.nixosModules.host-shared
-    inputs.self.nixosModules.actualbudget
+    #inputs.self.nixosModules.actualbudget
     ./hardware-configuration.nix
     ./networking.nix
     ./backup.nix
