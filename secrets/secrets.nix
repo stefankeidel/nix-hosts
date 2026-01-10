@@ -6,7 +6,7 @@ let
   nixie = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIE5v6RSePxjUpyDxV6LpU63AcI7YHSjP5jVM+DMed+/7";
   mini = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIEpbyIeJsFejzHM4/r1QDYKjFg52bh/J/HZwE/wWsyCZ";
   vault = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAICmSHitiberVrKGoVWpMv4xXEQGq3/ZDKExhqNeEQ+SX";
-  vault-mini = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIGISkJWL4EgTVKwV5CBryYvGPEWQJ7EiHn77m+wqoFFV"
+  vault-mini = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIGISkJWL4EgTVKwV5CBryYvGPEWQJ7EiHn77m+wqoFFV";
   systems = [lichtblick-mac nixie mini vault vault-mini];
 in {
   "rclone.conf.age".publicKeys = users ++ systems;
