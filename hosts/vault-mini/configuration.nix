@@ -12,7 +12,23 @@
       inputs.self.nixosModules.host-shared
       inputs.self.nixosModules.actualbudget
       ./hardware-configuration.nix
+      ./backup.nix
     ];
+
+  # secrets
+  age.secrets = {
+    rclone = {
+      file = ../../secrets/rclone.conf.age;
+      path = "/root/.config/rclone/rclone.conf";
+      owner = "root";
+      mode = "600";
+    };
+    restic = {
+      file = ../../secrets/restic.age;
+      owner = "root";
+      mode = "600";
+    };
+  };
 
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
@@ -84,6 +100,9 @@
 
   # Enable the OpenSSH daemon.
   services.openssh.enable = true;
+
+  # no pw, it's a VM
+  security.sudo.wheelNeedsPassword = false;
 
   services.tailscale = {
     enable = true;
