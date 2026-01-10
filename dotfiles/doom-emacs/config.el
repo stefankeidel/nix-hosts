@@ -300,7 +300,7 @@
             (todo "QUEUE")
             (todo "SAVED")
             ))
-          ("b" "Bikes"
+          ("b" "Bikes" ; TODO somehow filter these to bikes.org
            (
             (todo "TODO")
             (todo "WIP")
