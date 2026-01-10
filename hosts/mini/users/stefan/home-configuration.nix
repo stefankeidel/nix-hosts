@@ -20,6 +20,7 @@
       kubernetes-helm
       mosh
       streamlink
+      utm
       vfkit
       yt-dlp
       (writeShellScriptBin "do_bak" ''
