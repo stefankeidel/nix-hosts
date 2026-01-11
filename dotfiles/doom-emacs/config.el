@@ -111,6 +111,7 @@
       "s-i c" #'org-capture
       "s-i t" #'+vterm/toggle
       "s-i T" #'+vterm/here
+      "s-i l" #'agent-shell
       "M-y"   #'browse-kill-ring
       "<f2>"  #'gptel-complete
       "<f3>"  #'gptel-accept-completion)
@@ -192,7 +193,8 @@
   :after acp
   :config
   (setq agent-shell-openai-authentication (agent-shell-openai-make-authentication :login t)
-        agent-shell-prefer-viewport-interaction t))
+        agent-shell-prefer-viewport-interaction t
+        agent-shell-new-shell-config (agent-shell-openai-make-codex-config)))
 
 ;; GPT.el
 (after! gptel
