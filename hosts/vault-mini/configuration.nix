@@ -117,6 +117,17 @@
     22
     41641 # tailscale
   ];
+
+  nix.settings.experimental-features = ["nix-command" "flakes"];
+
+  # gc stuff
+  nix.optimise.automatic = true;
+  nix.gc = {
+    automatic = true;
+    dates = "daily";
+    options = "--delete-older-than 5d";
+  };
+  
   # networking.firewall.allowedUDPPorts = [ ... ];
   # Or disable the firewall altogether.
   # networking.firewall.enable = false;
