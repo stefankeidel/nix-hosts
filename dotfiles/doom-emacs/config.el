@@ -297,12 +297,13 @@
             (todo "QUEUE")
             (todo "SAVED")
             ))
-          ("b" "Bikes" ; TODO somehow filter these to bikes.org
+          ("b" "Bikes"
            (
             (todo "TODO")
             (todo "WIP")
             (todo "SAVED")
-            ))
+            )
+           ((org-agenda-files '("bikes.org"))))
           ))
 
   (setq org-capture-templates '(
