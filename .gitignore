@@ -11,3 +11,7 @@ htmlcov
 # nix
 result
 .cache
+
+# agent shell
+.agent-shell/
+

@@ -75,7 +75,6 @@
 ;; You can also try 'gd' (or 'C-c c d') to jump to their definition and see how
 ;; they are implemented.
 
-
 ; magit
 (map! "s-m m" #'magit-status
       "s-m j" #'magit-dispatch
@@ -182,30 +181,25 @@
         (not (string= lang "sql"))))
 
 ;; AI stuff
+
+;; ACP / agent-shell
+(use-package! acp
+  :after shell-maker)
+
+(use-package! agent-shell
+  :after acp
+  :config
+  (setq agent-shell-openai-authentication (agent-shell-openai-make-authentication :login t)
+        agent-shell-prefer-viewport-interaction t))
+
+;; GPT.el
 (after! gptel
   (gptel-make-gh-copilot "Copilot")
   (setq gptel-model 'gpt-5-mini
         gptel-default-mode 'org-mode
         gptel-backend (gptel-make-gh-copilot "Copilot"))
 
-  (use-package! macher
-      :custom
-      ;; The org UI has structured navigation and nice content folding.
-      (macher-action-buffer-ui 'org)
-
-      :config
-      ;; Recommended - register macher tools and presets with gptel.
-      (macher-install)
-
-      ;; Recommended - enable macher infrastructure for tools/prompts in
-      ;; any buffer.  (Actions and presets will still work without this.)
-      (macher-enable)
-    )
-
   (use-package! gptel)
-    ;; :config
-    ;; ;; Optional - set up macher as soon as gptel is loaded.
-    ;; (require 'macher))
 
   (use-package! gptel-autocomplete
     :config

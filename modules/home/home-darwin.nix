@@ -17,6 +17,7 @@
     packages = with pkgs; [
       alejandra
       codex
+      codex-acp
       colima
       docker-buildx
       docker-client
