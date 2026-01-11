@@ -296,7 +296,8 @@
             (todo "STARTED")
             (todo "QUEUE")
             (todo "SAVED")
-            ))
+            )
+           ((org-agenda-files '("reading.org"))))
           ("b" "Bikes"
            (
             (todo "TODO")
