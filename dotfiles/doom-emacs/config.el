@@ -109,6 +109,8 @@
       "s-i s" #'lichtblick-dbt-search-model
       "s-i a" #'org-agenda
       "s-i c" #'org-capture
+      "s-i t" #'+vterm/toggle
+      "s-i T" #'+vterm/here
       "M-y"   #'browse-kill-ring
       "<f2>"  #'gptel-complete
       "<f3>"  #'gptel-accept-completion)
