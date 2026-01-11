@@ -67,28 +67,28 @@
   };
 
   # syncthing
-  services.syncthing = {
-    enable = true;
-    openDefaultPorts = false; # only tailnet
-    # Optional: GUI credentials (can be set in the browser instead)
-    settings.gui = {
-      user = "stefan";
-      password = "stefan";
-    };
+  # services.syncthing = {
+  #   enable = true;
+  #   openDefaultPorts = false; # only tailnet
+  #   # Optional: GUI credentials (can be set in the browser instead)
+  #   settings.gui = {
+  #     user = "stefan";
+  #     password = "stefan";
+  #   };
 
-    guiAddress = "0.0.0.0:8384";
+  #   guiAddress = "0.0.0.0:8384";
 
-    settings.devices = {
-      "mini" = { id = "JU7KAPL-2RCNFV4-S4QLXAZ-46R5DZJ-OVO34RS-6MALUQE-5F4L4AA-ZCCZIAJ"; };
-      "lichtblick" = { id = "ZOOJ533-GWZLWPA-EPW5AOT-F327BKZ-6DAQRCC-6D5G7PV-C63SGX4-A53R4AS"; };
-    };
-    settings.folders = {
-      "Vault" = {
-        path = "/var/lib/syncthing/Vault";
-        devices = [ "mini" "lichtblick" ];
-      };
-    };
-  };
+  #   settings.devices = {
+  #     "mini" = { id = "JU7KAPL-2RCNFV4-S4QLXAZ-46R5DZJ-OVO34RS-6MALUQE-5F4L4AA-ZCCZIAJ"; };
+  #     "lichtblick" = { id = "ZOOJ533-GWZLWPA-EPW5AOT-F327BKZ-6DAQRCC-6D5G7PV-C63SGX4-A53R4AS"; };
+  #   };
+  #   settings.folders = {
+  #     "Vault" = {
+  #       path = "/var/lib/syncthing/Vault";
+  #       devices = [ "mini" "lichtblick" ];
+  #     };
+  #   };
+  # };
 
   environment.systemPackages = with pkgs; [
     vnstat
