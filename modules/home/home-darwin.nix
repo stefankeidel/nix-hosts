@@ -32,6 +32,7 @@
       pre-commit
       pwgen
       python313
+      rust-analyzer
       tidy-viewer
       tree-sitter
       ty
