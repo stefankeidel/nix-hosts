@@ -11,6 +11,7 @@
       inputs.comin.nixosModules.comin
       inputs.self.nixosModules.host-shared
       inputs.self.nixosModules.actualbudget
+      inputs.self.nixosModules.jellyfin
       ./hardware-configuration.nix
       ./backup.nix
     ];
@@ -46,6 +47,12 @@
 
   # Enable networking
   networking.networkmanager.enable = true;
+
+  fileSystems."/mnt/share" = {
+    device = "share";
+    fsType = "virtiofs";
+    options = ["ro"];
+  };
 
   # Set your time zone.
   time.timeZone = "Europe/Berlin";
