@@ -42,6 +42,23 @@
 ;; change `org-directory'. It must be set before org loads!
 (setq org-directory "~/Vault/orgmode/")
 
+;; Ensure GUI Emacs started from the Dock sees Nix/Homebrew binaries.
+(when (and (eq system-type 'darwin) (display-graphic-p))
+  (let* ((extra-paths `(
+                        "/run/current-system/sw/bin"
+                        "/nix/var/nix/profiles/default/bin"
+                        ,(format "/etc/profiles/per-user/%s/bin" (user-login-name))
+                        "~/.nix-profile/bin"
+                        "~/.local/state/nix/profiles/home-manager/bin"
+                        "~/.local/bin"
+                        "/opt/homebrew/bin"
+                        "/opt/homebrew/sbin"))
+         (expanded-paths (mapcar #'expand-file-name extra-paths)))
+    (dolist (path expanded-paths)
+      (when (file-directory-p path)
+        (add-to-list 'exec-path path t)))
+    (setenv "PATH" (mapconcat #'identity exec-path path-separator))))
+
 
 ;; Whenever you reconfigure a package, make sure to wrap your config in an
 ;; `after!' block, otherwise Doom's defaults may override your settings. E.g.
