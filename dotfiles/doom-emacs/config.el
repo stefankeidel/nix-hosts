@@ -261,6 +261,9 @@
                                "reading.org"
                                "bikes.org"))
 
+  (setq org-clock-persist 'history)
+  (org-clock-persistence-insinuate)
+
   (setq org-todo-keywords
         (quote ((sequence "TODO(t)" "NEXT(n)" "PROGRESS(p!)" "|" "DONE(d!)")
                 (sequence "HOLD(h@/!)" "|" "CANCELLED(c@/!)"))))
