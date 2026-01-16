@@ -28,13 +28,14 @@
       nixd
       nodejs
       nvd
+      podman
+      poppler-utils
       postgresql
       pre-commit
       pwgen
       python313
       rust-analyzer
       tidy-viewer
-      poppler-utils
       tree-sitter
       ty
       uv
