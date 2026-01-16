@@ -12,6 +12,7 @@
     packages = with pkgs; [
       duckdb
       k9s
+      podman
       kubectl
       kubectx
       kubelogin
