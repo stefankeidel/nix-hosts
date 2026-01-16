@@ -135,7 +135,7 @@
 ; projectile bindings
 (map! :map projectile-mode-map
       "s-p" #'projectile-command-map
-      "s-f" #'projectile-ripgrep)
+      "s-f" #'+default/search-project-for-symbol-at-point)
 
 ; some imports
 (use-package! visual-regexp)
