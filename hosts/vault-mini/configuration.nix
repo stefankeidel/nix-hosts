@@ -14,7 +14,8 @@
       inputs.self.nixosModules.jellyfin
       ./hardware-configuration.nix
       ./backup.nix
-      ./media.nix
+      #./media.nix
+      #./photos.nix
     ];
 
   # secrets
