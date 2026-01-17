@@ -53,7 +53,7 @@
   fileSystems."/mnt/share" = {
     device = "share";
     fsType = "virtiofs";
-    options = ["ro"];
+    options = ["rw"];
   };
 
   # Set your time zone.
@@ -125,6 +125,8 @@
   networking.firewall.allowedTCPPorts = [
     22
     41641 # tailscale
+    8080
+    8686
   ];
 
   nix.settings.experimental-features = ["nix-command" "flakes"];

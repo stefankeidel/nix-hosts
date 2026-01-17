@@ -17,15 +17,17 @@
     };
   };
 
+  # services.lidarr = {
+  #   enable = true;
+  # };
+
   fileSystems."/var/lib/sabnzbd/downloads" = {
-    device = "/mnt/share/Media/downloads";
+    device = "/mnt/share/Share/Downloads";
     fsType = "none";
     options = [
+      "bind"
       "rw"
+      "x-systemd.requires-mounts-for=/mnt/share"
     ];
   };
-
-  networking.firewall.allowedTCPPorts = [
-    8080
-  ];
 }

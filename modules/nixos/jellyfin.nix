@@ -2,11 +2,11 @@
   ...
 }: {
   fileSystems."/var/lib/jellyfin/media" = {
-    device = "/mnt/share/Media";
+    device = "/mnt/share/Share";
     fsType = "none";
     options = [
       "bind"
-      "ro"
+      "rw"
       "x-systemd.requires-mounts-for=/mnt/share"
     ];
   };
