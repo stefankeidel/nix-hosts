@@ -21,15 +21,9 @@ nix run nix-darwin -- build --flake .#lichtblick
 HOME=/var/root sudo darwin-rebuild switch --keep-going -v --flake ~/code/nix-hosts#lichtblick
 ```
 
-## Running NixOS VMs
+## Machines
 
-### Manual boot
-- Define your NixOS host under `hosts/<name>` (see `hosts/nextcloud/configuration.nix` for layout).
-- Build the VM derivation for a host:
-``` shell
-nix build .#nixosConfigurations.vm-mini.config.system.build.vfkit-vz-runner
-```
-- Boot the resulting VM script (created under `./result/bin`):
-``` shell
-./result/bin/vfkit-nextcloud
-```
+- `lichtblick`: work MacBook Pro (nix-darwin + home-manager for `stefan`).
+- `mini`: personal Mac mini (nix-darwin + home-manager, Syncthing + desktop tooling).
+- `nixie`: NixOS server hosting Nextcloud, Nginx for `keidel.me`, and Navidrome (with backups).
+- `vault-mini`: NixOS media/finance box running Actual Budget, Jellyfin, and SABnzbd (with backups).
