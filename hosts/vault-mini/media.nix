@@ -17,6 +17,14 @@
     };
   };
 
+  fileSystems."/var/lib/sabnzbd/downloads" = {
+    device = "/mnt/share/Media/downloads";
+    fsType = "none";
+    options = [
+      "rw"
+    ];
+  };
+
   networking.firewall.allowedTCPPorts = [
     8080
   ];
