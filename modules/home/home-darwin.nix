@@ -100,28 +100,28 @@
     jq.enable = true;
     direnv.enable = true;
 
-    # broot = {
-    #   enable = true;
+    broot = {
+      enable = true;
 
-    #   settings = {
-    #     default_flags = "--no-hidden --no-permissions --no-whale-spotting --sort-by-type-dirs-first";
+      settings = {
+        default_flags = "--no-hidden --no-permissions --no-whale-spotting --sort-by-type-dirs-first";
 
-    #     verbs = [
-    #       # the default ctrl-l and ctrl-r don't work very well if you
-    #       # actually use MacOS's Mission Control like I do
-    #       {
-    #         invocation = "stefan_panel_left";
-    #         key = "alt-left";
-    #         internal = ":panel_left";
-    #       }
-    #       {
-    #         invocation = "stefan_panel_right";
-    #         key = "alt-right";
-    #         internal = ":panel_right";
-    #       }
-    #     ];
-    #   };
-    # };
+        verbs = [
+          # the default ctrl-l and ctrl-r don't work very well if you
+          # actually use MacOS's Mission Control like I do
+          {
+            invocation = "stefan_panel_left";
+            key = "alt-left";
+            internal = ":panel_left";
+          }
+          {
+            invocation = "stefan_panel_right";
+            key = "alt-right";
+            internal = ":panel_right";
+          }
+        ];
+      };
+    };
 
     zsh = {
       enable = true;
