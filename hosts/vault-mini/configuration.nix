@@ -15,7 +15,7 @@
       ./hardware-configuration.nix
       ./backup.nix
       ./media.nix
-      #./photos.nix
+      ./navidrome.nix
     ];
 
   # secrets
