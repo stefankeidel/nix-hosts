@@ -26,8 +26,8 @@
       (writeShellScriptBin "do_bak" ''
         #!/usr/bin/env zsh
         set -e
-        restic --password-file ~/.config/restic-pw --repo rclone:sb:mini-bak backup --tag mini-2026-01 ~/code ~/Documents ~/Desktop ~/Nextcloud /Volumes/SAM/Photos\ Library.photoslibrary/ ~/Vault --skip-if-unchanged
-        restic --password-file ~/.config/restic-pw --repo rclone:sb:mini-bak forget --tag mini-2026-01 --keep-daily 7 --keep-weekly 2 --keep-monthly 3 --prune
+        restic --password-file ~/.config/restic-pw --repo rclone:sb:mini-bak backup --tag mini-2026-01.2 ~/code ~/Documents ~/Desktop ~/Nextcloud /Volumes/SAM/Photos\ Library.photoslibrary/ ~/Vault /Volumes/SAM/Share/Music --skip-if-unchanged
+        restic --password-file ~/.config/restic-pw --repo rclone:sb:mini-bak forget --tag mini-2026-01.2 --keep-daily 7 --keep-weekly 2 --keep-monthly 3 --prune
       '')
       (writeShellScriptBin "gonix" ''
         #!/usr/bin/env zsh
