@@ -104,8 +104,7 @@
       name = "origin";
       url = "https://github.com/stefankeidel/nix-hosts.git";
       branches.main.name = "main";
-      # We want to fetch this remote every 300 seconds
-      poller.period = 300;
+      poller.period = 60;
     }];
   };
 
