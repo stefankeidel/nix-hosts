@@ -15,6 +15,7 @@
     # install the heavier stuff we may not need
     # on minimal boxes here
     packages = with pkgs; [
+      aerospace
       alejandra
       codex
       codex-acp
