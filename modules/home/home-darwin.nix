@@ -177,10 +177,10 @@
           r = ["flatten-workspace-tree" "mode main"];
           f = ["layout floating tiling" "mode main"];
           backspace = ["close-all-windows-but-current" "mode main"];
-          "alt-shift-h" = ["join-with left" "mode main"];
-          "alt-shift-j" = ["join-with down" "mode main"];
-          "alt-shift-k" = ["join-with up" "mode main"];
-          "alt-shift-l" = ["join-with right" "mode main"];
+          "ctrl-alt-left" = ["join-with left" "mode main"];
+          "ctrl-alt-down" = ["join-with down" "mode main"];
+          "ctrl-alt-up" = ["join-with up" "mode main"];
+          "ctrl-alt-right" = ["join-with right" "mode main"];
         };
 
         mode.apps.binding = {
