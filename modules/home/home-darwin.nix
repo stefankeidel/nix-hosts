@@ -16,7 +16,6 @@
     # on minimal boxes here
     packages = with pkgs; [
       aerospace
-      alacritty
       alejandra
       codex
       codex-acp
@@ -101,6 +100,19 @@
     tmux.enable = true;
     jq.enable = true;
     direnv.enable = true;
+
+    alacritty = {
+      enable = true;
+
+      settings = {
+        font = {
+          normal.family = "Hack Nerd Front";
+          size = 19.0;
+        };
+      };
+
+      theme = "doom_one";
+    };
 
     broot = {
       enable = true;
