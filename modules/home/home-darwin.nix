@@ -190,7 +190,8 @@
           f = ["exec-and-forget open -a /Applications/Firefox.app" "mode main"];
           t = ["exec-and-forget open -a /Applications/Microsoft\\ Teams.app" "mode main"];
           o = ["exec-and-forget open -a /Applications/Microsoft\\ Outlook.app" "mode main"];
-          e = ["exec-and-forget open -a ~/Applications/Home\\ Manager\\ Apps/Emacs.app" "mode main"];
+          alt-e = ["exec-and-forget open -a ~/Applications/Home\\ Manager\\ Apps/Emacs.app" "mode main"];
+          e = ["exec-and-forget emacsclient -c"];
           m = ["exec-and-forget open -a ~/Applications/Home\\ Manager\\ Apps/Feishin.app" "mode main"];
         };
 
