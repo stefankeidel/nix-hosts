@@ -177,7 +177,6 @@
           r = ["flatten-workspace-tree" "mode main"];
           f = ["layout floating tiling" "mode main"];
           backspace = ["close-all-windows-but-current" "mode main"];
-
           "alt-shift-h" = ["join-with left" "mode main"];
           "alt-shift-j" = ["join-with down" "mode main"];
           "alt-shift-k" = ["join-with up" "mode main"];
@@ -185,10 +184,14 @@
         };
 
         mode.apps.binding = {
-          alt-f = ["exec-and-forget open -a /Applications/Firefox.app" "mode main"];
+          # quick firefox with new window
+          alt-f = ["exec-and-forget open -n -a /Applications/Firefox.app" "mode main"];
           # no new windows for these, when in doubt switch
-          alt-t = ["exec-and-forget open /Applications/Microsoft\ Teams.app" "mode main"];
-          alt-o = ["exec-and-forget open /Applications/Microsoft\ Outlook.app" "mode main"];
+          f = ["exec-and-forget open -a /Applications/Firefox.app" "mode main"];
+          t = ["exec-and-forget open -a /Applications/Microsoft\\ Teams.app" "mode main"];
+          o = ["exec-and-forget open -a /Applications/Microsoft\\ Outlook.app" "mode main"];
+          e = ["exec-and-forget open -a ~/Applications/Home\\ Manager\\ Apps/Emacs.app" "mode main"];
+          m = ["exec-and-forget open -a ~/Applications/Home\\ Manager\\ Apps/Feishin.app" "mode main"];
         };
 
         "workspace-to-monitor-force-assignment" = {
