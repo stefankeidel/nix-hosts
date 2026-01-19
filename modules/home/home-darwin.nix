@@ -202,6 +202,40 @@
           "f2" = "secondary";
           "f3" = "secondary";
         };
+
+        # auto-arrange some stuff across workspaces
+        on-window-detected = [
+          {
+            "if" = {
+              app-id = "org.gnu.Emacs";
+            };
+            run = "move-node-to-workspace 1";
+          }
+          {
+            "if" = {
+              app-id = "com.microsoft.Outlook";
+            };
+            run = "move-node-to-workspace f2";
+          }
+          {
+            "if" = {
+              app-id = "com.microsoft.teams2";
+            };
+            run = "move-node-to-workspace f2";
+          }
+          {
+            "if" = {
+              app-id = "org.jeffvli.feishin";
+            };
+            run = "move-node-to-workspace f3";
+          }
+          {
+            "if" = {
+              app-id = "org.whispersystems.signal-desktop";
+            };
+            run = "move-node-to-workspace f3";
+          }
+        ];
       };
     };
 
