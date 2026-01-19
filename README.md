@@ -25,5 +25,5 @@ HOME=/var/root sudo darwin-rebuild switch --keep-going -v --flake ~/code/nix-hos
 
 - `lichtblick`: work MacBook Pro (nix-darwin + home-manager for `stefan`).
 - `mini`: personal Mac mini (nix-darwin + home-manager, Syncthing + desktop tooling).
-- `nixie`: NixOS server hosting Nextcloud, Nginx for `keidel.me`, and Navidrome (with backups).
-- `vault-mini`: NixOS media/finance box running Actual Budget, Jellyfin, and SABnzbd (with backups).
+- `nixie`: NixOS server hosting Nextcloud, Nginx for `keidel.me` (with backups).
+- `vault-mini`: Internal NixOS VM running Actual Budget, Jellyfin, and Navidrome (with backups).
