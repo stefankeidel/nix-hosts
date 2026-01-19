@@ -15,7 +15,6 @@
     # install the heavier stuff we may not need
     # on minimal boxes here
     packages = with pkgs; [
-      aerospace
       alejandra
       codex
       codex-acp
@@ -100,6 +99,96 @@
     tmux.enable = true;
     jq.enable = true;
     direnv.enable = true;
+
+    aerospace = {
+      enable = true;
+      launchd.enable = true;
+
+      settings = {
+        "config-version" = 2;
+        "after-startup-command" = [];
+        "start-at-login" = true;
+        "enable-normalization-flatten-containers" = true;
+        "enable-normalization-opposite-orientation-for-nested-containers" = true;
+        "accordion-padding" = 30;
+        "default-root-container-layout" = "tiles";
+        "default-root-container-orientation" = "auto";
+        "on-focused-monitor-changed" = ["move-mouse monitor-lazy-center"];
+        "automatically-unhide-macos-hidden-apps" = true;
+        "persistent-workspaces" = ["1" "2" "3" "f1" "f2" "f3"];
+        "on-mode-changed" = [];
+
+        "key-mapping".preset = "qwerty";
+
+        gaps = {
+          inner.horizontal = 0;
+          inner.vertical = 0;
+          outer.left = 0;
+          outer.bottom = 0;
+          outer.top = 0;
+          outer.right = 0;
+        };
+
+        mode.main.binding = {
+          "alt-slash" = "layout tiles horizontal vertical";
+          "alt-comma" = "layout accordion horizontal vertical";
+
+          "alt-left" = "focus left";
+          "alt-right" = "focus right";
+          "alt-up" = "focus up";
+          "alt-down" = "focus down";
+
+          "alt-shift-left" = "move left";
+          "alt-shift-down" = "move down";
+          "alt-shift-up" = "move up";
+          "alt-shift-right" = "move right";
+
+          "alt-minus" = "resize smart -50";
+          "alt-equal" = "resize smart +50";
+
+          "alt-1" = "workspace 1";
+          "alt-2" = "workspace 2";
+          "alt-3" = "workspace 3";
+          "alt-f1" = "workspace f1";
+          "alt-f2" = "workspace f2";
+          "alt-f3" = "workspace f3";
+
+          "alt-shift-1" = "move-node-to-workspace 1";
+          "alt-shift-2" = "move-node-to-workspace 2";
+          "alt-shift-3" = "move-node-to-workspace 3";
+          "alt-shift-f1" = "move-node-to-workspace f1";
+          "alt-shift-f2" = "move-node-to-workspace f2";
+          "alt-shift-f3" = "move-node-to-workspace f3";
+
+          "alt-tab" = "workspace-back-and-forth";
+
+          "alt-enter" = [
+            "exec-and-forget open -n -a ~/Applications/Home\\ Manager\\ Apps/Alacritty.app"
+          ];
+        };
+
+        mode.service.binding = {
+          esc = ["reload-config" "mode main"];
+          r = ["flatten-workspace-tree" "mode main"];
+          f = ["layout floating tiling" "mode main"];
+          backspace = ["close-all-windows-but-current" "mode main"];
+
+          "alt-shift-h" = ["join-with left" "mode main"];
+          "alt-shift-j" = ["join-with down" "mode main"];
+          "alt-shift-k" = ["join-with up" "mode main"];
+          "alt-shift-l" = ["join-with right" "mode main"];
+        };
+
+        "workspace-to-monitor-force-assignment" = {
+          "1" = "main";
+          "2" = "main";
+          "3" = "main";
+          "f1" = "secondary";
+          "f2" = "secondary";
+          "f3" = "secondary";
+        };
+      };
+    };
 
     alacritty = {
       enable = true;
