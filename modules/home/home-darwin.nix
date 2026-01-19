@@ -167,6 +167,9 @@
           "alt-enter" = [
             "exec-and-forget open -n -a ~/Applications/Home\\ Manager\\ Apps/Alacritty.app"
           ];
+
+          alt-shift-semicolon = "mode service";
+          alt-shift-enter = "mode apps";
         };
 
         mode.service.binding = {
@@ -179,6 +182,13 @@
           "alt-shift-j" = ["join-with down" "mode main"];
           "alt-shift-k" = ["join-with up" "mode main"];
           "alt-shift-l" = ["join-with right" "mode main"];
+        };
+
+        mode.apps.binding = {
+          alt-f = ["exec-and-forget open -a /Applications/Firefox.app" "mode main"];
+          # no new windows for these, when in doubt switch
+          alt-t = ["exec-and-forget open /Applications/Microsoft\ Teams.app" "mode main"];
+          alt-o = ["exec-and-forget open /Applications/Microsoft\ Outlook.app" "mode main"];
         };
 
         "workspace-to-monitor-force-assignment" = {
@@ -261,6 +271,7 @@
         k = "kubectl -n data";
         h = "helm --namespace data";
         dl = "cd ~/Downloads";
+        ff = "aerospace list-windows --all | fzf --bind 'enter:execute(bash -c \"aerospace focus --window-id {1}\")+abort'";
       };
 
       history = {
