@@ -109,6 +109,9 @@
           normal.family = "Hack Nerd Font";
           size = 19.0;
         };
+        window = {
+          decorations = "None";
+        };
       };
 
       theme = "doom_one";
