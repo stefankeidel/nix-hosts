@@ -106,7 +106,7 @@
 
       settings = {
         font = {
-          normal.family = "Hack Nerd Front";
+          normal.family = "Hack Nerd Font";
           size = 19.0;
         };
       };
