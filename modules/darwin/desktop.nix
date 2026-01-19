@@ -71,6 +71,7 @@
   system.defaults.NSGlobalDomain.NSAutomaticPeriodSubstitutionEnabled = false;
   system.defaults.NSGlobalDomain.NSAutomaticQuoteSubstitutionEnabled = false;
   system.defaults.NSGlobalDomain.NSAutomaticSpellingCorrectionEnabled = false;
+  system.defaults.NSGlobalDomain.NSWindowShouldDragOnGesture = true;
 
   system.defaults.NSGlobalDomain.ApplePressAndHoldEnabled = false;
 

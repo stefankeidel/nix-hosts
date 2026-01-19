@@ -130,6 +130,8 @@
         };
 
         mode.main.binding = {
+          alt-ctrl-f = "layout floating tiling";
+          
           "alt-slash" = "layout tiles horizontal vertical";
           "alt-comma" = "layout accordion horizontal vertical";
 
