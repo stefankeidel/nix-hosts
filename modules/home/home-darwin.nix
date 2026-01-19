@@ -1,4 +1,5 @@
 {
+  config,
   pkgs,
   inputs,
   ...
@@ -100,6 +101,12 @@
     jq.enable = true;
     direnv.enable = true;
 
+
+    nushell = {
+      enable = true;
+      configFile.source = ../../dotfiles/config.nu;
+    };
+
     aerospace = {
       enable = true;
       launchd.enable = true;
@@ -164,8 +171,9 @@
 
           "alt-tab" = "workspace-back-and-forth";
 
-          "alt-enter" = [
-            "exec-and-forget open -n -a ~/Applications/Home\\ Manager\\ Apps/Alacritty.app"
+          # quick terminal with nu
+          alt-enter = [
+            "exec-and-forget open -n -a ~/Applications/Home\\ Manager\\ Apps/Alacritty.app --args -e /etc/profiles/per-user/${config.home.username}/bin/nu"
           ];
 
           alt-shift-semicolon = "mode service";
@@ -186,6 +194,8 @@
         mode.apps.binding = {
           # quick firefox with new window
           alt-f = ["exec-and-forget open -n -a /Applications/Firefox.app" "mode main"];
+          # fully blown new termin with zsh
+          s = ["exec-and-forget open -n -a ~/Applications/Home\\ Manager\\ Apps/Alacritty.app" "mode main"];
           # no new windows for these, when in doubt switch
           f = ["exec-and-forget open -a /Applications/Firefox.app" "mode main"];
           t = ["exec-and-forget open -a /Applications/Microsoft\\ Teams.app" "mode main"];
@@ -304,9 +314,8 @@
       shellAliases = {
         ll = "eza -la";
         l = "eza -l";
-        update-nix = "HOME=/var/root sudo darwin-rebuild switch --keep-going -v --flake ~/code/nix-hosts#lichtblick";
-        k = "kubectl -n data";
-        h = "helm --namespace data";
+        k = "kubectl";
+        h = "helm";
         dl = "cd ~/Downloads";
         ff = "aerospace list-windows --all | fzf --bind 'enter:execute(bash -c \"aerospace focus --window-id {1}\")+abort'";
       };
