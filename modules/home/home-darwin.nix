@@ -206,12 +206,12 @@
 
         # auto-arrange some stuff across workspaces
         on-window-detected = [
-          {
-            "if" = {
-              app-id = "org.gnu.Emacs";
-            };
-            run = "move-node-to-workspace 1";
-          }
+          # {
+          #   "if" = {
+          #     app-id = "org.gnu.Emacs";
+          #   };
+          #   run = "move-node-to-workspace 1";
+          # }
           {
             "if" = {
               app-id = "com.microsoft.Outlook";
