@@ -190,8 +190,7 @@
           f = ["exec-and-forget open -a /Applications/Firefox.app" "mode main"];
           t = ["exec-and-forget open -a /Applications/Microsoft\\ Teams.app" "mode main"];
           o = ["exec-and-forget open -a /Applications/Microsoft\\ Outlook.app" "mode main"];
-          alt-e = ["exec-and-forget open -a ~/Applications/Home\\ Manager\\ Apps/Emacs.app" "mode main"];
-          e = ["exec-and-forget emacsclient -c"];
+          e = ["exec-and-forget zsh -lic \"open -a ~/Applications/Home\\ Manager\\ Apps/Emacs.app\"" "mode main"];
           m = ["exec-and-forget open -a ~/Applications/Home\\ Manager\\ Apps/Feishin.app" "mode main"];
         };
 
@@ -206,12 +205,12 @@
 
         # auto-arrange some stuff across workspaces
         on-window-detected = [
-          # {
-          #   "if" = {
-          #     app-id = "org.gnu.Emacs";
-          #   };
-          #   run = "move-node-to-workspace 1";
-          # }
+          {
+            "if" = {
+              app-id = "org.gnu.Emacs";
+            };
+            run = "move-node-to-workspace 1";
+          }
           {
             "if" = {
               app-id = "com.microsoft.Outlook";
