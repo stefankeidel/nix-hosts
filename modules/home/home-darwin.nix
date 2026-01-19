@@ -16,6 +16,7 @@
     # on minimal boxes here
     packages = with pkgs; [
       aerospace
+      alacritty
       alejandra
       codex
       codex-acp
