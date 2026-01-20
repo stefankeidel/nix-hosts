@@ -128,8 +128,8 @@
         "key-mapping".preset = "qwerty";
 
         gaps = {
-          inner.horizontal = 0;
-          inner.vertical = 0;
+          inner.horizontal = 3;
+          inner.vertical = 3;
           outer.left = 0;
           outer.bottom = 0;
           outer.top = 0;
