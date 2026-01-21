@@ -132,6 +132,11 @@
         "start-at-login" = true;
         "enable-normalization-flatten-containers" = true;
         "enable-normalization-opposite-orientation-for-nested-containers" = true;
+        "exec-on-workspace-change" = [
+          "/bin/bash"
+          "-lc"
+          "/etc/profiles/per-user/${config.home.username}/bin/sketchybar --trigger aerospace_workspace_change FOCUSED_WORKSPACE=$AEROSPACE_FOCUSED_WORKSPACE"
+        ];
         "accordion-padding" = 30;
         "default-root-container-layout" = "tiles";
         "default-root-container-orientation" = "auto";
