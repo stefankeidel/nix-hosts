@@ -67,6 +67,9 @@
       AIRFLOW_UID = 502;
       AIRFLOW_GID = 0;
       AIRFLOW_PLATFORM = "linux/arm64";
+
+      # point Codex at their own home
+      CODEX_HOME = "/Users/${config.home.username}/.codex";
     };
 
     # all my dotfiles, should probably be modularized
