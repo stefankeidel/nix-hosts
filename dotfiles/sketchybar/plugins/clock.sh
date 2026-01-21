@@ -4,5 +4,8 @@
 # the item invoking this script:
 # https://felixkratz.github.io/SketchyBar/config/events#events-and-scripting
 
-sketchybar --set "$NAME" label="$(date '+%d/%m %H:%M')"
+hour="$(date '+%H')"
+minute="$(date '+%M')"
 
+sketchybar --set clock_hour label="$hour" \
+           --set clock_min label="$minute"
