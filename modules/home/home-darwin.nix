@@ -43,7 +43,6 @@
       yarn
       yq
       zoxide
-      sketchybar
     ];
 
     sessionVariables = {
@@ -98,11 +97,6 @@
     file.".vim/undo/.keep".source = builtins.toFile "keep" "";
     file."/Library/Application Support/Code/User/settings.json".source = ../../dotfiles/vscode-settings.json;
     file."/Library/Application Support/Code - Insiders/User/settings.json".source = ../../dotfiles/vscode-settings.json;
-
-    file.".config/sketchybar" = {
-      source = ../../dotfiles/sketchybar;
-      recursive = true;
-    };
   };
 
   programs = {
@@ -112,9 +106,13 @@
     jq.enable = true;
     direnv.enable = true;
 
-    # sketchybar = {
-    #   enable = true;
-    # };
+    sketchybar = {
+      enable = true;
+      config = {
+        source = ../../dotfiles/sketchybar;
+        recursive = true;
+      };
+    };
 
     nushell = {
       enable = true;
