@@ -75,6 +75,18 @@ sketchybar --trigger aerospace_workspace_change \
 #            --set front_app icon.drawing=off script="$PLUGIN_DIR/front_app.sh" \
 #            --subscribe front_app front_app_switched
 
+##### Adding Center Items #####
+# We add a Teams notification counter in the center.
+
+sketchybar \
+           --add item teams_notifications center \
+           --set teams_notifications update_freq=20 \
+           icon.drawing=off \
+           label.font="Hack Nerd Font:Bold:16.0" \
+           label.padding_left=0 \
+           label.padding_right=0 \
+           script="$PLUGIN_DIR/teams.sh"
+
 ##### Adding Right Items #####
 # In the same way as the left items we can add items to the right side.
 # Additional position (e.g. center) are available, see:
