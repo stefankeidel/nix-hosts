@@ -15,7 +15,7 @@ export AEROSPACE_BIN
 # https://felixkratz.github.io/SketchyBar/config/tricks#color-picker
 
 sketchybar --bar position=right height=40 blur_radius=30 color=0x40000000 display=main
-sleep 5
+sleep 2
 
 ##### Changing Defaults #####
 # We now change some default values, which are applied to all further items.
@@ -86,19 +86,33 @@ sketchybar --trigger aerospace_workspace_change \
 # volume is registered. More info about the event system can be found here:
 # https://felixkratz.github.io/SketchyBar/config/events
 
-sketchybar --add item clock_min right \
-           --set clock_min update_freq=10 \
+sketchybar \
+           --add item clock_day right \
+           --set clock_day update_freq=30 \
            icon.drawing=off \
            label.font="Hack Nerd Font:Bold:16.0" \
            label.padding_left=0 \
            label.padding_right=0 \
            script="$PLUGIN_DIR/clock.sh" \
+           --add item clock_month right \
+           --set clock_month \
+           icon.drawing=off \
+           label.font="Hack Nerd Font:Bold:16.0" \
+           label.padding_left=0 \
+           label.padding_right=0 \
+           --add item clock_min right \
+           --set clock_min \
+           icon.drawing=off \
+           label.font="Hack Nerd Font:Bold:16.0" \
+           label.padding_left=0 \
+           label.padding_right=0 \
            --add item clock_hour right \
            --set clock_hour \
            icon.drawing=off \
            label.font="Hack Nerd Font:Bold:16.0" \
            label.padding_left=0 \
            label.padding_right=0 \
+           # battery
            --add item battery_percent right \
            --set battery_percent update_freq=120 \
            icon.drawing=off \

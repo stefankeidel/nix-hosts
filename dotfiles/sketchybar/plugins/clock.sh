@@ -6,6 +6,10 @@
 
 hour="$(date '+%H')"
 minute="$(date '+%M')"
+month="$(date '+%m')"
+day="$(date '+%d')"
 
 sketchybar --set clock_hour label="$hour" \
-           --set clock_min label="$minute"
+           --set clock_min label="$minute" \
+           --set clock_month label="$month" \
+           --set clock_day label="$day"
