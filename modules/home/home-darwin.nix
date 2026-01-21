@@ -148,12 +148,21 @@
         "key-mapping".preset = "qwerty";
 
         gaps = {
-          inner.horizontal = 3;
-          inner.vertical = 3;
+          inner.horizontal = [
+            { monitor.main = 3; }
+            0
+          ];
+          inner.vertical = [
+            { monitor.main = 3; }
+            0
+          ];
           outer.left = 0;
           outer.bottom = 0;
-          outer.top = 40;
-          outer.right = 0;
+          outer.top = 0;
+          outer.right = [
+            { monitor.main = 40; }
+            0
+          ];
         };
 
         mode.main.binding = {
