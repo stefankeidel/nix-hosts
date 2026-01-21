@@ -1,6 +1,11 @@
 use std "path add"
 
-path add /etc/profiles/per-user/stefan.keidel@lichtblick.de/bin/
+let user = ($env.USER? | default $env.USERNAME?)
+if $user == null {
+  error make { msg: "Missing USER/USERNAME env var for per-user profile path." }
+}
+
+path add $"/etc/profiles/per-user/($user)/bin/"
 
 # init carapace
 # $env.CARAPACE_BRIDGES = 'zsh,fish,bash,inshellisense' # optional
