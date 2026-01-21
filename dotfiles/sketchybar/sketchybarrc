@@ -4,7 +4,7 @@
 # https://github.com/FelixKratz/dotfiles
 
 PLUGIN_DIR="$CONFIG_DIR/plugins"
-AEROSPACE_BIN="/etc/profiles/per-user/stefan.keidel@lichtblick.de/bin/aerospace"
+AEROSPACE_BIN="/etc/profiles/per-user/$USER/bin/aerospace"
 export AEROSPACE_BIN
 
 ##### Bar Appearance #####
@@ -15,6 +15,7 @@ export AEROSPACE_BIN
 # https://felixkratz.github.io/SketchyBar/config/tricks#color-picker
 
 sketchybar --bar position=right height=40 blur_radius=30 color=0x40000000 display=main
+sleep 5
 
 ##### Changing Defaults #####
 # We now change some default values, which are applied to all further items.
