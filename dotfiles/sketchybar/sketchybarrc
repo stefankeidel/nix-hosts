@@ -90,6 +90,9 @@ sketchybar \
            --add item clock_day right \
            --set clock_day update_freq=30 \
            icon.drawing=off \
+           background.drawing=on \
+           background.color=0x30ffffff \
+           label.color=0xffcbb6e8 \
            label.font="Hack Nerd Font:Bold:16.0" \
            label.padding_left=0 \
            label.padding_right=0 \
@@ -97,6 +100,9 @@ sketchybar \
            --add item clock_month right \
            --set clock_month \
            icon.drawing=off \
+           background.drawing=on \
+           background.color=0x25ffffff \
+           label.color=0xffcbb6e8 \
            label.font="Hack Nerd Font:Bold:16.0" \
            label.padding_left=0 \
            label.padding_right=0 \
