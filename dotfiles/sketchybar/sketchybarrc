@@ -4,8 +4,6 @@
 # https://github.com/FelixKratz/dotfiles
 
 PLUGIN_DIR="$CONFIG_DIR/plugins"
-AEROSPACE_BIN="/etc/profiles/per-user/stefan.keidel@lichtblick.de/bin/aerospace"
-export AEROSPACE_BIN
 
 ##### Bar Appearance #####
 # Configuring the general appearance of the bar.
@@ -40,7 +38,7 @@ sketchybar --default "${default[@]}"
 
 sketchybar --add event aerospace_workspace_change
 
-AEROSPACE_WORKSPACES=($("$AEROSPACE_BIN" list-workspaces --all))
+AEROSPACE_WORKSPACES=($(aerospace list-workspaces --all))
 for i in "${!AEROSPACE_WORKSPACES[@]}"
 do
   ws="${AEROSPACE_WORKSPACES[i]}"
@@ -54,7 +52,7 @@ do
     background.height=25
     label.drawing=off
     script="$PLUGIN_DIR/aerospace.sh $ws"
-    click_script="$AEROSPACE_BIN workspace $ws"
+    click_script="aerospace workspace $ws"
   )
   sketchybar --add item aerospace."$ws" left \
              --subscribe aerospace."$ws" aerospace_workspace_change \
@@ -62,7 +60,7 @@ do
 done
 
 sketchybar --trigger aerospace_workspace_change \
-           FOCUSED_WORKSPACE="$("$AEROSPACE_BIN" list-workspaces --focused | head -n 1)"
+           FOCUSED_WORKSPACE="$(aerospace list-workspaces --focused | head -n 1)"
 
 ##### Adding Left Items #####
 # We add some regular items to the left side of the bar, where
