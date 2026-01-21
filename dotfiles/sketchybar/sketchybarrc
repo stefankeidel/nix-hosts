@@ -137,7 +137,6 @@ sketchybar \
            label.font="Hack Nerd Font:Bold:16.0" \
            label.padding_left=0 \
            label.padding_right=0 \
-           # battery
            --add item battery_percent right \
            --set battery_percent update_freq=120 \
            icon.drawing=off \
