@@ -6,6 +6,7 @@ if $user == null {
 }
 
 path add $"/etc/profiles/per-user/($user)/bin/"
+path add /run/current-system/sw/bin/
 
 # init carapace
 # $env.CARAPACE_BRIDGES = 'zsh,fish,bash,inshellisense' # optional
