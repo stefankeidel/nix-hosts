@@ -17,6 +17,7 @@
     # on minimal boxes here
     packages = with pkgs; [
       alejandra
+      carapace
       codex
       codex-acp
       colima
@@ -41,6 +42,7 @@
       uv
       yarn
       yq
+      zoxide
     ];
 
     sessionVariables = {

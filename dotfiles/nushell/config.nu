@@ -64,3 +64,10 @@ $env.config = {
 # https://github.com/jdx/mise/discussions/4731
 mkdir ($nu.data-dir | path join "vendor/autoload")
 ^mise activate nu | save -f ($nu.data-dir | path join "vendor/autoload/mise.nu")
+
+# carapace
+source $"($nu.cache-dir)/carapace.nu"
+
+# init zoxide
+# https://github.com/ajeetdsouza/zoxide
+source ~/.zoxide.nu
