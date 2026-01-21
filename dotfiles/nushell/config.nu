@@ -55,3 +55,8 @@ $env.config = {
         # abbreviated_row_count: 10 # limit data rows from top and bottom after reaching a set point
     }
 }
+
+# mise en place according to
+# https://github.com/jdx/mise/discussions/4731
+mkdir ($nu.data-dir | path join "vendor/autoload")
+^mise activate nu | save -f ($nu.data-dir | path join "vendor/autoload/mise.nu")
