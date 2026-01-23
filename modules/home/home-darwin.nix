@@ -40,6 +40,7 @@
       tree-sitter
       ty
       uv
+      gitui
       yarn
       yq
       zoxide
