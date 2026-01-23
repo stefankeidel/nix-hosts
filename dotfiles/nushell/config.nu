@@ -6,6 +6,14 @@ def l [] {
     ls
 }
 
+def o [...paths] {
+    if ($paths | is-empty) {
+        ^open .
+    } else {
+        ^open ...$paths
+    }
+}
+
 $env.config = {
     show_banner: false
     edit_mode: emacs
