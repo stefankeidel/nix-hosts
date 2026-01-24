@@ -87,6 +87,7 @@
     # Casks = `brew install --cask`
     casks = [
       "soulseek"
+      "musicbrainz-picard"
     ];
 
     # Optional: Mac App Store apps
