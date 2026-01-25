@@ -17,6 +17,7 @@
     # on minimal boxes here
     packages = with pkgs; [
       alejandra
+      bitwarden-cli
       carapace
       codex
       codex-acp
@@ -25,7 +26,6 @@
       docker-client
       emacs-lsp-booster
       feishin
-      starship
       kalker
       lazydocker
       mise
@@ -38,9 +38,9 @@
       pre-commit
       pwgen
       python313
+      starship
       tidy-viewer
       tree-sitter
-      bitwarden-cli
       ty
       uv
       yarn
