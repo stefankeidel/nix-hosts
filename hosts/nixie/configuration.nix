@@ -111,7 +111,6 @@
     fuse
     git
     htop
-    mosh
     rclone
     restic
     ripgrep
