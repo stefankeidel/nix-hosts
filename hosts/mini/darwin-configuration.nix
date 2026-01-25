@@ -67,6 +67,13 @@
       group = "staff";
       mode = "600";
     };
+    nu-extra = {
+      file = ../../secrets/nu-extra-env.age;
+      path = "/Users/stefan/.extra.nu";
+      owner = "stefan";
+      group = "staff";
+      mode = "600";
+    };
   };
 
   # Let nix-darwin manage Homebrew itself
