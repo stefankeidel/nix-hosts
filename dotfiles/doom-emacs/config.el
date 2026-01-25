@@ -296,6 +296,7 @@
             (tags-todo "@inbox")
             (tags-todo "@work")
             (tags-todo "@home-@habit")
+            (tags-todo "@bike")
             ))
           ("r" "Reading list"
            (
