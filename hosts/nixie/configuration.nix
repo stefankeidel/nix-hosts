@@ -111,7 +111,6 @@
     fuse
     git
     htop
-    mosh
     rclone
     restic
     ripgrep
@@ -175,6 +174,8 @@
       PermitRootLogin = "yes";
     };
   };
+
+  programs.mosh.enable = true;
 
   services.tailscale.enable = true;
   services.tailscale.useRoutingFeatures = "server";

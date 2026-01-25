@@ -18,7 +18,6 @@
       kubectl
       kubectx
       kubernetes-helm
-      mosh
       streamlink
       utm
       vfkit

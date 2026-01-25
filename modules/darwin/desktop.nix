@@ -34,6 +34,9 @@
   # terraform is unfree :-/
   nixpkgs.config.allowUnfree = true;
 
+  # enable mosh
+  programs.mosh.enable = true;
+
   # nix linux builder
   nix.linux-builder = {
     enable = true;
