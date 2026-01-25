@@ -72,6 +72,9 @@ $env.config = {
     }
 }
 
+# source my custom stuff
+source ~/.extra.nu
+
 # mise en place according to
 # https://github.com/jdx/mise/discussions/4731
 mkdir ($nu.data-dir | path join "vendor/autoload")
