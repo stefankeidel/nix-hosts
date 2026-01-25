@@ -25,7 +25,10 @@
       docker-client
       emacs-lsp-booster
       feishin
+      gitui
       kalker
+      lazydocker
+      lazygit
       mise
       nixd
       nodejs
@@ -40,7 +43,6 @@
       tree-sitter
       ty
       uv
-      gitui
       yarn
       yq
       zoxide
