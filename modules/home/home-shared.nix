@@ -49,10 +49,6 @@
       user.name = "Stefan Keidel";
       user.email = "stefan.keidel@lichtblick.de";
 
-      core = {
-        pager = "less -F";
-      };
-
       init = {
         defaultBranch = "main";
       };
