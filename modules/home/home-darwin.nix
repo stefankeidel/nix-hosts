@@ -40,6 +40,7 @@
       python313
       tidy-viewer
       tree-sitter
+      bitwarden-cli
       ty
       uv
       yarn

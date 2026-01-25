@@ -72,9 +72,6 @@ $env.config = {
     }
 }
 
-# source my custom stuff
-source ~/.extra.nu
-
 # mise en place according to
 # https://github.com/jdx/mise/discussions/4731
 mkdir ($nu.data-dir | path join "vendor/autoload")
@@ -86,6 +83,9 @@ source $"($nu.cache-dir)/carapace.nu"
 # init zoxide
 # https://github.com/ajeetdsouza/zoxide
 source ~/.zoxide.nu
+
+# source my custom stuff
+source ~/.extra.nu
 
 # init starship
 mkdir ($nu.data-dir | path join "vendor/autoload")
