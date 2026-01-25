@@ -56,6 +56,13 @@
       group = "staff";
       mode = "600";
     };
+    nu-extra = {
+      file = ../../secrets/nu-extra-env.age;
+      path = "/Users/stefan.keidel@lichtblick.de/.extra.nu";
+      owner = "stefan.keidel@lichtblick.de";
+      group = "staff";
+      mode = "600";
+    };
   };
 
   system.stateVersion = 6; # initial nix-darwin state
