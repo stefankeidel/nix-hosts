@@ -25,10 +25,9 @@
       docker-client
       emacs-lsp-booster
       feishin
-      gitui
+      starship
       kalker
       lazydocker
-      lazygit
       mise
       nixd
       nodejs

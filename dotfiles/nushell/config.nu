@@ -83,3 +83,7 @@ source $"($nu.cache-dir)/carapace.nu"
 # init zoxide
 # https://github.com/ajeetdsouza/zoxide
 source ~/.zoxide.nu
+
+# init starship
+mkdir ($nu.data-dir | path join "vendor/autoload")
+starship init nu | save -f ($nu.data-dir | path join "vendor/autoload/starship.nu")
