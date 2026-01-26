@@ -6,6 +6,7 @@
 }: {
   imports = [
     inputs.nix-doom-emacs-unstraightened.homeModule
+    inputs.self.homeModules.helix
   ];
   
   home = {

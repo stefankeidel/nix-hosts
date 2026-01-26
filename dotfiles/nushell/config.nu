@@ -2,9 +2,9 @@ def ff [] {
     aerospace list-windows --all | fzf --bind 'enter:execute(bash -c "aerospace focus --window-id {1}")+abort'
 }
 
-def l [] {
-    ls
-}
+alias ll = ls -l
+alias l = ls
+alias e = emacsclient --create-frame
 
 def o [...paths] {
     if ($paths | is-empty) {

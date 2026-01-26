@@ -9,7 +9,7 @@ path add $"/etc/profiles/per-user/($user)/bin/"
 path add /run/current-system/sw/bin/
 
 # some other random stuff we also have set in zsh
-$env.EDITOR = 'vim'
+$env.EDITOR = 'hx'
 $env.PYTHONBREAKPOINT = 'pudb.set_trace'
 $env.LSP_USE_PLISTS = "true"
 $env.AIRFLOW_UID = 502
