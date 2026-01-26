@@ -50,8 +50,8 @@
     ];
 
     sessionVariables = {
-      EDITOR = "vim";
-      VISUAL = "vim";
+      EDITOR = "hx";
+      VISUAL = "hx";
       LANG = "en_US.UTF-8";
       LC_ALL = "en_US.UTF-8";
       MANPAGER = "less -X";
