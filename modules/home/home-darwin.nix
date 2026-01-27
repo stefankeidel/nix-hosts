@@ -144,7 +144,7 @@
         "default-root-container-orientation" = "auto";
         "on-focused-monitor-changed" = ["move-mouse monitor-lazy-center"];
         "automatically-unhide-macos-hidden-apps" = true;
-        "persistent-workspaces" = ["1" "2" "3" "f1" "f2" "f3"];
+        "persistent-workspaces" = ["1" "2" "3" "4" "f1" "f2" "f3"];
         "on-mode-changed" = [];
 
         "key-mapping".preset = "qwerty";
@@ -187,6 +187,7 @@
           "alt-1" = "workspace 1";
           "alt-2" = "workspace 2";
           "alt-3" = "workspace 3";
+          "alt-4" = "workspace 4";
           "alt-f1" = "workspace f1";
           "alt-f2" = "workspace f2";
           "alt-f3" = "workspace f3";
@@ -194,6 +195,7 @@
           "alt-shift-1" = "move-node-to-workspace 1";
           "alt-shift-2" = "move-node-to-workspace 2";
           "alt-shift-3" = "move-node-to-workspace 3";
+          "alt-shift-4" = "move-node-to-workspace 4";
           "alt-shift-f1" = "move-node-to-workspace f1";
           "alt-shift-f2" = "move-node-to-workspace f2";
           "alt-shift-f3" = "move-node-to-workspace f3";
@@ -237,6 +239,7 @@
           "1" = "main";
           "2" = "main";
           "3" = "main";
+          "4" = "main";
           "f1" = "secondary";
           "f2" = "secondary";
           "f3" = "secondary";
