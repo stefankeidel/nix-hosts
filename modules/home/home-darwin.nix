@@ -253,18 +253,6 @@
             };
             run = "move-node-to-workspace 1";
           }
-          # {
-          #   "if" = {
-          #     app-id = "com.microsoft.Outlook";
-          #   };
-          #   run = "move-node-to-workspace f2";
-          # }
-          # {
-          #   "if" = {
-          #     app-id = "com.microsoft.teams2";
-          #   };
-          #   run = "move-node-to-workspace f2";
-          # }
           {
             "if" = {
               app-id = "org.jeffvli.feishin";
