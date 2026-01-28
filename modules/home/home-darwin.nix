@@ -168,61 +168,62 @@
         };
 
         mode.main.binding = {
-          "alt-slash" = "layout tiles horizontal vertical";
-          "alt-comma" = "layout accordion horizontal vertical";
+          # All possible modifiers: cmd, alt, ctrl, shift
 
-          "alt-left" = "focus left";
-          "alt-right" = "focus right";
-          "alt-up" = "focus up";
-          "alt-down" = "focus down";
+          # I use Karabiner to map cmd-alt-ctrl to "hyper" as in caps lock
+          "cmd-alt-ctrl-slash" = "layout tiles horizontal vertical";
+          "cmd-alt-ctrl-comma" = "layout accordion horizontal vertical";
 
-          "alt-shift-left" = "move left";
-          "alt-shift-down" = "move down";
-          "alt-shift-up" = "move up";
-          "alt-shift-right" = "move right";
+          "cmd-alt-ctrl-left" = "focus left";
+          "cmd-alt-ctrl-right" = "focus right";
+          "cmd-alt-ctrl-up" = "focus up";
+          "cmd-alt-ctrl-down" = "focus down";
 
-          "alt-minus" = "resize smart -50";
-          "alt-equal" = "resize smart +50";
+          "cmd-alt-ctrl-shift-left" = "move left";
+          "cmd-alt-ctrl-shift-down" = "move down";
+          "cmd-alt-ctrl-shift-up" = "move up";
+          "cmd-alt-ctrl-shift-right" = "move right";
 
-          "alt-1" = "workspace 1";
-          "alt-2" = "workspace 2";
-          "alt-3" = "workspace 3";
-          "alt-4" = "workspace 4";
-          "alt-f1" = "workspace f1";
-          "alt-f2" = "workspace f2";
-          "alt-f3" = "workspace f3";
+          "cmd-alt-ctrl-minus" = "resize smart -50";
+          "cmd-alt-ctrl-equal" = "resize smart +50";
 
-          "alt-shift-1" = "move-node-to-workspace 1";
-          "alt-shift-2" = "move-node-to-workspace 2";
-          "alt-shift-3" = "move-node-to-workspace 3";
-          "alt-shift-4" = "move-node-to-workspace 4";
-          "alt-shift-f1" = "move-node-to-workspace f1";
-          "alt-shift-f2" = "move-node-to-workspace f2";
-          "alt-shift-f3" = "move-node-to-workspace f3";
+          "cmd-alt-ctrl-1" = "workspace 1";
+          "cmd-alt-ctrl-2" = "workspace 2";
+          "cmd-alt-ctrl-3" = "workspace 3";
+          "cmd-alt-ctrl-4" = "workspace 4";
+          "cmd-alt-ctrl-f1" = "workspace f1";
+          "cmd-alt-ctrl-f2" = "workspace f2";
+          "cmd-alt-ctrl-f3" = "workspace f3";
 
-          "alt-tab" = "workspace-back-and-forth";
+          "cmd-alt-ctrl-shift-1" = "move-node-to-workspace 1";
+          "cmd-alt-ctrl-shift-2" = "move-node-to-workspace 2";
+          "cmd-alt-ctrl-shift-3" = "move-node-to-workspace 3";
+          "cmd-alt-ctrl-shift-4" = "move-node-to-workspace 4";
+          "cmd-alt-ctrl-shift-f1" = "move-node-to-workspace f1";
+          "cmd-alt-ctrl-shift-f2" = "move-node-to-workspace f2";
+          "cmd-alt-ctrl-shift-f3" = "move-node-to-workspace f3";
 
-          # quick terminal with nu
-          alt-enter = [
-            "exec-and-forget open -n -a ~/Applications/Home\\ Manager\\ Apps/Alacritty.app --args -e /etc/profiles/per-user/${config.home.username}/bin/nu"
-          ];
+          "cmd-alt-ctrl-tab" = "workspace-back-and-forth";
 
-          alt-shift-semicolon = "mode service";
-          alt-shift-enter = "mode apps";
+          "cmd-alt-ctrl-semicolon" = "mode service";
+          "cmd-alt-ctrl-enter" = "mode apps";
         };
 
         mode.service.binding = {
           esc = ["reload-config" "mode main"];
           r = ["flatten-workspace-tree" "mode main"];
           f = ["layout floating tiling" "mode main"];
+          w = ["close" "mode main"];
           backspace = ["close-all-windows-but-current" "mode main"];
-          "ctrl-alt-left" = ["join-with left" "mode main"];
-          "ctrl-alt-down" = ["join-with down" "mode main"];
-          "ctrl-alt-up" = ["join-with up" "mode main"];
-          "ctrl-alt-right" = ["join-with right" "mode main"];
+          "left" = ["join-with left" "mode main"];
+          "down" = ["join-with down" "mode main"];
+          "up" = ["join-with up" "mode main"];
+          "right" = ["join-with right" "mode main"];
         };
 
         mode.apps.binding = {
+          # quickest shell  with nu
+          enter = ["exec-and-forget open -n -a ~/Applications/Home\\ Manager\\ Apps/Alacritty.app --args -e /etc/profiles/per-user/${config.home.username}/bin/nu" "mode main"];
           # quick firefox with new window
           alt-f = ["exec-and-forget open -n -a /Applications/Firefox.app" "mode main"];
           # fully blown new termin with zsh
