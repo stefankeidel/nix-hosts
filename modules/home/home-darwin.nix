@@ -132,7 +132,7 @@
       settings = {
         "config-version" = 2;
         after-startup-command = [
-          "exec-and-forget borders active_color=0xffe1e3e4 inactive_color=0xff494d64 width=5.0"
+          "exec-and-forget /etc/profiles/per-user/${config.home.username}/bin/borders active_color=0xffe1e3e4 inactive_color=0xff494d64 width=5.0"
         ];
         "start-at-login" = true;
         "enable-normalization-flatten-containers" = true;
