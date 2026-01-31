@@ -147,7 +147,7 @@
         "default-root-container-orientation" = "auto";
         "on-focused-monitor-changed" = ["move-mouse monitor-lazy-center"];
         "automatically-unhide-macos-hidden-apps" = true;
-        "persistent-workspaces" = ["1" "2" "3" "4" "f1" "f2" "f3"];
+        "persistent-workspaces" = ["1" "2" "3" "4" "q" "w" "e"];
         "on-mode-changed" = [];
 
         "key-mapping".preset = "qwerty";
@@ -194,17 +194,17 @@
           "cmd-alt-ctrl-2" = "workspace 2";
           "cmd-alt-ctrl-3" = "workspace 3";
           "cmd-alt-ctrl-4" = "workspace 4";
-          "cmd-alt-ctrl-f1" = "workspace f1";
-          "cmd-alt-ctrl-f2" = "workspace f2";
-          "cmd-alt-ctrl-f3" = "workspace f3";
+          "cmd-alt-ctrl-q" = "workspace q";
+          "cmd-alt-ctrl-w" = "workspace w";
+          "cmd-alt-ctrl-e" = "workspace e";
 
           "cmd-alt-ctrl-shift-1" = "move-node-to-workspace 1";
           "cmd-alt-ctrl-shift-2" = "move-node-to-workspace 2";
           "cmd-alt-ctrl-shift-3" = "move-node-to-workspace 3";
           "cmd-alt-ctrl-shift-4" = "move-node-to-workspace 4";
-          "cmd-alt-ctrl-shift-f1" = "move-node-to-workspace f1";
-          "cmd-alt-ctrl-shift-f2" = "move-node-to-workspace f2";
-          "cmd-alt-ctrl-shift-f3" = "move-node-to-workspace f3";
+          "cmd-alt-ctrl-shift-q" = "move-node-to-workspace q";
+          "cmd-alt-ctrl-shift-w" = "move-node-to-workspace w";
+          "cmd-alt-ctrl-shift-e" = "move-node-to-workspace e";
 
           "cmd-alt-ctrl-tab" = "workspace-back-and-forth";
 
@@ -244,9 +244,9 @@
           "2" = "main";
           "3" = "main";
           "4" = "main";
-          "f1" = "secondary";
-          "f2" = "secondary";
-          "f3" = "secondary";
+          "q" = "secondary";
+          "w" = "secondary";
+          "e" = "secondary";
         };
 
         # auto-arrange some stuff across workspaces
@@ -261,13 +261,13 @@
             "if" = {
               app-id = "org.jeffvli.feishin";
             };
-            run = "move-node-to-workspace f3";
+            run = "move-node-to-workspace e";
           }
           {
             "if" = {
               app-id = "org.whispersystems.signal-desktop";
             };
-            run = "move-node-to-workspace f3";
+            run = "move-node-to-workspace e";
           }
         ];
       };
