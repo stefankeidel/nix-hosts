@@ -269,7 +269,10 @@
                   )))
 
     (setq org-refile-targets
-      '(("projects.org" :regexp . "\\(?:Tasks\\)")))
+          '(
+            ("projects.org" :regexp . "\\(?:Tasks\\)")
+            ("bikes.org" :regexp . "\\(?:Tasks\\)")
+            ))
 
   ;; one big archive for everything [file-specific rules still apply and override]
   (setq org-archive-location '"archive.org::")
