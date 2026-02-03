@@ -10,6 +10,7 @@
 
   home = {
     packages = with pkgs; [
+      (callPackage ../../../../packages/akv-tui-rs.nix { })
       duckdb
       k9s
       kubectl
