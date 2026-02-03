@@ -93,6 +93,9 @@ sketchybar \
            --add item outlook_notifications center \
            --set outlook_notifications "${NOTIFICATION_ITEM[@]}" \
            script="$PLUGIN_DIR/notification_status.sh \"Microsoft Outlook\" O"
+           --add item signal_notifications center \
+           --set signal_notifications "${NOTIFICATION_ITEM[@]}" \
+           script="$PLUGIN_DIR/notification_status.sh \"Signal\" S"
 
 ##### Adding Right Items #####
 # In the same way as the left items we can add items to the right side.
