@@ -35,7 +35,7 @@
     # Optional, to download less. Neither the module nor the overlay uses this input.
     nix-doom-emacs-unstraightened.inputs.nixpkgs.follows = "";
 
-    microvm.url = "github:microvm-nix/microvm.nix";
+    microvm.url = "github:microvm-nix/microvm.nix?rev=9b8e2cb2733906059bba7a7c9aaa7576003c5cfa";
     microvm.inputs.nixpkgs.follows = "nixpkgs";
   };
 
