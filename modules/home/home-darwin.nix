@@ -125,20 +125,20 @@
       envFile.source = ../../dotfiles/nushell/env.nu;
     };
 
-    alacritty = {
+    ghostty = {
       enable = true;
+      package = pkgs.ghostty-bin; # needed on darwin
+
+      enableZshIntegration = true;
 
       settings = {
-        font = {
-          normal.family = "Hack Nerd Font";
-          size = 19.0;
-        };
-        window = {
-          decorations = "None";
-        };
-      };
+        theme = "Catppuccin Frappe";
 
-      theme = "doom_one";
+        "font-family" = "Hack Nerd Font";
+        "font-size" = 19.0;
+        "window-decoration" = "none";
+        "undo-timeout" = "0";
+      };
     };
 
     broot = {
