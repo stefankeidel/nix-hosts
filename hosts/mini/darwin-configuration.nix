@@ -95,6 +95,8 @@
     casks = [
       "soulseek"
       "musicbrainz-picard"
+      "flashspace"
+      "karabiner-elements"
     ];
 
     # Optional: Mac App Store apps

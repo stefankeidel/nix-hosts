@@ -22,7 +22,6 @@
       carapace
       codex
       codex-acp
-      flashspace
       rectangle
       colima
       docker-buildx
