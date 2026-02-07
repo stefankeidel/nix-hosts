@@ -82,8 +82,8 @@
 
     # Casks = `brew install --cask`
     casks = [
-      "flashspace"
-      "karabiner-elements"
+      # "flashspace"
+      # "karabiner-elements"
       "firefox"
     ];
 
