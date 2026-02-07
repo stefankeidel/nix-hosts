@@ -22,7 +22,6 @@
       carapace
       codex
       codex-acp
-      rectangle
       colima
       docker-buildx
       docker-client
@@ -48,7 +47,6 @@
       yarn
       yq
       zoxide
-      jankyborders
     ];
 
     sessionVariables = {
