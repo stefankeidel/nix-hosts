@@ -84,6 +84,7 @@
     casks = [
       "flashspace"
       "karabiner-elements"
+      "firefox"
     ];
 
     # Optional: Mac App Store apps
