@@ -15,7 +15,7 @@
 ;;      directory (for easy access to its source code).
 
 ; remove frame decoration
-(add-to-list 'default-frame-alist '(undecorated . t))
+;(add-to-list 'default-frame-alist '(undecorated . t))
 
 (doom! :input
        ;;bidi              ; (tfel ot) thgir etirw uoy gnipleh
