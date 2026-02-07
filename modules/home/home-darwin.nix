@@ -26,6 +26,7 @@
       docker-buildx
       docker-client
       emacs-lsp-booster
+      raycast
       feishin
       kalker
       lazydocker
