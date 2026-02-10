@@ -7,6 +7,7 @@
   imports = [
     inputs.nix-doom-emacs-unstraightened.homeModule
     inputs.self.homeModules.helix
+    inputs.self.homeModules.tmux
   ];
   
   home = {
@@ -107,7 +108,6 @@
   programs = {
     home-manager.enable = true;
     bat.enable = true;
-    tmux.enable = true;
     jq.enable = true;
     direnv.enable = true;
 
