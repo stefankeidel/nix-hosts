@@ -6,6 +6,7 @@
 }: {
   imports = [
     inputs.nix-doom-emacs-unstraightened.homeModule
+    inputs.self.homeModules.ghostty
     inputs.self.homeModules.helix
     inputs.self.homeModules.tmux
   ];
@@ -123,22 +124,6 @@
       enable = true;
       configFile.source = ../../dotfiles/nushell/config.nu;
       envFile.source = ../../dotfiles/nushell/env.nu;
-    };
-
-    ghostty = {
-      enable = true;
-      package = pkgs.ghostty-bin; # needed on darwin
-
-      enableZshIntegration = true;
-
-      settings = {
-        theme = "Catppuccin Frappe";
-
-        "font-family" = "Hack Nerd Font";
-        "font-size" = 19.0;
-        "window-decoration" = "none";
-        "undo-timeout" = "0";
-      };
     };
 
     broot = {
