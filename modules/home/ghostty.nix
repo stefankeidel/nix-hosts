@@ -28,11 +28,9 @@
         "ctrl+up=goto_split:top"
         "ctrl+right=goto_split:right"
 
-        "ctrl+a>left=new_split:left"
-        "ctrl+a>down=new_split:down"
-        "ctrl+a>up=new_split:up"
-        "ctrl+a>right=new_split:right"
-        "ctrl+a>f=toggle_split_zoom"
+        "ctrl+x>2=new_split:down"
+        "ctrl+x>3=new_split:right"
+        "ctrl+x>f=toggle_split_zoom"
       ];
     };
   };
