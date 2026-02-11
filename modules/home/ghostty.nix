@@ -20,6 +20,9 @@
       keybind = [
         "ctrl+n=new_window"
 
+        "cmd+w=goto_split:next"
+        "cmd+r=reload_config"
+
         "ctrl+left=goto_split:left"
         "ctrl+down=goto_split:bottom"
         "ctrl+up=goto_split:top"
