@@ -10,7 +10,7 @@
 
   home = {
     packages = with pkgs; [
-      beets
+      #beets
       duckdb
       ffmpeg
       ghostscript
