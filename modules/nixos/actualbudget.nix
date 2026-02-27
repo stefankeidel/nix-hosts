@@ -5,7 +5,7 @@
   virtualisation.oci-containers = {
     # backend = "docker"; # podman craps out in VM
     containers.actual = {
-      image = "actualbudget/actual-server:26.1.0";
+      image = "actualbudget/actual-server:26.2.1";
 
       # bind to tailnet only
       ports = [
