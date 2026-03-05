@@ -71,20 +71,19 @@
 
     # Apple Silicon vs Intel handled automatically
     onActivation = {
-      autoUpdate = false;
-      upgrade = false;
+      autoUpdate = true;
+      upgrade = true;
       cleanup = "zap";
     };
 
     # Formulae = `brew install`
-    # brews = [
-    # ];
+    brews = [
+    ];
 
     # Casks = `brew install --cask`
     casks = [
-      # "flashspace"
-      # "karabiner-elements"
       "firefox"
+      "codex"
     ];
 
     # Optional: Mac App Store apps

@@ -22,14 +22,13 @@
       alejandra
       bitwarden-cli
       carapace
-      codex
       codex-acp
       colima
       docker-buildx
       docker-client
       emacs-lsp-booster
-      raycast
       feishin
+      github-copilot-cli
       kalker
       lazydocker
       mise
@@ -42,6 +41,7 @@
       pre-commit
       pwgen
       python313
+      raycast
       starship
       tidy-viewer
       tree-sitter
