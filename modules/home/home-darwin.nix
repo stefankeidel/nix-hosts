@@ -22,7 +22,8 @@
       alejandra
       bitwarden-cli
       carapace
-      codex-acp
+      claude-code
+      claude-code-acp
       colima
       docker-buildx
       docker-client

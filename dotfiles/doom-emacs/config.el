@@ -195,7 +195,7 @@
 (use-package! agent-shell
   :after acp
   :config
-  (setq agent-shell-openai-authentication (agent-shell-openai-make-authentication :login t)
+  (setq agent-shell-anthropic-authentication (agent-shell-anthropic-make-authentication :login t)
         agent-shell-prefer-viewport-interaction t))
 
 ;; GPT.el
