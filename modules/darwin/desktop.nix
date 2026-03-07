@@ -34,11 +34,6 @@
   # terraform is unfree :-/
   nixpkgs.config.allowUnfree = true;
 
-  # Workaround for dbus-run-session failures on Darwin (see nixpkgs #493775).
-  nixpkgs.overlays = lib.mkAfter [
-    (import ../../overlays/dbus-darwin-session.nix)
-  ];
-
   # nix linux builder
   nix.linux-builder = {
     enable = true;
