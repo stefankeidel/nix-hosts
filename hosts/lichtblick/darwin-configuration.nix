@@ -83,6 +83,7 @@
     # Casks = `brew install --cask`
     casks = [
       "firefox"
+      "codex"
     ];
 
     # Optional: Mac App Store apps
