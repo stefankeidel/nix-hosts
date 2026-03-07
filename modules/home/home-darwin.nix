@@ -29,6 +29,7 @@
       emacs-lsp-booster
       feishin
       github-copilot-cli
+      copilot-language-server
       kalker
       lazydocker
       mise
