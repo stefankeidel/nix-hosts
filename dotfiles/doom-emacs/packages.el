@@ -60,9 +60,8 @@
 (package! ob-sql-mode)
 (package! undo-fu :disable t)
 (package! elfeed)
-;; (package! copilot
-;;   :recipe (:host github :repo "copilot-emacs/copilot.el" :files ("*.el"))
-;;   :disable t)
+(package! copilot
+  :recipe (:host github :repo "copilot-emacs/copilot.el" :files ("*.el")))
 ;; (package! org-ql
 ;;   :recipe (:host github :repo "alphapapa/org-ql" :files ("*.el")))
 ;; (package! org-roam-ql)

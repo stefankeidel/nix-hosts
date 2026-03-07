@@ -201,7 +201,7 @@
 ;; GPT.el
 (after! gptel
   (gptel-make-gh-copilot "Copilot")
-  (setq gptel-model 'gpt-5-mini
+  (setq gptel-model 'gpt-5.2-codex
         gptel-default-mode 'org-mode
         gptel-backend (gptel-make-gh-copilot "Copilot"))
 
@@ -225,16 +225,13 @@
 )
 
 ;; accept completion from copilot and fallback to company
-;; (use-package! copilot
-;;   :hook (prog-mode . copilot-mode)
-;;   :config
-;;   (map! :map copilot-completion-map "<f2>" #'copilot-accept-completion)
-;;   (add-to-list 'copilot-indentation-alist '(prog-mode 2))
-;;   (add-to-list 'copilot-indentation-alist '(org-mode 2))
-;;   (add-to-list 'copilot-indentation-alist '(text-mode 2))
-;;   (add-to-list 'copilot-indentation-alist '(closure-mode 2))
-;;   (add-to-list 'copilot-indentation-alist '(emacs-lisp-mode 2))
-;; )
+(use-package! copilot
+  :hook (prog-mode . copilot-mode)
+  :bind (:map copilot-completion-map
+              ("<tab>" . 'copilot-accept-completion)
+              ("TAB" . 'copilot-accept-completion)
+              ("C-TAB" . 'copilot-accept-completion-by-word)
+              ("C-<tab>" . 'copilot-accept-completion-by-word)))
 
 ; my legacy org mode clusterfuck of a configuration
 ; should be at the very bottom and refactored at some point
