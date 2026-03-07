@@ -82,8 +82,8 @@
 
     # Apple Silicon vs Intel handled automatically
     onActivation = {
-      autoUpdate = false;
-      upgrade = false;
+      autoUpdate = true;
+      upgrade = true;
       cleanup = "zap";
     };
 
@@ -95,8 +95,7 @@
     casks = [
       "soulseek"
       "musicbrainz-picard"
-      # "flashspace"
-      # "karabiner-elements"
+      "codex"
     ];
 
     # Optional: Mac App Store apps
