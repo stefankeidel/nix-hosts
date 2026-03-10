@@ -22,6 +22,7 @@
       alejandra
       bitwarden-cli
       carapace
+      codex
       codex-acp
       colima
       docker-buildx
