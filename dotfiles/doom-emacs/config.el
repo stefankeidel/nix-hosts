@@ -201,7 +201,7 @@
 ;; GPT.el
 (after! gptel
   (gptel-make-gh-copilot "Copilot")
-  (setq gptel-model 'gpt-5.2-codex
+  (setq gptel-model 'gpt-5-mini
         gptel-default-mode 'org-mode
         gptel-backend (gptel-make-gh-copilot "Copilot"))
 
