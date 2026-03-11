@@ -96,6 +96,7 @@
       "soulseek"
       "musicbrainz-picard"
       "codex"
+      "marta"
     ];
 
     # Optional: Mac App Store apps
