@@ -84,6 +84,7 @@
     casks = [
       "firefox"
       "codex"
+      "marta"
     ];
 
     # Optional: Mac App Store apps
