@@ -95,7 +95,6 @@
     casks = [
       "soulseek"
       "musicbrainz-picard"
-      "codex"
       "marta"
     ];
 
