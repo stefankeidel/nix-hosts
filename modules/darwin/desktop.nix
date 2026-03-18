@@ -33,31 +33,6 @@
 
   # terraform is unfree :-/
   nixpkgs.config.allowUnfree = true;
-  nixpkgs.overlays = [
-    (final: prev: {
-      feishin = prev.feishin.overrideAttrs (old: {
-        nativeBuildInputs =
-          (old.nativeBuildInputs or [])
-          ++ final.lib.optionals final.stdenv.hostPlatform.isDarwin [
-            final.darwin.sigtool
-          ];
-        postPatch = (old.postPatch or "") + final.lib.optionalString final.stdenv.hostPlatform.isDarwin ''
-          python3 <<'PY'
-from pathlib import Path
-
-path = Path("electron-builder.yml")
-needle = "    type: distribution\n"
-text = path.read_text()
-
-if needle not in text:
-    raise SystemExit("expected macOS distribution type in electron-builder.yml")
-
-path.write_text(text.replace(needle, needle + "    identity: null\n", 1))
-PY
-        '';
-      });
-    })
-  ];
 
   # nix linux builder
   nix.linux-builder = {
