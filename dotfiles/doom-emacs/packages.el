@@ -80,3 +80,7 @@
 (package! shell-maker)
 (package! acp)
 (package! agent-shell)
+
+(package! buffer-guardian
+  :recipe
+  (:host github :repo "jamescherti/buffer-guardian.el"))

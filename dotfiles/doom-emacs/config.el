@@ -564,3 +564,15 @@
 (after! python
   (global-mise-mode t)
 )
+
+(after! buffer-guardian
+  ;; Save the buffer even if the window change results in the same buffer
+  (setq buffer-guardian-save-on-same-buffer-window-change t)
+
+  ;; Non-nil to enable verbose mode to log when a buffer is automatically saved
+  (setq buffer-guardian-verbose nil)
+
+  ;; Save all buffers after N seconds of user idle time. (Disabled by default)
+  ;; (setq buffer-guardian-save-all-buffers-idle 30)
+
+  (buffer-guardian-mode 1))
