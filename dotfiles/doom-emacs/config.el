@@ -440,6 +440,7 @@
         ("https://www.construction-physics.com/feed" blog)
         ("https://www.optimallyirrational.com/feed" blog)
         ("https://www.ribbonfarm.com/feed" blog)
+        ("https://www.statsignificant.com/feed" blog)
 
         ; emacs
         ("https://asylum.madhouse-project.org/blog/atom.xml" emacs blog)
