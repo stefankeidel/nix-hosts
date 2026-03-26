@@ -25,7 +25,6 @@
       codex
       codex-acp
       colima
-      lima
       docker-buildx
       docker-client
       emacs-lsp-booster
