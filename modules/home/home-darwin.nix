@@ -25,18 +25,19 @@
       codex
       codex-acp
       colima
+      copilot-language-server
       docker-buildx
       docker-client
       emacs-lsp-booster
       feishin
       github-copilot-cli
-      copilot-language-server
       kalker
       lazydocker
       mise
       nixd
       nodejs
       nvd
+      obsidian
       podman
       poppler-utils
       postgresql
