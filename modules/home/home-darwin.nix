@@ -38,6 +38,7 @@
       nvd
       obsidian
       podman
+      podman-compose
       poppler-utils
       postgresql
       pre-commit
