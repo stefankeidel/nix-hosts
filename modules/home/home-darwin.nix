@@ -183,6 +183,7 @@
         dl = "cd ~/Downloads";
         ff = "aerospace list-windows --all | fzf --bind 'enter:execute(bash -c \"aerospace focus --window-id {1}\")+abort'";
         obs = "cd ~/Library/Mobile\\ Documents/iCloud~md~obsidian/Documents/stefan";
+        lazypodman = "DOCKER_HOST=\"unix://$(podman machine inspect --format '{{.ConnectionInfo.PodmanSocket.Path}}')\" lazydocker";
       };
 
       history = {
