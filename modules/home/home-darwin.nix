@@ -23,6 +23,8 @@
       bitwarden-cli
       carapace
       claude-code
+      opencode
+      opencode-desktop
       colima
       copilot-language-server
       docker-buildx
