@@ -12,8 +12,10 @@
     pkgs.curl
     pkgs.dua
     pkgs.eza
+    pkgs.fd
     pkgs.git
     pkgs.httpie
+    pkgs.jujutsu
     pkgs.netcat-gnu
     pkgs.nix-direnv
     pkgs.nmap
@@ -27,7 +29,6 @@
     pkgs.unixtools.watch
     pkgs.vim
     pkgs.wget
-    pkgs.fd
   ];
   # ++ (
   #   # you can access the host configuration using osConfig.
