@@ -125,11 +125,11 @@
     #   };
     # };
 
-    nushell = {
-      enable = true;
-      configFile.source = ../../dotfiles/nushell/config.nu;
-      envFile.source = ../../dotfiles/nushell/env.nu;
-    };
+    # nushell = {
+    #   enable = true;
+    #   configFile.source = ../../dotfiles/nushell/config.nu;
+    #   envFile.source = ../../dotfiles/nushell/env.nu;
+    # };
 
     broot = {
       enable = true;
