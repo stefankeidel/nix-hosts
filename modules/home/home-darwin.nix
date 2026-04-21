@@ -9,6 +9,7 @@
     inputs.self.homeModules.ghostty
     inputs.self.homeModules.helix
     inputs.self.homeModules.tmux
+    inputs.self.homeModules.zellij
   ];
   
   home = {

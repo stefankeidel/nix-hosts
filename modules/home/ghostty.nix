@@ -18,19 +18,10 @@
       "window-save-state" = "always";
 
       keybind = [
-        "ctrl+n=new_window"
-
-        "cmd+w=goto_split:next"
-        "cmd+r=reload_config"
-
-        "ctrl+left=goto_split:left"
-        "ctrl+down=goto_split:bottom"
-        "ctrl+up=goto_split:top"
-        "ctrl+right=goto_split:right"
-
-        "ctrl+x>2=new_split:down"
-        "ctrl+x>3=new_split:right"
-        "ctrl+x>f=toggle_split_zoom"
+        # unbind ghostty's default alt+arrow word-jump bindings
+        # so they pass through to zellij as focus-change keys
+        "alt+left=unbind"
+        "alt+right=unbind"
       ];
     };
   };
