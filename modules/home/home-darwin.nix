@@ -24,8 +24,6 @@
       bitwarden-cli
       carapace
       claude-code
-      opencode
-      opencode-desktop
       colima
       copilot-language-server
       docker-buildx
@@ -35,11 +33,14 @@
       github-copilot-cli
       kalker
       lazydocker
+      llama-cpp
       mise
       nixd
       nodejs
       nvd
       obsidian
+      opencode
+      opencode-desktop
       podman
       podman-compose
       poppler-utils
