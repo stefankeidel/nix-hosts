@@ -78,6 +78,9 @@
       SPACESHIP_PROMPT_ASYNC = "false"; # irritating af
       SPACESHIP_DOCKER_SHOW = "false"; # what good does the version do
 
+      # don't track, lol. some tools actually respect this
+      DO_NOT_TRACK = "true";
+
       # Always-true work stuff
       # ok to put this in personal stuff too
       AIRFLOW_UID = 502;
