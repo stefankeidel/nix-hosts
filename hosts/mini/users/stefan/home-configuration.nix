@@ -18,7 +18,7 @@
       kubectl
       kubectx
       kubernetes-helm
-      streamlink
+      (streamlink.overrideAttrs (_: { doInstallCheck = false; }))
       utm
       vfkit
       yt-dlp
