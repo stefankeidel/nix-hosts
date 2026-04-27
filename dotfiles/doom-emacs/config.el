@@ -345,7 +345,8 @@
       (org-present-big)
       (org-display-inline-images)
       ;; (focus-mode 1)
-      ;; (center-content-mode 1)))
+      ;; (center-content-mode 1)
+      ))
 
   (add-hook! 'org-present-mode-quit-hook
     (defun +org-present-teardown ()
@@ -353,8 +354,9 @@
       ;(org-modern-mode -1)
       ;(setq org-modern-hide-stars (default-value 'org-modern-hide-stars))
       ;(org-modern-mode 1)
-      ;; (focus-mode -1)qq
-      ;; (center-content-mode -1)))
+      ;; (focus-mode -1)
+      ;; (center-content-mode -1)
+      ))
 
   ;; Custom functions
   (defun org-present-next-item ()
