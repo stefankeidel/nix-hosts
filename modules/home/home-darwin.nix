@@ -39,8 +39,8 @@
       nodejs
       nvd
       obsidian
-      opencode
-      opencode-desktop
+      # opencode
+      # opencode-desktop
       podman
       podman-compose
       poppler-utils
