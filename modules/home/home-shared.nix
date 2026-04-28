@@ -48,7 +48,7 @@
 
     settings = {
       user.name = "Stefan Keidel";
-      user.email = "stefan.keidel@lichtblick.de";
+      user.email = "1188614+stefankeidel@users.noreply.github.com";
 
       init = {
         defaultBranch = "main";
@@ -64,6 +64,17 @@
       signByDefault = false;
       format = "openpgp";
     };
+
+    includes = [
+      {
+        condition = "hasconfig:remote.*.url:*dev.azure.com*";
+        contents.user.email = "stefan.keidel@lichtblick.de";
+      }
+      {
+        condition = "hasconfig:remote.*.url:*gitlab.lichtblick.app*";
+        contents.user.email = "keidel_dev@lichtblick.de";
+      }
+    ];
   };
 
   programs.doom-emacs = {
