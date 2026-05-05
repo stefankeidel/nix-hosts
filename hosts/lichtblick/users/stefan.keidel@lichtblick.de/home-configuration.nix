@@ -13,6 +13,8 @@
       (callPackage ../../../../packages/akv-tui-rs.nix { })
       (callPackage ../../../../packages/squad-cli.nix { })
       duckdb
+      gitlab-duo
+      glab
       k9s
       kubectl
       kubectx
