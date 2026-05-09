@@ -10,14 +10,7 @@
 
   home = {
     packages = with pkgs; [
-      #beets
       duckdb
-      ffmpeg
-      ghostscript
-      k9s
-      kubectl
-      kubectx
-      kubernetes-helm
       (streamlink.overrideAttrs (_: { doInstallCheck = false; }))
       utm
       vfkit

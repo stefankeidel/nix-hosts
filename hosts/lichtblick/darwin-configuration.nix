@@ -82,7 +82,6 @@
 
     # Casks = `brew install --cask`
     casks = [
-      "copilot-cli"
       "firefox"
       "marta"
     ];

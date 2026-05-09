@@ -39,15 +39,13 @@
       nodejs
       nvd
       obsidian
-      # opencode
-      # opencode-desktop
       podman
       podman-compose
       poppler-utils
       postgresql
       pre-commit
       pwgen
-      python313
+      python314
       raycast
       starship
       tidy-viewer
