@@ -249,17 +249,37 @@
   (use-package! german-holidays)
   (use-package! ob-http)
 
-  (setq org-agenda-files (list "inbox.org"
-                               "projects.org"
-                               "reading.org"
-                               "bikes.org"))
+  (defun stefan/org-files-under (&rest directories)
+    "Return org files below DIRECTORIES, relative to `org-directory'."
+    (mapcan (lambda (directory)
+              (directory-files-recursively
+               (expand-file-name directory org-directory) "\\.org\\'"))
+            directories))
+
+  (setq org-agenda-files
+        (append
+         (list (expand-file-name "tasks.org" org-directory))
+         (list (expand-file-name "reading.org" org-directory))
+         (stefan/org-files-under
+          "personal"
+          "work"
+          "knowledge"
+          "presentations")))
 
   (setq org-clock-persist 'history)
   (org-clock-persistence-insinuate)
 
   (setq org-todo-keywords
-        (quote ((sequence "TODO(t)" "NEXT(n)" "PROGRESS(p!)" "|" "DONE(d!)")
-                (sequence "HOLD(h@/!)" "|" "CANCELLED(c@/!)"))))
+        (quote ((sequence "TODO(t)" "NEXT(n)" "PROGRESS(p!)" "WIP(w!)" "|" "DONE(d!)")
+                (sequence "QUEUE(q)" "STARTED(s!)" "SAVED(v)" "|" "FINISHED(f!)")
+                (sequence "HOLD(h@/!)" "|" "CANCELLED(c@/!)" "CANCELED(x@/!)"))))
+
+  (setq org-tag-alist '((:startgroup)
+                        ("@home" . ?h)
+                        ("@work" . ?w)
+                        (:endgroup)
+                        ("@personal" . ?p)
+                        ("@habit" . ?b)))
 
   (setq org-todo-keyword-faces
         (quote (("TODO" :foreground "indian red" :weight bold)
@@ -268,21 +288,21 @@
                   ("HOLD" :foreground "orange" :weight bold)
                   ("NEXT" :foreground "LightSalmon1" :weight bold)
                   ("CANCELLED" :foreground "forest green" :weight bold)
+                  ("CANCELED" :foreground "forest green" :weight bold)
                   ("MEETING" :foreground "forest green" :weight bold)
                   ;; For my reading list
                   ("QUEUE" :foreground "LightSalmon1" :weight bold)
                   ("STARTED" :foreground "PeachPuff2" :weight bold)
                   ("SAVED" :foreground "sky blue" :weight bold)
+                  ("FINISHED" :foreground "forest green" :weight bold)
+                  ("WIP" :foreground "sky blue" :weight bold)
                   )))
 
     (setq org-refile-targets
-          '(
-            ("projects.org" :regexp . "\\(?:Tasks\\)")
-            ("bikes.org" :regexp . "\\(?:Tasks\\)")
-            ))
+          `((,(expand-file-name "tasks.org" org-directory) :regexp . "\\(?:Home\\|Work\\)")))
 
-  ;; one big archive for everything [file-specific rules still apply and override]
-  (setq org-archive-location '"archive.org::")
+  ;; Default archive target; file-specific #+ARCHIVE rules still override this.
+  (setq org-archive-location '"archive/org-mode/archive.org::")
 
   (setq org-agenda-skip-deadline-if-done t)
   (setq org-agenda-skip-scheduled-if-done t)
@@ -296,17 +316,17 @@
   (add-to-list 'org-modules 'org-habit t)
 
   (setq org-agenda-custom-commands
-        '(
+        `(
           ("a" "Agenda and tasks"
            ((agenda "" (
                         (org-agenda-span 'week)
                         (org-deadline-warning-days 4)
                         ))
-            (todo "NEXT")
-            (tags-todo "@inbox")
+            (alltodo ""
+                  ((org-agenda-files ',(list (expand-file-name "tasks.org" org-directory)))
+                   (org-agenda-overriding-header "Tasks")))
             (tags-todo "@work")
-            (tags-todo "@home-@habit")
-            (tags-todo "@bike")
+            (tags-todo "@home")
             ))
           ("r" "Reading list"
            (
@@ -314,20 +334,13 @@
             (todo "QUEUE")
             (todo "SAVED")
             )
-           ((org-agenda-files '("reading.org"))))
-          ("b" "Bikes"
-           (
-            (todo "TODO")
-            (todo "WIP")
-            (todo "SAVED")
-            )
-           ((org-agenda-files '("bikes.org"))))
+          ((org-agenda-files ',(list (expand-file-name "reading.org" org-directory)))))
           ))
 
   (setq org-capture-templates '(
-   ("i" "Inbox" entry
-    (file "inbox.org")
-          "* TODO %?\n/Entered on/ %U")
+   ("i" "Task" entry
+    (file+headline "tasks.org" "Tasks")
+          "** TODO %?\n/Entered on/ %U")
    ("r" "Reading List" entry
     (file+headline "reading.org" "from template")
     "** QUEUE %?")
