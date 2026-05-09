@@ -23,7 +23,6 @@
       alejandra
       bitwarden-cli
       carapace
-      codex
       codex-acp
       colima
       copilot-language-server
