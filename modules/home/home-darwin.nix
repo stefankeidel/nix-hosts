@@ -23,7 +23,8 @@
       alejandra
       bitwarden-cli
       carapace
-      claude-code
+      codex
+      codex-acp
       colima
       copilot-language-server
       docker-buildx
