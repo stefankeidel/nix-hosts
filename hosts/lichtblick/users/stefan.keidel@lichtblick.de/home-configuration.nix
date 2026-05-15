@@ -2,7 +2,8 @@
   pkgs,
   inputs,
   ...
-}: {
+}:
+{
   imports = [
     inputs.self.homeModules.home-shared
     inputs.self.homeModules.home-darwin
@@ -12,6 +13,7 @@
     packages = with pkgs; [
       (callPackage ../../../../packages/akv-tui-rs.nix { })
       (callPackage ../../../../packages/squad-cli.nix { })
+      (callPackage ../../../../packages/whichllm.nix { })
       azure-cli
       duckdb
       gitlab-duo
@@ -43,25 +45,27 @@
   };
 
   services.syncthing = {
-      enable = true;
+    enable = true;
 
-      # Optional: GUI credentials (can be set in the browser instead)
-      settings.gui = {
-        user = "stefan";
-        password = "stefan";
+    # Optional: GUI credentials (can be set in the browser instead)
+    settings.gui = {
+      user = "stefan";
+      password = "stefan";
+    };
+
+    guiAddress = "127.0.0.1:8384";
+
+    settings.devices = {
+      "mini" = {
+        id = "JU7KAPL-2RCNFV4-S4QLXAZ-46R5DZJ-OVO34RS-6MALUQE-5F4L4AA-ZCCZIAJ";
       };
+    };
 
-      guiAddress = "127.0.0.1:8384";
-
-      settings.devices = {
-        "mini" = { id = "JU7KAPL-2RCNFV4-S4QLXAZ-46R5DZJ-OVO34RS-6MALUQE-5F4L4AA-ZCCZIAJ"; };
+    settings.folders = {
+      "Vault" = {
+        path = "/Users/stefan.keidel@lichtblick.de/Vault";
+        devices = [ "mini" ];
       };
-
-      settings.folders = {
-        "Vault" = {
-          path = "/Users/stefan.keidel@lichtblick.de/Vault";
-          devices = [ "mini" ];
-        };
-      };
+    };
   };
 }
