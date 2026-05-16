@@ -19,6 +19,7 @@
     # install the heavier stuff we may not need
     # on minimal boxes here
     packages = with pkgs; [
+      (callPackage ../../../../packages/whichllm.nix { })
       alejandra
       bitwarden-cli
       carapace
