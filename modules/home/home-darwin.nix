@@ -22,7 +22,6 @@
       (callPackage ../../packages/whichllm.nix { })
       alejandra
       bitwarden-cli
-      carapace
       codex
       codex-acp
       colima
@@ -32,7 +31,6 @@
       emacs-lsp-booster
       feishin
       github-copilot-cli
-      kalker
       lazydocker
       llama-cpp
       mise
@@ -54,7 +52,6 @@
       uv
       yarn
       yq
-      zoxide
     ];
 
     sessionVariables = {

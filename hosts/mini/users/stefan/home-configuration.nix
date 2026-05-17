@@ -10,10 +10,7 @@
 
   home = {
     packages = with pkgs; [
-      duckdb
-      (streamlink.overrideAttrs (_: { doInstallCheck = false; }))
       utm
-      vfkit
       yt-dlp
       (writeShellScriptBin "do_bak" ''
         #!/usr/bin/env zsh
