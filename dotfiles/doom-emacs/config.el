@@ -454,7 +454,6 @@
         ("https://feedpress.me/TheTechnium" blog)
         ("https://www.construction-physics.com/feed" blog)
         ("https://www.optimallyirrational.com/feed" blog)
-        ("https://www.ribbonfarm.com/feed" blog)
         ("https://www.statsignificant.com/feed" blog)
 
         ; emacs
@@ -468,7 +467,6 @@
 
         ; bikes
         ("https://inrng.com/feed/" bikes)
-        ("http://feeds.feedburner.com/redkiteprayer/krin" bikes)
         ("https://bikepacking.com/feed/" bikes interesting)
         ("https://fahrradzukunft.de/feed/" bikes)
         ("https://www.iamtedking.com/blog?format=rss" bikes interesting)
@@ -478,7 +476,6 @@
         ; ("https://meltano.com/blog/feed/" data blog) -- meltano feed is kaputt
         ("https://roundup.getdbt.com/feed" data blog)
         ("https://www.ssp.sh/index.xml" data blog)
-        ("https://more-than-numbers.count.co/feed" blog)
         ("https://www.dataengineeringweekly.com/feed" blog)
         ("https://stkbailey.substack.com/feed" blog)
         ("https://seattledataguy.substack.com/feed" blog)
