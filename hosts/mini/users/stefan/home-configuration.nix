@@ -12,6 +12,7 @@
     packages = with pkgs; [
       utm
       yt-dlp
+      ffmpeg
       (writeShellScriptBin "do_bak" ''
         #!/usr/bin/env zsh
         set -e
