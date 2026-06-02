@@ -484,6 +484,7 @@
         ("https://motherduck.com/rss.xml" blog)
         ("https://dataengineeringcentral.substack.com/feed" blog)
         ("https://astral.sh/blog/rss.xml" blog)
+        ("https://docs.getdbt.com/blog/rss.xml" data blog)
         ))
   :config
   (defface interesting-elfeed-entry
