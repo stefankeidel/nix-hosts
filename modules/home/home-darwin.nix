@@ -10,7 +10,7 @@
     inputs.self.homeModules.helix
     inputs.self.homeModules.zellij
   ];
-  
+
   home = {
     # enableNixpkgsReleaseCheck = false;
 
@@ -110,6 +110,7 @@
     file.".vim/backups/.keep".source = builtins.toFile "keep" "";
     file.".vim/swaps/.keep".source = builtins.toFile "keep" "";
     file.".vim/undo/.keep".source = builtins.toFile "keep" "";
+    file."Proton".source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/Library/CloudStorage/ProtonDrive-stefan@keidel.me-folder";
     file."/Library/Application Support/Code/User/settings.json".source = ../../dotfiles/vscode-settings.json;
     file."/Library/Application Support/Code - Insiders/User/settings.json".source = ../../dotfiles/vscode-settings.json;
   };
