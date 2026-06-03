@@ -18,7 +18,6 @@
       gitlab-duo
       glab
       k9s
-      renovate
       kubectl
       kubectx
       kubelogin

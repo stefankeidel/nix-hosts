@@ -19,7 +19,7 @@
     # install the heavier stuff we may not need
     # on minimal boxes here
     packages = with pkgs; [
-      (callPackage ../../packages/whichllm.nix { })
+      #(callPackage ../../packages/whichllm.nix { })
       alejandra
       bitwarden-cli
       codex
@@ -32,7 +32,6 @@
       feishin
       github-copilot-cli
       lazydocker
-      llama-cpp
       mise
       nixd
       nodejs
