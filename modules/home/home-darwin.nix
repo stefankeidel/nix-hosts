@@ -22,6 +22,9 @@
       #(callPackage ../../packages/whichllm.nix { })
       alejandra
       bitwarden-cli
+      proton-vpn
+      proton-pass
+      protonmail-bridge
       codex
       codex-acp
       colima
