@@ -71,9 +71,9 @@
 
     # Apple Silicon vs Intel handled automatically
     onActivation = {
-      autoUpdate = true;
-      upgrade = true;
-      cleanup = "zap";
+      # autoUpdate = true;
+      # upgrade = true;
+      # cleanup = "zap";
     };
 
     # Formulae = `brew install`
