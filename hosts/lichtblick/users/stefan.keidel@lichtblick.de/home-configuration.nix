@@ -43,28 +43,28 @@
     ];
   };
 
-  services.syncthing = {
-    enable = true;
+  # services.syncthing = {
+  #   enable = true;
 
-    # Optional: GUI credentials (can be set in the browser instead)
-    settings.gui = {
-      user = "stefan";
-      password = "stefan";
-    };
+  #   # Optional: GUI credentials (can be set in the browser instead)
+  #   settings.gui = {
+  #     user = "stefan";
+  #     password = "stefan";
+  #   };
 
-    guiAddress = "127.0.0.1:8384";
+  #   guiAddress = "127.0.0.1:8384";
 
-    settings.devices = {
-      "mini" = {
-        id = "JU7KAPL-2RCNFV4-S4QLXAZ-46R5DZJ-OVO34RS-6MALUQE-5F4L4AA-ZCCZIAJ";
-      };
-    };
+  #   settings.devices = {
+  #     "mini" = {
+  #       id = "JU7KAPL-2RCNFV4-S4QLXAZ-46R5DZJ-OVO34RS-6MALUQE-5F4L4AA-ZCCZIAJ";
+  #     };
+  #   };
 
-    settings.folders = {
-      "Vault" = {
-        path = "/Users/stefan.keidel@lichtblick.de/Vault";
-        devices = [ "mini" ];
-      };
-    };
-  };
+  #   settings.folders = {
+  #     "Vault" = {
+  #       path = "/Users/stefan.keidel@lichtblick.de/Vault";
+  #       devices = [ "mini" ];
+  #     };
+  #   };
+  # };
 }
