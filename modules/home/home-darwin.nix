@@ -21,6 +21,7 @@
     packages = with pkgs; [
       #(callPackage ../../packages/whichllm.nix { })
       alejandra
+      keepassxc
       bitwarden-cli
       codex
       codex-acp
