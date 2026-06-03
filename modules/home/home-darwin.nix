@@ -22,9 +22,6 @@
       #(callPackage ../../packages/whichllm.nix { })
       alejandra
       bitwarden-cli
-      proton-vpn
-      proton-pass
-      protonmail-bridge
       codex
       codex-acp
       colima
@@ -44,6 +41,10 @@
       poppler-utils
       postgresql
       pre-commit
+      proton-pass
+      proton-pass-cli
+      proton-vpn
+      protonmail-desktop
       pwgen
       python314
       raycast

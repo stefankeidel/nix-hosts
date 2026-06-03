@@ -84,6 +84,7 @@
     casks = [
       "firefox"
       "marta"
+      "proton-drive"
     ];
 
     # Optional: Mac App Store apps
