@@ -95,6 +95,7 @@
       "soulseek"
       "musicbrainz-picard"
       "marta"
+      "proton-drive"
     ];
 
     # Optional: Mac App Store apps
