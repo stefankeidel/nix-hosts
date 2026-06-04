@@ -236,15 +236,6 @@ function tre() {
 	tree -aC -I '.git|node_modules|bower_components' --dirsfirst "$@" | less -FRNX;
 }
 
-# unlock bitwarden
-unlock_bw_if_locked() {
-    export NODE_NO_WARNINGS=1
-    if [[ -z $BW_SESSION ]] ; then
-        >&2 echo 'bw locked - unlocking into a new session'
-        export BW_SESSION="$(bw unlock --raw)"
-    fi
-}
-
 # Fix completions for uv run.
 _uv_run_mod() {
     if [[ "$words[2]" == "run" && "$words[CURRENT]" != -* ]]; then
