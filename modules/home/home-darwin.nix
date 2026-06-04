@@ -31,6 +31,7 @@
       feishin
       github-copilot-cli
       lazydocker
+      llama-cpp
       mise
       nixd
       nodejs
