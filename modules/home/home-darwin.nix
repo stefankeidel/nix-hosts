@@ -41,10 +41,8 @@
       poppler-utils
       postgresql
       pre-commit
-      proton-pass
       proton-pass-cli
       proton-vpn
-      protonmail-desktop
       pwgen
       python314
       raycast
