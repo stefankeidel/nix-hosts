@@ -55,6 +55,7 @@
       uv
       yarn
       yq
+      cmake
     ];
 
     sessionVariables = {
