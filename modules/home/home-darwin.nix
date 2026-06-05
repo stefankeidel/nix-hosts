@@ -96,7 +96,6 @@
     # };
 
     file.".vimrc".source = ../../dotfiles/vim_config;
-    file.".wezterm.lua".source = ../../dotfiles/weztermconfig.lua;
     file.".functions".source = ../../dotfiles/functions;
     file.".hushlogin".source = ../../dotfiles/hushlogin;
     # probably replaced by inline config, i.e. properly nixified
