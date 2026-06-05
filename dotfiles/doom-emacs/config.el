@@ -256,15 +256,21 @@
                (expand-file-name directory org-directory) "\\.org\\'"))
             directories))
 
-  (setq org-agenda-files
+  (defvar stefan/org-task-files nil
+    "Org files that should contribute regular tasks to the agenda.")
+
+  (setq stefan/org-task-files
         (append
          (list (expand-file-name "tasks.org" org-directory))
-         (list (expand-file-name "reading.org" org-directory))
          (stefan/org-files-under
           "personal"
           "work"
           "knowledge"
-          "presentations")))
+          "presentations"))
+        org-agenda-files
+        (append
+         stefan/org-task-files
+         (list (expand-file-name "reading.org" org-directory))))
 
   (setq org-clock-persist 'history)
   (org-clock-persistence-insinuate)
@@ -323,10 +329,8 @@
                         (org-deadline-warning-days 4)
                         ))
             (alltodo ""
-                  ((org-agenda-files ',(list (expand-file-name "tasks.org" org-directory)))
-                   (org-agenda-overriding-header "Tasks")))
-            (tags-todo "@work")
-            (tags-todo "@home")
+                     ((org-agenda-files ',stefan/org-task-files)
+                      (org-agenda-overriding-header "Tasks")))
             ))
           ("r" "Reading list"
            (
