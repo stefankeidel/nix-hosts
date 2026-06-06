@@ -40,7 +40,7 @@
 
 ;; If you use `org' and don't want your org files in the default location below,
 ;; change `org-directory'. It must be set before org loads!
-(setq org-directory "~/Proton/Vault/orgmode/")
+(setq org-directory (file-name-as-directory (expand-file-name "~/Proton/Vault/orgmode/")))
 
 
 ;; Whenever you reconfigure a package, make sure to wrap your config in an
@@ -252,25 +252,30 @@
   (defun stefan/org-files-under (&rest directories)
     "Return org files below DIRECTORIES, relative to `org-directory'."
     (mapcan (lambda (directory)
-              (directory-files-recursively
-               (expand-file-name directory org-directory) "\\.org\\'"))
+              (let ((path (expand-file-name directory org-directory)))
+                (when (file-directory-p path)
+                  (directory-files-recursively path "\\.org\\'"))))
             directories))
 
   (defvar stefan/org-task-files nil
     "Org files that should contribute regular tasks to the agenda.")
 
   (setq stefan/org-task-files
-        (append
-         (list (expand-file-name "tasks.org" org-directory))
-         (stefan/org-files-under
-          "personal"
-          "work"
-          "knowledge"
-          "presentations"))
+        (seq-filter
+         #'file-exists-p
+         (append
+          (list (expand-file-name "tasks.org" org-directory))
+          (stefan/org-files-under
+           "personal"
+           "work"
+           "knowledge"
+           "presentations")))
         org-agenda-files
-        (append
-         stefan/org-task-files
-         (list (expand-file-name "reading.org" org-directory))))
+        (seq-filter
+         #'file-exists-p
+         (append
+          stefan/org-task-files
+          (list (expand-file-name "reading.org" org-directory)))))
 
   (setq org-clock-persist 'history)
   (org-clock-persistence-insinuate)
@@ -313,7 +318,8 @@
   (setq org-agenda-skip-deadline-if-done t)
   (setq org-agenda-skip-scheduled-if-done t)
   (setq org-agenda-skip-scheduled-if-deadline-is-shown t)
-  (setq org-agenda-include-diary t)
+  (setq diary-file (expand-file-name "diary" org-directory)
+        org-agenda-include-diary (file-exists-p diary-file))
 
   (org-babel-do-load-languages
    'org-babel-load-languages
