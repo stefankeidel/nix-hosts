@@ -141,7 +141,7 @@ in
         colima start \
           --profile "$colima_profile" \
           --cpu 4 \
-          --memory 12 \
+          --memory 10 \
           --disk 80 \
           --vm-type vz \
           --mount-type virtiofs \
