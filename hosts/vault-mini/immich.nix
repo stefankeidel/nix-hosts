@@ -23,7 +23,14 @@
     openFirewall = true;
     mediaLocation = "/mnt/share/Share/Immich";
 
-    settings.server.externalDomain = "https://images.keidel.me";
+    settings = {
+      server.externalDomain = "https://images.keidel.me";
+      storageTemplate = {
+        enabled = true;
+        hashVerificationEnabled = true;
+        template = "{{y}}/{{y}}-{{MM}}-{{dd}}/{{filename}}";
+      };
+    };
   };
 
   systemd.services.immich-server.serviceConfig.RequiresMountsFor = [
