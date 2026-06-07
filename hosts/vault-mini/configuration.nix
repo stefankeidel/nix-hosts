@@ -15,6 +15,7 @@
       ./hardware-configuration.nix
       ./backup.nix
       ./media.nix
+      ./immich.nix
       ./navidrome.nix
     ];
 
