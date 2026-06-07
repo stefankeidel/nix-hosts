@@ -17,7 +17,11 @@
         --password-file /run/agenix/restic \
         --repo rclone:sb:vault-mini-bak backup \
         --tag vault-mini-2026-01 \
-        /var/lib/actualbudget
+        /var/lib/actualbudget \
+        /mnt/share/Share/Immich/backups \
+        /mnt/share/Share/Immich/library \
+        /mnt/share/Share/Immich/profile \
+        /mnt/share/Share/Immich/upload
 
       /run/current-system/sw/bin/restic \
         --password-file /run/agenix/restic \
@@ -30,5 +34,6 @@
       Type = "oneshot";
       User = "root";
     };
+    unitConfig.RequiresMountsFor = "/mnt/share/Share/Immich";
   };
 }
