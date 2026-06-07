@@ -13,6 +13,7 @@
       utm
       yt-dlp
       ffmpeg
+      immich-go
       (writeShellScriptBin "do_bak" ''
         #!/usr/bin/env zsh
         set -e
