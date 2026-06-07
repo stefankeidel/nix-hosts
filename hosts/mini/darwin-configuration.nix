@@ -6,6 +6,7 @@
   imports = [
     inputs.self.nixosModules.host-shared
     inputs.self.darwinModules.desktop
+    ./immich.nix
   ];
 
   nixpkgs.hostPlatform = "aarch64-darwin";

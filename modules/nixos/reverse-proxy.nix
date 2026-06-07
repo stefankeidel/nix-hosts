@@ -26,7 +26,7 @@
     '';
 
     locations."/" = {
-      proxyPass = "http://vault-mini:2283";
+      proxyPass = "http://mini:2283";
       proxyWebsockets = true;
       extraConfig = ''
         proxy_set_header Host $host;
