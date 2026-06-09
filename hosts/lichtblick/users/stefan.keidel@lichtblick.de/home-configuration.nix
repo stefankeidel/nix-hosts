@@ -13,9 +13,9 @@
     packages = with pkgs; [
       (callPackage ../../../../packages/akv-tui-rs.nix { })
       #(callPackage ../../../../packages/squad-cli.nix { })
+      (callPackage ../../../../packages/gitlab-duo.nix { })
       azure-cli
       duckdb
-      gitlab-duo
       glab
       k9s
       kubectl
