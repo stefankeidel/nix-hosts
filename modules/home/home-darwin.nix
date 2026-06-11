@@ -51,7 +51,7 @@
       ty
       uv
       yarn
-      yq
+      yq-go
     ];
 
     sessionVariables = {
