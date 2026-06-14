@@ -1,6 +1,7 @@
-{pkgs, ...}: {
+{ pkgs, ... }:
+{
   systemd.timers."nextcloud-bak" = {
-    wantedBy = ["timers.target"];
+    wantedBy = [ "timers.target" ];
     timerConfig = {
       OnCalendar = "daily";
       Persistent = true;
@@ -42,6 +43,7 @@
     serviceConfig = {
       Type = "oneshot";
       User = "nextcloud";
+      Environment = "RCLONE_CONFIG=/etc/rclone/rclone.conf";
     };
   };
 }

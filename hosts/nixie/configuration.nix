@@ -7,7 +7,8 @@
   lib,
   pkgs,
   ...
-}: {
+}:
+{
   imports = [
     # the default agenix module
     inputs.agenix.nixosModules.default
@@ -29,9 +30,10 @@
   age.secrets = {
     rclone = {
       file = ../../secrets/rclone.conf.age;
-      path = "/var/lib/nextcloud/.config/rclone/rclone.conf";
-      owner = "nextcloud";
-      mode = "600";
+      path = "/etc/rclone/rclone.conf";
+      owner = "root";
+      group = "rclone";
+      mode = "640";
     };
     restic = {
       file = ../../secrets/restic.age;
@@ -84,14 +86,22 @@
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.stefan = {
     isNormalUser = true;
-    extraGroups = ["wheel" "podman"];
+    extraGroups = [
+      "wheel"
+      "podman"
+    ];
   };
+  users.groups.rclone = { };
+  users.users.nextcloud.extraGroups = [ "rclone" ];
 
   # it's just me, so :shrug:
   security.sudo.wheelNeedsPassword = false;
 
   # yes, flakes
-  nix.settings.experimental-features = ["nix-command" "flakes"];
+  nix.settings.experimental-features = [
+    "nix-command"
+    "flakes"
+  ];
 
   # gc stuff
   nix.optimise.automatic = true;
@@ -127,7 +137,7 @@
   # postgres
   services.postgresql = {
     enable = true;
-    ensureDatabases = ["accounting"];
+    ensureDatabases = [ "accounting" ];
     enableTCPIP = true;
     authentication = pkgs.lib.mkOverride 10 ''
       #...
@@ -164,11 +174,11 @@
   # Enable the OpenSSH daemon.
   services.openssh = {
     enable = true;
-    ports = [22];
+    ports = [ 22 ];
     openFirewall = false; # only via VPN/Wireguard/Tailscale
     settings = {
       PasswordAuthentication = false;
-      AllowUsers = ["stefan"];
+      AllowUsers = [ "stefan" ];
       UseDns = true;
       X11Forwarding = false;
       PermitRootLogin = "yes";
@@ -177,7 +187,7 @@
 
   services.tailscale.enable = true;
   services.tailscale.useRoutingFeatures = "server";
-  services.tailscale.extraSetFlags = ["--advertise-exit-node"];
+  services.tailscale.extraSetFlags = [ "--advertise-exit-node" ];
 
   # Open ports in the firewall.
   networking.firewall.allowedTCPPorts = [
@@ -200,14 +210,39 @@
   # gitops
   services.comin = {
     enable = true;
-    remotes = [{
-      name = "origin";
-      url = "https://github.com/stefankeidel/nix-hosts.git";
-      branches.main.name = "main";
-    }];
+    remotes = [
+      {
+        name = "origin";
+        url = "https://github.com/stefankeidel/nix-hosts.git";
+        branches.main.name = "main";
+      }
+    ];
   };
 
-  programs.fuse.userAllowOther = false;
+  programs.fuse.userAllowOther = true;
+
+  systemd.tmpfiles.rules = [
+    "d /etc/rclone 0750 root rclone -"
+    "d /mnt/sb 0755 root root -"
+  ];
+
+  systemd.services.rclone-mount-sb = {
+    description = "Mount rclone remote sb";
+    wantedBy = [ "multi-user.target" ];
+    wants = [ "network-online.target" ];
+    after = [
+      "network-online.target"
+      "agenix.service"
+    ];
+
+    serviceConfig = {
+      Type = "simple";
+      ExecStart = "${pkgs.rclone}/bin/rclone mount sb: /mnt/sb --config /etc/rclone/rclone.conf --allow-other --umask 002 --dir-cache-time 1h --vfs-cache-mode writes --vfs-cache-max-age 24h";
+      ExecStop = "${pkgs.fuse}/bin/fusermount -uz /mnt/sb";
+      Restart = "on-failure";
+      RestartSec = "10s";
+    };
+  };
 
   # Copy the NixOS configuration file and link it from the resulting system
   # (/run/current-system/configuration.nix). This is useful in case you
