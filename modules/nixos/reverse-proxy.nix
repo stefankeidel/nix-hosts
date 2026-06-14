@@ -6,7 +6,7 @@
     enableACME = true;
 
     locations."/" = {
-      proxyPass = "http://vault-mini:4533";
+      proxyPass = "http://127.0.0.1:4533";
       proxyWebsockets = true;
       extraConfig = ''
         proxy_set_header Host $host;

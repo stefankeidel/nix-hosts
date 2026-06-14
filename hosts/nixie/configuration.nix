@@ -24,6 +24,7 @@
     ./nextcloud.nix
     ./website.nix
     ./backup.nix
+    ./navidrome.nix
   ];
 
   # secrets
