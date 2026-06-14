@@ -19,6 +19,15 @@
         template = "{{y}}/{{y}}-{{MM}}-{{dd}}/{{filename}}";
       };
     };
+
+    machine-learning.environment = {
+      HF_XET_CACHE = "/var/cache/immich/huggingface-xet";
+    };
+  };
+
+  users.users.immich = {
+    home = "/var/lib/immich";
+    createHome = true;
   };
 
   systemd.services.immich-server = {
