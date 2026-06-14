@@ -89,6 +89,10 @@ in
 
   launchd.user.agents.immich = {
     path = with pkgs; [
+      "/usr/bin"
+      "/bin"
+      "/usr/sbin"
+      "/sbin"
       colima
       coreutils
       docker-client
@@ -140,10 +144,9 @@ in
       if ! colima status --profile "$colima_profile" >/dev/null 2>&1; then
         colima start \
           --profile "$colima_profile" \
-          --cpu 4 \
+          --cpus 4 \
           --memory 10 \
           --disk 80 \
-          --vm-type vz \
           --mount-type virtiofs \
           --mount "$HOME:w" \
           --mount "/Volumes/SAM:w"
