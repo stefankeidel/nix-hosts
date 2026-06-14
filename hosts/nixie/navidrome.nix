@@ -26,5 +26,6 @@
   systemd.services.navidrome = {
     requires = [ "rclone-mount-sb.service" ];
     after = [ "rclone-mount-sb.service" ];
+    unitConfig.RequiresMountsFor = [ "/mnt/sb" ];
   };
 }

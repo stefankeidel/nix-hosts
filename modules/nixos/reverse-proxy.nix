@@ -26,7 +26,7 @@
     '';
 
     locations."/" = {
-      proxyPass = "http://mini:2283";
+      proxyPass = "http://127.0.0.1:2283";
       proxyWebsockets = true;
       extraConfig = ''
         proxy_set_header Host $host;
