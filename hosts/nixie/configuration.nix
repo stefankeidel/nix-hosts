@@ -240,7 +240,7 @@
 
     serviceConfig = {
       Type = "simple";
-      ExecStart = "${pkgs.rclone}/bin/rclone mount sb: /mnt/sb --config /etc/rclone/rclone.conf --allow-other --umask 002 --dir-cache-time 5m --poll-interval 1m --cache-dir /var/cache/rclone/sb --vfs-cache-mode writes --vfs-cache-max-age 1h --vfs-cache-max-size 5G --vfs-cache-poll-interval 1m";
+      ExecStart = "${pkgs.rclone}/bin/rclone mount sb: /mnt/sb --config /etc/rclone/rclone.conf --allow-other --umask 002 --dir-cache-time 5m --poll-interval 1m --cache-dir /var/cache/rclone/sb --vfs-cache-mode writes --vfs-cache-max-age 1h --vfs-cache-max-size 7G --vfs-cache-poll-interval 1m";
       ExecStartPost = "${pkgs.bash}/bin/bash -c 'for i in {1..30}; do ${pkgs.util-linux}/bin/mountpoint -q /mnt/sb && exit 0; sleep 1; done; exit 1'";
       ExecReload = "${pkgs.coreutils}/bin/kill -HUP $MAINPID";
       ExecStop = "${pkgs.fuse}/bin/fusermount -uz /mnt/sb";
