@@ -30,6 +30,9 @@
     createHome = true;
   };
 
+  # Immich uses Redis for cache/queues; avoid failed RDB snapshots blocking writes.
+  services.redis.servers.immich.save = [ ];
+
   systemd.services.immich-server = {
     requires = [ "rclone-mount-sb.service" ];
     after = [ "rclone-mount-sb.service" ];
