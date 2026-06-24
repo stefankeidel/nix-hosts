@@ -24,6 +24,7 @@
       codex
       codex-acp
       colima
+      imagemagick
       copilot-language-server
       docker-buildx
       docker-client
