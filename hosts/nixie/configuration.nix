@@ -25,7 +25,6 @@
     ./website.nix
     ./backup.nix
     ./navidrome.nix
-    ./immich.nix
   ];
 
   # secrets

@@ -13,11 +13,10 @@
       utm
       yt-dlp
       ffmpeg
-      immich-go
       (writeShellScriptBin "do_bak" ''
         #!/usr/bin/env zsh
         set -e
-        restic --password-file ~/.config/restic-pw --repo rclone:sb:mini-bak backup --tag mini-2026-06 ~/code ~/Documents ~/Desktop ~/Nextcloud /Volumes/SAM/Photos\ Library.photoslibrary/ ~/Library/CloudStorage/ProtonDrive-stefan@keidel.me-folder /Volumes/SAM/Share/Music /Volumes/SAM/Share/Immich --skip-if-unchanged
+        restic --password-file ~/.config/restic-pw --repo rclone:sb:mini-bak backup --tag mini-2026-06 ~/code ~/Documents ~/Desktop ~/Nextcloud /Volumes/SAM/Photos\ Library.photoslibrary/ ~/Library/CloudStorage/ProtonDrive-stefan@keidel.me-folder /Volumes/SAM/Share/Music --skip-if-unchanged
         restic --password-file ~/.config/restic-pw --repo rclone:sb:mini-bak forget --tag mini-2026-06 --keep-daily 7 --keep-weekly 2 --keep-monthly 3 --prune
       '')
       (writeShellScriptBin "gonix" ''
