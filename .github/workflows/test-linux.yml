@@ -1,4 +1,4 @@
-name: Test Nixie Build on Linux
+name: Test Build on Linux
 
 on:
   pull_request:
