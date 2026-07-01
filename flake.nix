@@ -4,6 +4,7 @@
   # Add all your dependencies here
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs?ref=nixos-unstable";
+    nixpkgs-darwin-pinned.url = "github:NixOS/nixpkgs/567a49d1913ce81ac6e9582e3553dd90a955875f";
 
     # some of my "hosted" systems are on stable :shrug:
     nix-stable.url = "github:NixOS/nixpkgs/nixos-25.11";
@@ -37,5 +38,51 @@
   };
 
   # Load the blueprint
-  outputs = inputs: inputs.blueprint { inherit inputs; };
+  outputs =
+    inputs:
+    let
+      blueprintOutputs = inputs.blueprint { inherit inputs; };
+
+      mkPinnedDarwin =
+        {
+          host,
+          user,
+        }:
+        inputs.nix-darwin.lib.darwinSystem {
+          pkgs = import inputs.nixpkgs-darwin-pinned {
+            system = "aarch64-darwin";
+            config.allowUnfree = true;
+          };
+          specialArgs = {
+            inherit inputs;
+          };
+          modules = [
+            (./. + "/hosts/${host}/darwin-configuration.nix")
+            inputs.home-manager.darwinModules.home-manager
+            {
+              home-manager = {
+                useGlobalPkgs = true;
+                useUserPackages = true;
+                extraSpecialArgs = {
+                  inherit inputs;
+                };
+                users.${user} = import (./. + "/hosts/${host}/users/${user}/home-configuration.nix");
+              };
+            }
+          ];
+        };
+    in
+    blueprintOutputs
+    // {
+      darwinConfigurations = blueprintOutputs.darwinConfigurations // {
+        mini = mkPinnedDarwin {
+          host = "mini";
+          user = "stefan";
+        };
+        lichtblick = mkPinnedDarwin {
+          host = "lichtblick";
+          user = "stefan.keidel@lichtblick.de";
+        };
+      };
+    };
 }
