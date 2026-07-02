@@ -26,7 +26,7 @@
     ./backup.nix
     ./navidrome.nix
     ./immich.nix
-    ./authentik.nix
+    #./authentik.nix
   ];
 
   # secrets
