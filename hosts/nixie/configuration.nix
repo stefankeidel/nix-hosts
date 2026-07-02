@@ -16,6 +16,7 @@
     inputs.self.nixosModules.host-shared
     # gitops via nix
     inputs.comin.nixosModules.comin
+    inputs.authentik-nix.nixosModules.default
     # my reverse proxy config routing into my network
     inputs.self.nixosModules.reverse-proxy
     # Include the results of the hardware scan.
@@ -26,6 +27,7 @@
     ./backup.nix
     ./navidrome.nix
     ./immich.nix
+    ./authentik.nix
   ];
 
   # secrets

@@ -17,4 +17,5 @@ in {
   "zsh-extra.age".publicKeys = users ++ systems;
   "navidrome.env.age".publicKeys = users ++ systems;
   "nu-extra-env.age".publicKeys = users ++ systems;
+  "authentik.env.age".publicKeys = users ++ systems;
 }
