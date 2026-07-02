@@ -93,11 +93,9 @@ in
 
   systemd.services.podman-authentik-server = {
     requires = [
-      "agenix.service"
       "postgresql.target"
     ];
     after = [
-      "agenix.service"
       "network-online.target"
       "postgresql.target"
     ];
@@ -105,11 +103,9 @@ in
 
   systemd.services.podman-authentik-worker = {
     requires = [
-      "agenix.service"
       "postgresql.target"
     ];
     after = [
-      "agenix.service"
       "network-online.target"
       "postgresql.target"
     ];
