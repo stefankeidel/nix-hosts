@@ -32,8 +32,6 @@
     comin.url = "github:nlewo/comin";
     comin.inputs.nixpkgs.follows = "nixpkgs";
 
-    authentik-nix.url = "github:nix-community/authentik-nix";
-
     nix-doom-emacs-unstraightened.url = "github:marienz/nix-doom-emacs-unstraightened";
     # Optional, to download less. Neither the module nor the overlay uses this input.
     nix-doom-emacs-unstraightened.inputs.nixpkgs.follows = "";
