@@ -4,7 +4,10 @@ let
   secretExists = name: builtins.pathExists (secretFile name);
   requiredSecrets = [
     "authelia-jwt-secret"
+    "authelia-oidc-hmac-secret"
+    "authelia-oidc-issuer-private-key"
     "authelia-storage-encryption-key"
+    "immich-oidc-client-secret-digest"
     "lldap-admin-password"
     "lldap-jwt-secret"
   ];
@@ -29,8 +32,26 @@ in
       group = "authelia-main";
       mode = "600";
     };
+    authelia-oidc-hmac-secret = {
+      file = secretFile "authelia-oidc-hmac-secret";
+      owner = "authelia-main";
+      group = "authelia-main";
+      mode = "600";
+    };
+    authelia-oidc-issuer-private-key = {
+      file = secretFile "authelia-oidc-issuer-private-key";
+      owner = "authelia-main";
+      group = "authelia-main";
+      mode = "600";
+    };
     authelia-storage-encryption-key = {
       file = secretFile "authelia-storage-encryption-key";
+      owner = "authelia-main";
+      group = "authelia-main";
+      mode = "600";
+    };
+    immich-oidc-client-secret-digest = {
+      file = secretFile "immich-oidc-client-secret-digest";
       owner = "authelia-main";
       group = "authelia-main";
       mode = "600";
@@ -81,6 +102,8 @@ in
 
     secrets = {
       jwtSecretFile = "/run/agenix/authelia-jwt-secret";
+      oidcHmacSecretFile = "/run/agenix/authelia-oidc-hmac-secret";
+      oidcIssuerPrivateKeyFile = "/run/agenix/authelia-oidc-issuer-private-key";
       storageEncryptionKeyFile = "/run/agenix/authelia-storage-encryption-key";
     };
 
@@ -143,6 +166,34 @@ in
       };
 
       notifier.filesystem.filename = "/var/lib/authelia-main/notifications.txt";
+
+      identity_providers.oidc = {
+        clients = [
+          {
+            client_id = "immich";
+            client_name = "Immich";
+            client_secret = ''{{ secret "/run/agenix/immich-oidc-client-secret-digest" }}'';
+            public = false;
+            authorization_policy = "two_factor";
+            consent_mode = "implicit";
+            redirect_uris = [
+              "https://images.keidel.me/auth/login"
+              "https://images.keidel.me/user-settings"
+              "https://images.keidel.me/api/oauth/mobile-redirect"
+            ];
+            scopes = [
+              "openid"
+              "profile"
+              "email"
+            ];
+            grant_types = [ "authorization_code" ];
+            response_types = [ "code" ];
+            id_token_signed_response_alg = "RS256";
+            userinfo_signed_response_alg = "RS256";
+            token_endpoint_auth_method = "client_secret_post";
+          }
+        ];
+      };
     };
   };
 

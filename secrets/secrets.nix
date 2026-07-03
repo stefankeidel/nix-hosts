@@ -25,7 +25,11 @@ in
   "navidrome.env.age".publicKeys = users ++ systems;
   "nu-extra-env.age".publicKeys = users ++ systems;
   "authelia-jwt-secret.age".publicKeys = users ++ systems;
+  "authelia-oidc-hmac-secret.age".publicKeys = users ++ systems;
+  "authelia-oidc-issuer-private-key.age".publicKeys = users ++ systems;
   "authelia-storage-encryption-key.age".publicKeys = users ++ systems;
+  "immich-oidc-client-secret.age".publicKeys = users ++ systems;
+  "immich-oidc-client-secret-digest.age".publicKeys = users ++ systems;
   "lldap-admin-password.age".publicKeys = users ++ systems;
   "lldap-jwt-secret.age".publicKeys = users ++ systems;
 }
