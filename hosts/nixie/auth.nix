@@ -71,7 +71,7 @@ in
       ldap_base_dn = "dc=keidel,dc=me";
       ldap_user_email = "stefan@keidel.me";
       ldap_user_pass_file = "/run/agenix/lldap-admin-password";
-      force_ldap_user_pass_reset = "always";
+      force_ldap_user_pass_reset = false;
       jwt_secret_file = "/run/agenix/lldap-jwt-secret";
     };
   };
