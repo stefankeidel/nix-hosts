@@ -65,9 +65,9 @@ in
     settings = {
       ldap_host = "127.0.0.1";
       ldap_port = 3890;
-      http_host = "127.0.0.1";
+      http_host = "100.96.176.26";
       http_port = 17170;
-      http_url = "https://ldap.keidel.me";
+      http_url = "http://nixie.beago-ordinal.ts.net:17170";
       ldap_base_dn = "dc=keidel,dc=me";
       ldap_user_email = "stefan@keidel.me";
       ldap_user_pass_file = "/run/agenix/lldap-admin-password";
@@ -172,17 +172,5 @@ in
     };
   };
 
-  services.nginx.virtualHosts."ldap.keidel.me" = {
-    forceSSL = true;
-    enableACME = true;
-
-    locations."/" = {
-      proxyPass = "http://127.0.0.1:17170";
-      extraConfig = ''
-        proxy_set_header Host $host;
-        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-        proxy_set_header X-Forwarded-Proto $scheme;
-      '';
-    };
-  };
+  networking.firewall.interfaces.tailscale0.allowedTCPPorts = [ 17170 ];
 }
