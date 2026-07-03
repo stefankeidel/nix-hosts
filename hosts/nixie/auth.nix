@@ -90,7 +90,7 @@ in
 
     settings = {
       theme = "auto";
-      default_2fa_method = "totp";
+      default_2fa_method = "webauthn";
 
       server.address = "tcp://127.0.0.1:9091/";
 
@@ -99,7 +99,17 @@ in
         format = "text";
       };
 
-      access_control.default_policy = "one_factor";
+      access_control.default_policy = "two_factor";
+
+      webauthn = {
+        disable = false;
+        display_name = "keidel.me";
+        selection_criteria = {
+          attachment = "";
+          discoverability = "preferred";
+          user_verification = "preferred";
+        };
+      };
 
       session = {
         name = "authelia_session";
