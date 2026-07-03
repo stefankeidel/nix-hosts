@@ -111,6 +111,16 @@ in
         };
       };
 
+      totp = {
+        disable = false;
+        issuer = "keidel.me";
+        algorithm = "sha1";
+        digits = 6;
+        period = 30;
+        skew = 1;
+        secret_size = 32;
+      };
+
       session = {
         name = "authelia_session";
         same_site = "lax";
