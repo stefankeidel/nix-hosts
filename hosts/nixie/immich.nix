@@ -41,11 +41,12 @@ in
         storageLabelClaim = "preferred_username";
         buttonText = "Sign in with Authelia";
         autoRegister = true;
-        autoLaunch = false;
+        autoLaunch = true;
         mobileOverrideEnabled = true;
         mobileRedirectUri = "https://images.keidel.me/api/oauth/mobile-redirect";
         tokenEndpointAuthMethod = "client_secret_post";
       };
+      passwordLogin.enabled = false;
       server.externalDomain = "https://images.keidel.me";
       storageTemplate = {
         enabled = true;

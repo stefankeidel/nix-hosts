@@ -27,6 +27,7 @@
     ./navidrome.nix
     ./immich.nix
     ./auth.nix
+    ./actualbudget.nix
   ];
 
   # secrets
