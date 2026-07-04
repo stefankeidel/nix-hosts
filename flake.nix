@@ -4,7 +4,7 @@
   # Add all your dependencies here
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs?ref=nixos-unstable";
-    nixpkgs-darwin-pinned.url = "github:NixOS/nixpkgs/567a49d1913ce81ac6e9582e3553dd90a955875f";
+    nixpkgs-darwin-pinned.url = "github:NixOS/nixpkgs?ref=nixos-unstable"; #"github:NixOS/nixpkgs/567a49d1913ce81ac6e9582e3553dd90a955875f";
 
     # some of my "hosted" systems are on stable :shrug:
     nix-stable.url = "github:NixOS/nixpkgs/nixos-25.11";
