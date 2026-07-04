@@ -10,7 +10,6 @@
 
   home = {
     packages = with pkgs; [
-      utm
       yt-dlp
       ffmpeg
       immich-go
