@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ ... }:
 {
   systemd.timers."nextcloud-bak" = {
     wantedBy = [ "timers.target" ];
@@ -26,13 +26,13 @@
       /run/current-system/sw/bin/restic \
         --password-file /run/agenix/restic \
         --repo rclone:sb:nixie-bak backup \
-        --tag nixie-2026-01 \
+        --tag nixie-nextcloud-2026-01 \
         /var/lib/nextcloud
 
       /run/current-system/sw/bin/restic \
         --password-file /run/agenix/restic \
         --repo rclone:sb:nixie-bak forget \
-        --tag nixie-2026-01 \
+        --tag nixie-nextcloud-2026-01 \
         --keep-daily 7 --keep-weekly 1 --keep-monthly 1 \
         --prune
 
@@ -41,6 +41,39 @@
     serviceConfig = {
       Type = "oneshot";
       User = "nextcloud";
+      Environment = "RCLONE_CONFIG=/etc/rclone/rclone.conf";
+    };
+  };
+
+  systemd.timers."actualbudget-bak" = {
+    wantedBy = [ "timers.target" ];
+    timerConfig = {
+      OnCalendar = "daily";
+      Persistent = true;
+      Unit = "actualbudget-bak.service";
+    };
+  };
+
+  systemd.services."actualbudget-bak" = {
+    script = ''
+      set -euo pipefail
+
+      /run/current-system/sw/bin/restic \
+        --password-file /run/agenix/restic \
+        --repo rclone:sb:nixie-bak backup \
+        --tag nixie-actualbudget-2026-01 \
+        /var/lib/actualbudget
+
+      /run/current-system/sw/bin/restic \
+        --password-file /run/agenix/restic \
+        --repo rclone:sb:nixie-bak forget \
+        --tag nixie-actualbudget-2026-01 \
+        --keep-daily 7 --keep-weekly 1 --keep-monthly 1 \
+        --prune
+    '';
+    serviceConfig = {
+      Type = "oneshot";
+      User = "root";
       Environment = "RCLONE_CONFIG=/etc/rclone/rclone.conf";
     };
   };
