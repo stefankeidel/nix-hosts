@@ -20,20 +20,3 @@ jobs:
 
       - name: Build Nix Flake
         run: nix build '.#nixosConfigurations.nixie.config.system.build.toplevel'
-
-  build-vm-mini:
-    name: Build Nix Flake Vault Mini
-    runs-on: ubuntu-24.04-arm
-
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
-
-      - name: Install Nix
-        uses: DeterminateSystems/nix-installer-action@main
-
-      - name: Check Flake Inputs
-        uses: DeterminateSystems/flake-checker-action@main
-
-      - name: Build Nix Flake
-        run: nix build '.#nixosConfigurations.vault-mini.config.system.build.toplevel'
