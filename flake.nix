@@ -7,7 +7,7 @@
     nixpkgs-darwin-pinned.url = "github:NixOS/nixpkgs?ref=nixos-unstable"; #"github:NixOS/nixpkgs/567a49d1913ce81ac6e9582e3553dd90a955875f";
 
     # some of my "hosted" systems are on stable :shrug:
-    nix-stable.url = "github:NixOS/nixpkgs/nixos-25.11";
+    nix-stable.url = "github:NixOS/nixpkgs/nixos-26.05";
 
     blueprint.url = "github:numtide/blueprint";
     blueprint.inputs.nixpkgs.follows = "nixpkgs";
