@@ -233,6 +233,10 @@
               ("C-TAB" . 'copilot-accept-completion-by-word)
               ("C-<tab>" . 'copilot-accept-completion-by-word)))
 
+(after! copilot
+  (setopt copilot-lsp-settings '(:github-enterprise (:uri "https://lichtblick-se.ghe.com")))
+)
+
 ;;   :config
 ;;   (add-to-list 'copilot-indentation-alist '(prog-mode 2))
 ;;   (add-to-list 'copilot-indentation-alist '(org-mode 2))
