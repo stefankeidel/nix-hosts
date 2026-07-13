@@ -189,14 +189,14 @@
 ;; AI stuff
 
 ;; ACP / agent-shell
-;; (use-package! acp
-;;   :after shell-maker)
+(use-package! acp
+  :after shell-maker)
 
-;; (use-package! agent-shell
-;;   :after acp
-;;   :config
-;;   (setq agent-shell-openai-authentication (agent-shell-openai-make-authentication :login t)
-;;         agent-shell-prefer-viewport-interaction t))
+(use-package! agent-shell
+  :after acp
+  :config
+  (setq agent-shell-openai-authentication (agent-shell-github-make-copilot-config :login t)
+        agent-shell-prefer-viewport-interaction t))
 
 ;; GPT.el
 (after! gptel

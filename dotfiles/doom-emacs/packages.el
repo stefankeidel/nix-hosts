@@ -60,7 +60,7 @@
 (package! ob-sql-mode)
 (package! undo-fu :disable t)
 (package! elfeed)
-(package! copilot)
+;(package! copilot)
 ;; (package! org-ql
 ;;   :recipe (:host github :repo "alphapapa/org-ql" :files ("*.el")))
 ;; (package! org-roam-ql)
