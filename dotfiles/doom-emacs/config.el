@@ -194,9 +194,14 @@
 
 (use-package! agent-shell
   :after acp
+  :bind (:map agent-shell-mode-map
+              ("RET" . newline)
+              ("C-c C-c" . shell-maker-submit)
+              ("C-c C-k" . agent-shell-interrupt))
   :config
   (setq agent-shell-openai-authentication (agent-shell-github-make-copilot-config :login t)
         agent-shell-prefer-viewport-interaction t))
+
 
 ;; GPT.el
 (after! gptel
