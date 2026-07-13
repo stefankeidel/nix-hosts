@@ -5,7 +5,6 @@
   ...
 }: {
   imports = [
-    inputs.nix-doom-emacs-unstraightened.homeModule
     inputs.self.homeModules.ghostty
     inputs.self.homeModules.helix
     inputs.self.homeModules.zellij
@@ -91,10 +90,10 @@
     # at some point(tm)
     #
     # emacs config
-    # file.".config/doom" = {
-    #   source = ../../dotfiles/doom-emacs;
-    #   recursive = true;
-    # };
+    file.".config/doom" = {
+      source = ../../dotfiles/doom-emacs;
+      recursive = true;
+    };
 
     file.".vimrc".source = ../../dotfiles/vim_config;
     file.".functions".source = ../../dotfiles/functions;
