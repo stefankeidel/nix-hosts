@@ -86,6 +86,7 @@
       "firefox"
       "marta"
       "proton-drive"
+      "copilot-cli"
     ];
 
     # Optional: Mac App Store apps

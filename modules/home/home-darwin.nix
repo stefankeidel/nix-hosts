@@ -29,7 +29,6 @@
       docker-client
       emacs-lsp-booster
       feishin
-      github-copilot-cli
       lazydocker
       mise
       nixd
