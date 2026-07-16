@@ -17,11 +17,14 @@
     # they're all somewhat dev machines, right!?
     # install the heavier stuff we may not need
     # on minimal boxes here
-    packages = with pkgs; [
-      #(callPackage ../../packages/whichllm.nix { })
-      alejandra
+    packages = (with inputs.llm-agents.packages.${pkgs.stdenv.hostPlatform.system}; [
+      copilot-cli
       codex
       codex-acp
+      skills
+    ]) ++ (with pkgs; [
+      #(callPackage ../../packages/whichllm.nix { })
+      alejandra
       colima
       imagemagick
       copilot-language-server
@@ -51,7 +54,7 @@
       uv
       yarn
       yq-go
-    ];
+    ]);
 
     sessionVariables = {
       EDITOR = "hx";
