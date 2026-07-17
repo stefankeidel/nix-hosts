@@ -14,6 +14,7 @@
       (callPackage ../../../../packages/akv-tui-rs.nix { })
       (callPackage ../../../../packages/squad-cli.nix { })
       azure-cli
+      azure-storage-azcopy
       glab
       k9s
       kubectl
