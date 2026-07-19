@@ -83,6 +83,7 @@
       "s-m b" #'magit-blame)
 
 (setq git-commit-summary-max-length 80)
+(setq projectile-auto-update-cache-with-watches t)
 
 ; random functions for dbt navigation enhancements
 (defun kill-buffer-basename ()
