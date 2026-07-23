@@ -615,17 +615,18 @@
 
   (buffer-guardian-mode 1))
 
-(use-package! lab
-  :demand t
-  :config
-  ;; GitLab token is never committed here; it's decrypted by agenix to
-  ;; ~/.config/gitlab-token (see hosts/*/darwin-configuration.nix and
-  ;; secrets/gitlab-token.age) and read at startup instead.
-  (let ((gitlab-token-file (expand-file-name "~/.config/gitlab-token")))
-    (setq lab-config
-          `((:host "https://gitlab.lichtblick.app/"
-             :token ,(when (file-exists-p gitlab-token-file)
-                       (with-temp-buffer
-                         (insert-file-contents gitlab-token-file)
-                         (string-trim (buffer-string))))
-             :group "lichtblick")))))
+;; GitLab token is never committed here; it's decrypted by agenix to
+;; ~/.config/gitlab-token (see hosts/*/darwin-configuration.nix and
+;; secrets/gitlab-token.age) and read at startup instead.
+;;
+;; `lab-config' is a plain variable, so it can be set here directly without
+;; forcing the `lab' package to load early (use-package!'s lazy loading was
+;; preventing this from taking effect until the buffer was eval'd by hand).
+(let ((gitlab-token-file (expand-file-name "~/.config/gitlab-token")))
+  (setq lab-config
+        `((:host "https://gitlab.lichtblick.app/"
+           :token ,(when (file-exists-p gitlab-token-file)
+                     (with-temp-buffer
+                       (insert-file-contents gitlab-token-file)
+                       (string-trim (buffer-string))))
+           :group "lichtblick"))))
