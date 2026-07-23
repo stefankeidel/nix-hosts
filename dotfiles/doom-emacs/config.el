@@ -111,6 +111,8 @@
       "s-i c" #'org-capture
       "s-i t" #'+vterm/toggle
       "s-i T" #'+vterm/here
+      "s-i v" #'stefan-projectile-run-vterm
+      "s-i g" #'stefan-projectile-run-copilot
       "s-i l" #'agent-shell
       "M-y"   #'browse-kill-ring)
 
@@ -131,6 +133,39 @@
     `((".*" . ,temporary-file-directory))))
 
 (global-undo-tree-mode 1)
+
+(defun stefan-projectile-run-vterm ()
+  "Open a permanent vterm buffer in the current project's root.
+
+Unlike `+vterm/toggle' and `+vterm/here', this always creates (or
+switches to) a dedicated, non-popup buffer named \"term
+<project-name>\", cd'd into the project root, similar to
+`projectile-run-eshell'/`projectile-run-term'
+(cf. https://github.com/bbatsov/projectile/pull/1474)."
+  (interactive)
+  (let* ((project (projectile-project-name))
+         (default-directory (projectile-project-root))
+         (buffer-name (format "term %s" project)))
+    (if (get-buffer buffer-name)
+        (switch-to-buffer buffer-name)
+      (vterm buffer-name))))
+
+(defun stefan-projectile-run-copilot ()
+  "Open a permanent vterm buffer in the current project's root and start
+copilot in it.
+
+Buffer naming mirrors `stefan-projectile-run-vterm', but is prefixed
+with \"copilot\" instead of \"term\" so both can coexist per-project."
+  (interactive)
+  (let* ((project (projectile-project-name))
+         (default-directory (projectile-project-root))
+         (buffer-name (format "copilot %s" project))
+         (existing (get-buffer buffer-name)))
+    (if existing
+        (switch-to-buffer existing)
+      (vterm buffer-name)
+      (vterm-send-string "copilot")
+      (vterm-send-return))))
 
 ; projectile bindings
 (map! :map projectile-mode-map
