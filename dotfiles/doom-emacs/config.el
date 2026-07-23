@@ -112,7 +112,8 @@
       "s-i t" #'+vterm/toggle
       "s-i T" #'+vterm/here
       "s-i l" #'agent-shell
-      "M-y"   #'browse-kill-ring)
+      "M-y"   #'browse-kill-ring
+      "C-."   #'embark-act)
 
 (bind-key "s-l" lab-map)
 
