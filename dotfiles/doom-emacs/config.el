@@ -111,8 +111,6 @@
       "s-i c" #'org-capture
       "s-i t" #'+vterm/toggle
       "s-i T" #'+vterm/here
-      "s-i v" #'stefan-projectile-run-vterm
-      "s-i g" #'stefan-projectile-run-copilot
       "s-i l" #'agent-shell
       "M-y"   #'browse-kill-ring)
 
@@ -134,43 +132,62 @@
 
 (global-undo-tree-mode 1)
 
-(defun stefan-projectile-run-vterm ()
-  "Open a permanent vterm buffer in the current project's root.
+(defun stefan--projectile-run-vterm-buffer (label &optional other-window command)
+  "Open or switch to a permanent vterm buffer for the current project.
 
-Unlike `+vterm/toggle' and `+vterm/here', this always creates (or
-switches to) a dedicated, non-popup buffer named \"term
-<project-name>\", cd'd into the project root, similar to
-`projectile-run-eshell'/`projectile-run-term'
-(cf. https://github.com/bbatsov/projectile/pull/1474)."
-  (interactive)
+The buffer is named \"**LABEL project-name**\" and its `default-directory'
+is the project root, similar to `projectile-run-eshell'/
+`projectile-run-term' (cf.
+https://github.com/bbatsov/projectile/pull/1474).  When OTHER-WINDOW is
+non-nil the buffer is displayed in another window.  When COMMAND is
+given, it is sent to the freshly created vterm followed by a return, so
+callers can launch e.g. \"copilot\" straight away."
   (let* ((project (projectile-project-name))
          (default-directory (projectile-project-root))
-         (buffer-name (format "term %s" project)))
-    (if (get-buffer buffer-name)
-        (switch-to-buffer buffer-name)
-      (vterm buffer-name))))
+         (buffer-name (format "**%s %s**" label project))
+         (existing (get-buffer buffer-name)))
+    (if existing
+        (if other-window
+            (switch-to-buffer-other-window existing)
+          (switch-to-buffer existing))
+      (if other-window
+          (vterm-other-window buffer-name)
+        (vterm buffer-name))
+      (when command
+        (vterm-send-string command)
+        (vterm-send-return)))))
+
+(defun stefan-projectile-run-vterm ()
+  "Open a permanent vterm buffer in the current project's root."
+  (interactive)
+  (stefan--projectile-run-vterm-buffer "term"))
+
+(defun stefan-projectile-run-vterm-other-window ()
+  "Like `stefan-projectile-run-vterm', but displayed in another window."
+  (interactive)
+  (stefan--projectile-run-vterm-buffer "term" t))
 
 (defun stefan-projectile-run-copilot ()
   "Open a permanent vterm buffer in the current project's root and start
-copilot in it.
-
-Buffer naming mirrors `stefan-projectile-run-vterm', but is prefixed
-with \"copilot\" instead of \"term\" so both can coexist per-project."
+copilot in it."
   (interactive)
-  (let* ((project (projectile-project-name))
-         (default-directory (projectile-project-root))
-         (buffer-name (format "copilot %s" project))
-         (existing (get-buffer buffer-name)))
-    (if existing
-        (switch-to-buffer existing)
-      (vterm buffer-name)
-      (vterm-send-string "copilot")
-      (vterm-send-return))))
+  (stefan--projectile-run-vterm-buffer "copilot" nil "copilot"))
+
+(defun stefan-projectile-run-copilot-other-window ()
+  "Like `stefan-projectile-run-copilot', but displayed in another window."
+  (interactive)
+  (stefan--projectile-run-vterm-buffer "copilot" t "copilot"))
 
 ; projectile bindings
 (map! :map projectile-mode-map
       "s-p" #'projectile-command-map
       "s-f" #'projectile-search-review);#'+default/search-project-for-symbol-at-point)
+
+(map! :map projectile-command-map
+      "x v"   #'stefan-projectile-run-vterm
+      "x c"   #'stefan-projectile-run-copilot
+      "x 4 v" #'stefan-projectile-run-vterm-other-window
+      "x 4 c" #'stefan-projectile-run-copilot-other-window)
 
 ; it's disabled by default
 (put 'projectile-ripgrep 'disabled nil)
