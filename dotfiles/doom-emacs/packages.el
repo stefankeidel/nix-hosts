@@ -83,3 +83,7 @@
 (package! buffer-guardian
   :recipe
   (:host github :repo "jamescherti/buffer-guardian.el"))
+
+(package! lab
+  :recipe
+  (:host github :repo "isamert/lab.el"))

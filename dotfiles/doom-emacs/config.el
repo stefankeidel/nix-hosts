@@ -614,3 +614,11 @@
   ;; (setq buffer-guardian-save-all-buffers-idle 30)
 
   (buffer-guardian-mode 1))
+
+(use-package! lab
+  :config
+  (setq lab-config
+      '((:host "https://gitlab.lichtblick.app/"
+         :token "topsecret"
+         :group "lichtblick")
+       )))
