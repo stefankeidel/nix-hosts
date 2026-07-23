@@ -112,9 +112,7 @@
       "s-i t" #'+vterm/toggle
       "s-i T" #'+vterm/here
       "s-i l" #'agent-shell
-      "M-y"   #'browse-kill-ring
-      "C-."   #'embark-act
-      "C-;"   #'embark-dwim)
+      "M-y"   #'browse-kill-ring)
 
 (bind-key "s-l" lab-map)
 
@@ -688,3 +686,11 @@ copilot in it."
                          (string-trim (buffer-string))))
              :group "lichtblick"))))
 )
+
+(use-package! embark
+  :ensure t
+  :bind (("C-." . embark-act)
+         ("C-;" . embark-dwim)
+         ("C-h B" . embark-bindings))
+  :init
+  (setq prefix-help-command #'embark-prefix-help-command))
