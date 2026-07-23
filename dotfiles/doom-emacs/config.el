@@ -105,7 +105,6 @@
       "C-c r" #'consult-ripgrep
       "C-s"   #'consult-line
       "s-z"   #'avy-goto-char
-      "s-l"   #'gptel-menu
       "s-i k" #'kill-buffer-basename
       "s-i s" #'lichtblick-dbt-search-model
       "s-i a" #'org-agenda
@@ -113,9 +112,9 @@
       "s-i t" #'+vterm/toggle
       "s-i T" #'+vterm/here
       "s-i l" #'agent-shell
-      "M-y"   #'browse-kill-ring
-      "<f2>"  #'gptel-complete
-      "<f3>"  #'gptel-accept-completion)
+      "M-y"   #'browse-kill-ring)
+
+(bind-key "s-l" lab-map)
 
 ; kill ring navigation
 (use-package! browse-kill-ring
