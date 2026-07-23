@@ -593,7 +593,7 @@
 
 (use-package! yasnippet
   :init
-  (add-to-list 'yas-snippet-dirs (f-expand "~/.config/doom/snippets"))
+  (add-to-list 'yas-snippet-dirs (expand-file-name "~/.config/doom/snippets"))
   :config
   (yas-global-mode 1))
 
