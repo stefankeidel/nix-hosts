@@ -135,16 +135,19 @@
 (defun stefan--projectile-run-vterm-buffer (label &optional other-window command)
   "Open or switch to a permanent vterm buffer for the current project.
 
-The buffer is named \"**LABEL project-name**\" and its `default-directory'
-is the project root, similar to `projectile-run-eshell'/
-`projectile-run-term' (cf.
-https://github.com/bbatsov/projectile/pull/1474).  When OTHER-WINDOW is
+The buffer is named \"**LABEL parent/project**\", where parent/project is
+the last two path segments of the project root (e.g. \"data/infrastructure\"
+for ~/code/lichtblick/data/infrastructure), and its `default-directory' is
+the project root, similar to `projectile-run-eshell'/`projectile-run-term'
+(cf. https://github.com/bbatsov/projectile/pull/1474).  When OTHER-WINDOW is
 non-nil the buffer is displayed in another window.  When COMMAND is
 given, it is sent to the freshly created vterm followed by a return, so
 callers can launch e.g. \"copilot\" straight away."
-  (let* ((project (projectile-project-name))
+  (let* ((root (directory-file-name (projectile-project-root)))
+         (parent (file-name-nondirectory (directory-file-name (file-name-directory root))))
+         (project (file-name-nondirectory root))
          (default-directory (projectile-project-root))
-         (buffer-name (format "**%s %s**" label project))
+         (buffer-name (format "**%s %s/%s**" label parent project))
          (existing (get-buffer buffer-name)))
     (if existing
         (if other-window
