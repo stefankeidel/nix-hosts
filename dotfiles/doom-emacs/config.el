@@ -113,7 +113,8 @@
       "s-i T" #'+vterm/here
       "s-i l" #'agent-shell
       "M-y"   #'browse-kill-ring
-      "C-."   #'embark-act)
+      "C-."   #'embark-act
+      "C-;"   #'embark-dwim)
 
 (bind-key "s-l" lab-map)
 
