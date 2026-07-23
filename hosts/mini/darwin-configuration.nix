@@ -73,6 +73,13 @@
       group = "staff";
       mode = "600";
     };
+    gitlab-token = {
+      file = ../../secrets/gitlab-token.age;
+      path = "/Users/stefan/.config/gitlab-token";
+      owner = "stefan";
+      group = "staff";
+      mode = "600";
+    };
   };
 
   # Let nix-darwin manage Homebrew itself

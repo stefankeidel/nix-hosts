@@ -32,4 +32,5 @@ in
   "immich-oidc-client-secret-digest.age".publicKeys = users ++ systems;
   "lldap-admin-password.age".publicKeys = users ++ systems;
   "lldap-jwt-secret.age".publicKeys = users ++ systems;
+  "gitlab-token.age".publicKeys = users ++ systems;
 }

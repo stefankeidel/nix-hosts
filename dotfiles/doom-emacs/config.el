@@ -616,9 +616,16 @@
   (buffer-guardian-mode 1))
 
 (use-package! lab
+  :demand t
   :config
-  (setq lab-config
-      '((:host "https://gitlab.lichtblick.app/"
-         :token "topsecret"
-         :group "lichtblick")
-       )))
+  ;; GitLab token is never committed here; it's decrypted by agenix to
+  ;; ~/.config/gitlab-token (see hosts/*/darwin-configuration.nix and
+  ;; secrets/gitlab-token.age) and read at startup instead.
+  (let ((gitlab-token-file (expand-file-name "~/.config/gitlab-token")))
+    (setq lab-config
+          `((:host "https://gitlab.lichtblick.app/"
+             :token ,(when (file-exists-p gitlab-token-file)
+                       (with-temp-buffer
+                         (insert-file-contents gitlab-token-file)
+                         (string-trim (buffer-string))))
+             :group "lichtblick")))))

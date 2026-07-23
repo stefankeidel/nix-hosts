@@ -63,6 +63,13 @@
       group = "staff";
       mode = "600";
     };
+    gitlab-token = {
+      file = ../../secrets/gitlab-token.age;
+      path = "/Users/stefan.keidel@lichtblick.de/.config/gitlab-token";
+      owner = "stefan.keidel@lichtblick.de";
+      group = "staff";
+      mode = "600";
+    };
   };
 
   # Let nix-darwin manage Homebrew itself
