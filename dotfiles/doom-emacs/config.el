@@ -187,10 +187,10 @@ copilot in it."
       "s-f" #'projectile-search-review);#'+default/search-project-for-symbol-at-point)
 
 (map! :map projectile-command-map
-      "x v"   #'stefan-projectile-run-vterm
-      "x c"   #'stefan-projectile-run-copilot
-      "x 4 v" #'stefan-projectile-run-vterm-other-window
-      "x 4 c" #'stefan-projectile-run-copilot-other-window)
+      "v"   #'stefan-projectile-run-vterm
+      "c"   #'stefan-projectile-run-copilot
+      "4 v" #'stefan-projectile-run-vterm-other-window
+      "4 c" #'stefan-projectile-run-copilot-other-window)
 
 ; it's disabled by default
 (put 'projectile-ripgrep 'disabled nil)
