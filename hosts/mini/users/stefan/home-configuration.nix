@@ -13,7 +13,6 @@
       yt-dlp
       ffmpeg
       immich-go
-      transmission_4-mac
       (writeShellScriptBin "do_bak" ''
         #!/usr/bin/env zsh
         set -e
