@@ -103,6 +103,7 @@
       "musicbrainz-picard"
       "marta"
       "proton-drive"
+      "transmission"
     ];
 
     # Optional: Mac App Store apps
