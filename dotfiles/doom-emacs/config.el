@@ -101,7 +101,9 @@
 
 ; global stuff
 (map! "s-w"   #'next-multiframe-window
+      "s-r"   #'+vertico/switch-workspace-buffer
       "s-e"   #'consult-buffer
+      "s-i e" #'+workspace/switch-to
       "C-c r" #'consult-ripgrep
       "C-s"   #'consult-line
       "s-z"   #'avy-goto-char
