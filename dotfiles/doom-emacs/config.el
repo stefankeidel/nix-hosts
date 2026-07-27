@@ -132,8 +132,8 @@
 
 (global-undo-tree-mode 1)
 
-(defun stefan--projectile-run-vterm-buffer (label &optional other-window command)
-  "Open or switch to a permanent vterm buffer for the current project.
+(defun stefan--projectile-run-ghostel-buffer (label &optional other-window command)
+  "Open or switch to a permanent ghostel buffer for the current project.
 
 The buffer is named \"**LABEL parent/project**\", where parent/project is
 the last two path segments of the project root (e.g. \"data/infrastructure\"
@@ -141,8 +141,8 @@ for ~/code/lichtblick/data/infrastructure), and its `default-directory' is
 the project root, similar to `projectile-run-eshell'/`projectile-run-term'
 (cf. https://github.com/bbatsov/projectile/pull/1474).  When OTHER-WINDOW is
 non-nil the buffer is displayed in another window.  When COMMAND is
-given, it is sent to the freshly created vterm followed by a return, so
-callers can launch e.g. \"copilot\" straight away."
+given, it is sent to the freshly created ghostel buffer followed by a
+return, so callers can launch e.g. \"copilot\" straight away."
   (let* ((root (directory-file-name (projectile-project-root)))
          (parent (file-name-nondirectory (directory-file-name (file-name-directory root))))
          (project (file-name-nondirectory root))
@@ -153,33 +153,40 @@ callers can launch e.g. \"copilot\" straight away."
         (if other-window
             (switch-to-buffer-other-window existing)
           (switch-to-buffer existing))
-      (if other-window
-          (vterm-other-window buffer-name)
-        (vterm buffer-name))
-      (when command
-        (vterm-send-string command)
-        (vterm-send-return)))))
+      ;; `ghostel-buffer-name' drives both the buffer's name and the
+      ;; identity `ghostel' uses to find/reuse it on subsequent calls,
+      ;; mirroring `ghostel-project's own let-binding trick.
+      (let* ((ghostel-buffer-name buffer-name)
+             (display-buffer-overriding-action
+              (if other-window
+                  '(display-buffer-pop-up-window)
+                display-buffer-overriding-action))
+             (buf (ghostel)))
+        (when command
+          (with-current-buffer buf
+            (ghostel-send-string command)
+            (ghostel-send-string "\r")))))))
 
-(defun stefan-projectile-run-vterm ()
-  "Open a permanent vterm buffer in the current project's root."
+(defun stefan-projectile-run-ghostel ()
+  "Open a permanent ghostel buffer in the current project's root."
   (interactive)
-  (stefan--projectile-run-vterm-buffer "term"))
+  (stefan--projectile-run-ghostel-buffer "term"))
 
-(defun stefan-projectile-run-vterm-other-window ()
-  "Like `stefan-projectile-run-vterm', but displayed in another window."
+(defun stefan-projectile-run-ghostel-other-window ()
+  "Like `stefan-projectile-run-ghostel', but displayed in another window."
   (interactive)
-  (stefan--projectile-run-vterm-buffer "term" t))
+  (stefan--projectile-run-ghostel-buffer "term" t))
 
 (defun stefan-projectile-run-copilot ()
-  "Open a permanent vterm buffer in the current project's root and start
+  "Open a permanent ghostel buffer in the current project's root and start
 copilot in it."
   (interactive)
-  (stefan--projectile-run-vterm-buffer "copilot" nil "copilot"))
+  (stefan--projectile-run-ghostel-buffer "copilot" nil "copilot"))
 
 (defun stefan-projectile-run-copilot-other-window ()
   "Like `stefan-projectile-run-copilot', but displayed in another window."
   (interactive)
-  (stefan--projectile-run-vterm-buffer "copilot" t "copilot"))
+  (stefan--projectile-run-ghostel-buffer "copilot" t "copilot"))
 
 ; projectile bindings
 (map! :map projectile-mode-map
@@ -189,7 +196,7 @@ copilot in it."
 (map! :map projectile-command-map
       "v"   #'ghostel-project
       "c"   #'stefan-projectile-run-copilot
-      "4 v" #'stefan-projectile-run-vterm-other-window
+      "4 v" #'stefan-projectile-run-ghostel-other-window
       "4 c" #'stefan-projectile-run-copilot-other-window)
 
 ; it's disabled by default
