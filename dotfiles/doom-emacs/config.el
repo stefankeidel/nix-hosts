@@ -111,8 +111,6 @@
       "s-i s" #'lichtblick-dbt-search-model
       "s-i a" #'org-agenda
       "s-i c" #'org-capture
-      "s-i t" #'+vterm/toggle
-      "s-i T" #'+vterm/here
       "s-i l" #'agent-shell
       "M-y"   #'browse-kill-ring)
 
@@ -189,7 +187,7 @@ copilot in it."
       "s-f" #'projectile-search-review);#'+default/search-project-for-symbol-at-point)
 
 (map! :map projectile-command-map
-      "v"   #'stefan-projectile-run-vterm
+      "v"   #'ghostel-project
       "c"   #'stefan-projectile-run-copilot
       "4 v" #'stefan-projectile-run-vterm-other-window
       "4 c" #'stefan-projectile-run-copilot-other-window)
