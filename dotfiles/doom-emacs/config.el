@@ -199,6 +199,17 @@ copilot in it."
   (interactive)
   (stefan--projectile-run-ghostel-buffer "copilot" t "copilot"))
 
+(defun stefan-projectile-run-vibe ()
+  "Open a permanent ghostel buffer in the current project's root and start
+Mistral's vibe CLI in it."
+  (interactive)
+  (stefan--projectile-run-ghostel-buffer "vibe" nil "vibe"))
+
+(defun stefan-projectile-run-vibe-other-window ()
+  "Like `stefan-projectile-run-vibe', but displayed in another window."
+  (interactive)
+  (stefan--projectile-run-ghostel-buffer "vibe" t "vibe"))
+
 ; projectile bindings
 (map! :map projectile-mode-map
       "s-p" #'projectile-command-map
@@ -207,8 +218,10 @@ copilot in it."
 (map! :map projectile-command-map
       "v"   #'stefan-projectile-run-ghostel
       "c"   #'stefan-projectile-run-copilot
+      "x"   #'stefan-projectile-run-vibe
       "4 v" #'stefan-projectile-run-ghostel-other-window
-      "4 c" #'stefan-projectile-run-copilot-other-window)
+      "4 c" #'stefan-projectile-run-copilot-other-window
+      "4 x" #'stefan-projectile-run-vibe-other-window)
 
 ; it's disabled by default
 (put 'projectile-ripgrep 'disabled nil)
