@@ -21,6 +21,7 @@
       copilot-cli
       codex
       codex-acp
+      mistral-vibe
       skills
     ]) ++ (with pkgs; [
       #(callPackage ../../packages/whichllm.nix { })
