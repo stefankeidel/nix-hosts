@@ -270,30 +270,27 @@ copilot in it."
 
 
 ;; GPT.el
-(after! gptel
-  (gptel-make-gh-copilot "Copilot")
-  (setq gptel-model 'gpt-5-mini
-        gptel-default-mode 'org-mode
-        gptel-backend (gptel-make-gh-copilot "Copilot"))
+;; (after! gptel
+;;   (gptel-make-gh-copilot "Copilot" :host "api.enterprise.githubcopilot.com")
 
-  (use-package! gptel)
+;;   (use-package! gptel)
 
-  (use-package! gptel-autocomplete
-    :config
-    (setq gptel-autocomplete-before-context-lines 100)
-    (setq gptel-autocomplete-after-context-lines 20)
-    (setq gptel-autocomplete-temperature 0.1)
-    (setq gptel-autocomplete-use-context t)
-    )
+;;   (use-package! gptel-autocomplete
+;;     :config
+;;     (setq gptel-autocomplete-before-context-lines 100)
+;;     (setq gptel-autocomplete-after-context-lines 20)
+;;     (setq gptel-autocomplete-temperature 0.1)
+;;     (setq gptel-autocomplete-use-context t)
+;;     )
 
-  ;; (gptel-make-preset 'gpt5coding                       ;preset name, a symbol
-  ;;     :description "A preset optimized for coding tasks" ;for your reference
-  ;;     :backend "Copilot"
-  ;;     :model 'gpt-5-mini
-  ;;     :system "You are an expert coding assistant. Your role is to provide high-quality code solutions, refactorings, and explanations."
-  ;;     :tools '("view_buffer" "edit_buffer")) ;gptel tools or tool names
-  ;;
-)
+;;   ;; (gptel-make-preset 'gpt5coding                       ;preset name, a symbol
+;;   ;;     :description "A preset optimized for coding tasks" ;for your reference
+;;   ;;     :backend "Copilot"
+;;   ;;     :model 'gpt-5-mini
+;;   ;;     :system "You are an expert coding assistant. Your role is to provide high-quality code solutions, refactorings, and explanations."
+;;   ;;     :tools '("view_buffer" "edit_buffer")) ;gptel tools or tool names
+;;   ;;
+;; )
 
 ;; accept completion from copilot and fallback to company
 ;; (use-package! copilot
