@@ -8,6 +8,7 @@
     inputs.self.homeModules.ghostty
     inputs.self.homeModules.helix
     inputs.self.homeModules.zellij
+    inputs.nix-doom-emacs-unstraightened.homeModule
   ];
 
   home = {

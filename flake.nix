@@ -33,6 +33,10 @@
     comin.inputs.nixpkgs.follows = "nixpkgs";
 
     llm-agents.url = "github:numtide/llm-agents.nix";
+
+    nix-doom-emacs-unstraightened.url = "github:marienz/nix-doom-emacs-unstraightened";
+    # Optional, to download less. Neither the module nor the overlay uses this input.
+    nix-doom-emacs-unstraightened.inputs.nixpkgs.follows = "";
   };
 
   # Load the blueprint

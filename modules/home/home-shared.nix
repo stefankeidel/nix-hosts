@@ -77,15 +77,15 @@
     ];
   };
 
-  # programs.doom-emacs = {
-  #   enable = true;
-  #   doomDir = ../../dotfiles/doom-emacs;
+  programs.doom-emacs = {
+    enable = true;
+    doomDir = ../../dotfiles/doom-emacs;
 
-  #   extraPackages = epkgs: with epkgs; [
-  #     treesit-grammars.with-all-grammars
-  #     vterm
-  #   ];
-  # };
+    extraPackages = epkgs: with epkgs; [
+      treesit-grammars.with-all-grammars
+      vterm
+    ];
+  };
 
   home.stateVersion = "24.11"; # initial home-manager state
 }

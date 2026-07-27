@@ -3,4 +3,4 @@
 # @raycast.schemaVersion 1
 # @raycast.title Emacs Switch
 # @raycast.mode silent
-open -a /Applications/Nix\ Apps/Emacs.app
+open -a ~/Applications/Home\ Manager\ Apps/Emacs.app
