@@ -147,6 +147,13 @@ the project root, similar to `projectile-run-eshell'/`projectile-run-term'
 non-nil the buffer is displayed in another window.  When COMMAND is
 given, it is sent to the freshly created ghostel buffer followed by a
 return, so callers can launch e.g. \"copilot\" straight away."
+  ;; Force ghostel.el to load now, before we dynamically rebind
+  ;; `ghostel-buffer-name' below.  On a fresh Emacs (package not yet
+  ;; loaded), that variable isn't declared special yet, so `let*'
+  ;; would only create a throwaway lexical binding that the real
+  ;; `ghostel' function - defined in a separately compiled file -
+  ;; never sees, silently ignoring our buffer name override.
+  (require 'ghostel)
   (let* ((root (directory-file-name (projectile-project-root)))
          (parent (file-name-nondirectory (directory-file-name (file-name-directory root))))
          (project (file-name-nondirectory root))
