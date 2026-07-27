@@ -198,7 +198,7 @@ copilot in it."
       "s-f" #'projectile-search-review);#'+default/search-project-for-symbol-at-point)
 
 (map! :map projectile-command-map
-      "v"   #'ghostel-project
+      "v"   #'stefan-projectile-run-ghostel
       "c"   #'stefan-projectile-run-copilot
       "4 v" #'stefan-projectile-run-ghostel-other-window
       "4 c" #'stefan-projectile-run-copilot-other-window)
