@@ -136,17 +136,18 @@
 
 (global-undo-tree-mode 1)
 
-(defun stefan--projectile-run-ghostel-buffer (label &optional other-window command)
+(defun stefan--projectile-run-ghostel-buffer (label &optional where command)
   "Open or switch to a permanent ghostel buffer for the current project.
 
 The buffer is named \"**LABEL parent/project**\", where parent/project is
 the last two path segments of the project root (e.g. \"data/infrastructure\"
 for ~/code/lichtblick/data/infrastructure), and its `default-directory' is
 the project root, similar to `projectile-run-eshell'/`projectile-run-term'
-(cf. https://github.com/bbatsov/projectile/pull/1474).  When OTHER-WINDOW is
-non-nil the buffer is displayed in another window.  When COMMAND is
-given, it is sent to the freshly created ghostel buffer followed by a
-return, so callers can launch e.g. \"copilot\" straight away."
+(cf. https://github.com/bbatsov/projectile/pull/1474).  WHERE controls
+placement: nil for the current window, `window' for another window, or
+`frame' for another frame.  When COMMAND is given, it is sent to the
+freshly created ghostel buffer followed by a return, so callers can
+launch e.g. \"copilot\" straight away."
   ;; Force ghostel.el to load now, before we dynamically rebind
   ;; `ghostel-buffer-name' below.  On a fresh Emacs (package not yet
   ;; loaded), that variable isn't declared special yet, so `let*'
@@ -161,54 +162,49 @@ return, so callers can launch e.g. \"copilot\" straight away."
          (buffer-name (format "**%s %s/%s**" label parent project))
          (existing (get-buffer buffer-name)))
     (if existing
-        (if other-window
-            (switch-to-buffer-other-window existing)
-          (switch-to-buffer existing))
+        (pcase where
+          ('window (switch-to-buffer-other-window existing))
+          ('frame (switch-to-buffer-other-frame existing))
+          (_ (switch-to-buffer existing)))
       ;; `ghostel-buffer-name' drives both the buffer's name and the
       ;; identity `ghostel' uses to find/reuse it on subsequent calls,
       ;; mirroring `ghostel-project's own let-binding trick.
       (let* ((ghostel-buffer-name buffer-name)
              (display-buffer-overriding-action
-              (if other-window
-                  '(display-buffer-pop-up-window)
-                display-buffer-overriding-action))
+              (pcase where
+                ('window '(display-buffer-pop-up-window))
+                ('frame '(display-buffer-pop-up-frame))
+                (_ display-buffer-overriding-action)))
              (buf (ghostel)))
         (when command
           (with-current-buffer buf
             (ghostel-send-string command)
             (ghostel-send-string "\r")))))))
 
-(defun stefan-projectile-run-ghostel ()
-  "Open a permanent ghostel buffer in the current project's root."
-  (interactive)
-  (stefan--projectile-run-ghostel-buffer "term"))
+(defmacro stefan--def-projectile-ghostel-commands (name label &optional command)
+  "Define interactive commands stefan-projectile-run-NAME[-other-{window,frame}]
+that open a ghostel buffer LABEL, optionally sending COMMAND."
+  (let ((base (intern (format "stefan-projectile-run-%s" name)))
+        (win (intern (format "stefan-projectile-run-%s-other-window" name)))
+        (frame (intern (format "stefan-projectile-run-%s-other-frame" name))))
+    `(progn
+       (defun ,base ()
+         ,(format "Open a permanent ghostel buffer in the current project's root%s."
+                  (if command (format " and start %s in it" command) ""))
+         (interactive)
+         (stefan--projectile-run-ghostel-buffer ,label nil ,command))
+       (defun ,win ()
+         ,(format "Like `%s', but displayed in another window." base)
+         (interactive)
+         (stefan--projectile-run-ghostel-buffer ,label 'window ,command))
+       (defun ,frame ()
+         ,(format "Like `%s', but displayed in another frame." base)
+         (interactive)
+         (stefan--projectile-run-ghostel-buffer ,label 'frame ,command)))))
 
-(defun stefan-projectile-run-ghostel-other-window ()
-  "Like `stefan-projectile-run-ghostel', but displayed in another window."
-  (interactive)
-  (stefan--projectile-run-ghostel-buffer "term" t))
-
-(defun stefan-projectile-run-copilot ()
-  "Open a permanent ghostel buffer in the current project's root and start
-copilot in it."
-  (interactive)
-  (stefan--projectile-run-ghostel-buffer "copilot" nil "copilot"))
-
-(defun stefan-projectile-run-copilot-other-window ()
-  "Like `stefan-projectile-run-copilot', but displayed in another window."
-  (interactive)
-  (stefan--projectile-run-ghostel-buffer "copilot" t "copilot"))
-
-(defun stefan-projectile-run-vibe ()
-  "Open a permanent ghostel buffer in the current project's root and start
-Mistral's vibe CLI in it."
-  (interactive)
-  (stefan--projectile-run-ghostel-buffer "vibe" nil "vibe"))
-
-(defun stefan-projectile-run-vibe-other-window ()
-  "Like `stefan-projectile-run-vibe', but displayed in another window."
-  (interactive)
-  (stefan--projectile-run-ghostel-buffer "vibe" t "vibe"))
+(stefan--def-projectile-ghostel-commands "ghostel" "term")
+(stefan--def-projectile-ghostel-commands "copilot" "copilot" "copilot")
+(stefan--def-projectile-ghostel-commands "vibe" "vibe" "vibe")
 
 ; projectile bindings
 (map! :map projectile-mode-map
@@ -221,7 +217,10 @@ Mistral's vibe CLI in it."
       "x"   #'stefan-projectile-run-vibe
       "4 v" #'stefan-projectile-run-ghostel-other-window
       "4 c" #'stefan-projectile-run-copilot-other-window
-      "4 x" #'stefan-projectile-run-vibe-other-window)
+      "4 x" #'stefan-projectile-run-vibe-other-window
+      "5 v" #'stefan-projectile-run-ghostel-other-frame
+      "5 c" #'stefan-projectile-run-copilot-other-frame
+      "5 x" #'stefan-projectile-run-vibe-other-frame)
 
 ; it's disabled by default
 (put 'projectile-ripgrep 'disabled nil)
