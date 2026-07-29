@@ -116,6 +116,7 @@
       "s-i a" #'org-agenda
       "s-i c" #'org-capture
       "s-i l" #'agent-shell
+      "s-i o" #'stefan/open-current-gitlab-project
       "M-y"   #'browse-kill-ring)
 
 (bind-key "s-l" lab-map)
@@ -205,6 +206,57 @@ that open a ghostel buffer LABEL, optionally sending COMMAND."
 (stefan--def-projectile-ghostel-commands "ghostel" "term")
 (stefan--def-projectile-ghostel-commands "copilot" "copilot" "copilot")
 (stefan--def-projectile-ghostel-commands "vibe" "vibe" "vibe")
+
+(defun stefan/open-current-gitlab-project ()
+  "Open the current Projectile project in the GitLab browser."
+  (interactive)
+  (unless (fboundp 'projectile-project-root)
+    (require 'projectile))
+  (let* ((project-root (or (and (fboundp 'projectile-project-root)
+                                (projectile-project-root))
+                           default-directory))
+         (project-name (file-name-nondirectory (directory-file-name project-root)))
+         (remote-url (string-trim
+                      (shell-command-to-string
+                       (format "git -C %s remote get-url origin"
+                               (shell-quote-argument project-root)))))
+         (repo-path
+          (or
+           (let ((url (string-trim remote-url)))
+             (cond
+              ((string-prefix-p "ssh://" url)
+               (let* ((rest (substring url (length "ssh://")))
+                      (at-pos (string-match "@" rest))
+                      (without-user (if at-pos
+                                        (substring rest (1+ at-pos))
+                                      rest))
+                      (slash-pos (string-match "/" without-user)))
+                 (if slash-pos
+                     (substring without-user (1+ slash-pos))
+                   nil)))
+              ((or (string-prefix-p "https://" url)
+                   (string-prefix-p "http://" url)
+                   (string-prefix-p "git://" url))
+               (let* ((prefix (cond ((string-prefix-p "https://" url) "https://")
+                                    ((string-prefix-p "http://" url) "http://")
+                                    ((string-prefix-p "git://" url) "git://")
+                                    (t "")))
+                      (rest (substring url (length prefix)))
+                      (slash-pos (string-match "/" rest)))
+                 (if slash-pos
+                     (substring rest (1+ slash-pos))
+                   nil)))
+              ((string-match-p ":" url)
+               (let* ((colon-pos (string-match ":" url))
+                      (path (substring url (1+ colon-pos))))
+                 (if (and path (not (string-prefix-p "/" path)))
+                     path
+                   nil)))
+              (t nil)))
+           project-name))
+         (normalized-path (replace-regexp-in-string "\\.git$" "" repo-path))
+         (url (format "https://gitlab.lichtblick.app/%s" normalized-path)))
+    (browse-url url)))
 
 ; projectile bindings
 (map! :map projectile-mode-map
