@@ -24,6 +24,7 @@
       codex-acp
       mistral-vibe
       skills
+      pi
     ]) ++ (with pkgs; [
       #(callPackage ../../packages/whichllm.nix { })
       alejandra
