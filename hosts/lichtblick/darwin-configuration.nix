@@ -86,6 +86,7 @@
     # Formulae = `brew install`
     brews = [
       "duckdb"
+      "llama.cpp"
     ];
 
     # Casks = `brew install --cask`
