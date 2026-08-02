@@ -26,7 +26,7 @@
       skills
       pi
     ]) ++ (with pkgs; [
-      #(callPackage ../../packages/whichllm.nix { })
+      (callPackage ../../packages/garmin-cli.nix { })
       alejandra
       colima
       imagemagick
