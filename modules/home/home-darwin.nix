@@ -86,7 +86,7 @@
       AIRFLOW_UID = 502;
       AIRFLOW_GID = 0;
       AIRFLOW_PLATFORM = "linux/arm64";
-      AIRFLOW_DAGS_DIR = "~/code/lichtblick/gitlab/scopes/data/airflow-dags/";
+      AIRFLOW_DAGS_DIR = "~/code/lichtblick/gitlab/scopes/data/airflow-dags/dags/";
 
       # point Codex at their own home
       CODEX_HOME = "/Users/${config.home.username}/.codex";
