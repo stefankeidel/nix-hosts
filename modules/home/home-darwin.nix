@@ -8,6 +8,7 @@
     inputs.self.homeModules.ghostty
     inputs.self.homeModules.helix
     inputs.self.homeModules.zellij
+    inputs.self.homeModules.pi
     inputs.nix-doom-emacs-unstraightened.homeModule
   ];
 
@@ -22,7 +23,6 @@
       copilot-cli
       codex
       skills
-      pi
     ]) ++ (with pkgs; [
       #(callPackage ../../packages/garmin-cli.nix { })
       alejandra
