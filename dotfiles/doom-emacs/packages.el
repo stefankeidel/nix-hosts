@@ -72,9 +72,9 @@
 ;;   :recipe (:host github :repo "JDNdeveloper/gptel-autocomplete" :files ("*.el")))
 (package! org-modern)
 (package! org-present)
-(package! shell-maker)
-(package! acp)
-(package! agent-shell)
+;; (package! shell-maker)
+;; (package! acp)
+;; (package! agent-shell)
 
 (package! buffer-guardian
   :recipe

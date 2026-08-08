@@ -21,8 +21,6 @@
     packages = (with inputs.llm-agents.packages.${pkgs.stdenv.hostPlatform.system}; [
       copilot-cli
       codex
-      codex-acp
-      mistral-vibe
       skills
       pi
     ]) ++ (with pkgs; [

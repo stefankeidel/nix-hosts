@@ -115,7 +115,7 @@
       "s-i s" #'lichtblick-dbt-search-model
       "s-i a" #'org-agenda
       "s-i c" #'org-capture
-      "s-i l" #'agent-shell
+      ;"s-i l" #'agent-shell
       "s-i o" #'stefan/open-current-gitlab-project
       "M-y"   #'browse-kill-ring)
 
@@ -205,7 +205,7 @@ that open a ghostel buffer LABEL, optionally sending COMMAND."
 
 (stefan--def-projectile-ghostel-commands "ghostel" "term")
 (stefan--def-projectile-ghostel-commands "copilot" "copilot" "copilot")
-(stefan--def-projectile-ghostel-commands "vibe" "vibe" "vibe")
+(stefan--def-projectile-ghostel-commands "codex" "codex" "codex")
 
 (defun stefan/open-current-gitlab-project ()
   "Open the current Projectile project in the GitLab browser."
@@ -266,13 +266,13 @@ that open a ghostel buffer LABEL, optionally sending COMMAND."
 (map! :map projectile-command-map
       "v"   #'stefan-projectile-run-ghostel
       "c"   #'stefan-projectile-run-copilot
-      "x"   #'stefan-projectile-run-vibe
+      "x"   #'stefan-projectile-run-codex
       "4 v" #'stefan-projectile-run-ghostel-other-window
       "4 c" #'stefan-projectile-run-copilot-other-window
-      "4 x" #'stefan-projectile-run-vibe-other-window
+      "4 x" #'stefan-projectile-run-codex-other-window
       "5 v" #'stefan-projectile-run-ghostel-other-frame
       "5 c" #'stefan-projectile-run-copilot-other-frame
-      "5 x" #'stefan-projectile-run-vibe-other-frame)
+      "5 x" #'stefan-projectile-run-codex-other-frame)
 
 ; it's disabled by default
 (put 'projectile-ripgrep 'disabled nil)
@@ -326,18 +326,18 @@ that open a ghostel buffer LABEL, optionally sending COMMAND."
 ;; AI stuff
 
 ;; ACP / agent-shell
-(use-package! acp
-  :after shell-maker)
+;; (use-package! acp
+;;   :after shell-maker)
 
-(use-package! agent-shell
-  :after acp
-  :bind (:map agent-shell-mode-map
-              ("RET" . newline)
-              ("C-c C-c" . shell-maker-submit)
-              ("C-c C-k" . agent-shell-interrupt))
-  :config
-  (setq agent-shell-openai-authentication (agent-shell-github-make-copilot-config :login t)
-        agent-shell-prefer-viewport-interaction t))
+;; (use-package! agent-shell
+;;   :after acp
+;;   :bind (:map agent-shell-mode-map
+;;               ("RET" . newline)
+;;               ("C-c C-c" . shell-maker-submit)
+;;               ("C-c C-k" . agent-shell-interrupt))
+;;   :config
+;;   (setq agent-shell-openai-authentication (agent-shell-github-make-copilot-config :login t)
+;;         agent-shell-prefer-viewport-interaction t))
 
 
 ;; GPT.el
