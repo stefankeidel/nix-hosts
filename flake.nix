@@ -39,7 +39,7 @@
     nix-doom-emacs-unstraightened.inputs.nixpkgs.follows = "";
 
     # pi coding agent
-    inputs.pi.url = "github:lukasl-dev/pi.nix";
+    pi.url = "github:lukasl-dev/pi.nix";
   };
 
   # Load the blueprint
