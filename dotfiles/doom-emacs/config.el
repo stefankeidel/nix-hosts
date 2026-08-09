@@ -205,7 +205,7 @@ that open a ghostel buffer LABEL, optionally sending COMMAND."
 
 (stefan--def-projectile-ghostel-commands "ghostel" "term")
 (stefan--def-projectile-ghostel-commands "copilot" "copilot" "copilot")
-(stefan--def-projectile-ghostel-commands "codex" "codex" "codex")
+(stefan--def-projectile-ghostel-commands "pi" "pi" "pi")
 
 (defun stefan/open-current-gitlab-project ()
   "Open the current Projectile project in the GitLab browser."
@@ -266,13 +266,13 @@ that open a ghostel buffer LABEL, optionally sending COMMAND."
 (map! :map projectile-command-map
       "v"   #'stefan-projectile-run-ghostel
       "c"   #'stefan-projectile-run-copilot
-      "x"   #'stefan-projectile-run-codex
+      "x"   #'stefan-projectile-run-pi
       "4 v" #'stefan-projectile-run-ghostel-other-window
       "4 c" #'stefan-projectile-run-copilot-other-window
-      "4 x" #'stefan-projectile-run-codex-other-window
+      "4 x" #'stefan-projectile-run-pi-other-window
       "5 v" #'stefan-projectile-run-ghostel-other-frame
       "5 c" #'stefan-projectile-run-copilot-other-frame
-      "5 x" #'stefan-projectile-run-codex-other-frame)
+      "5 x" #'stefan-projectile-run-pi-other-frame)
 
 ; it's disabled by default
 (put 'projectile-ripgrep 'disabled nil)
