@@ -487,7 +487,9 @@ export function gpxLooksValid(body: string, contentType: string): boolean {
 		} else {
 			if (rootSeen && stack.length === 0) return false;
 			const selfClosing = /\/\s*$/.test(token);
-			const opening = /^([A-Za-z_:][A-Za-z0-9_.:-]*)(.*)$/.exec(selfClosing ? token.replace(/\/\s*$/, "") : token);
+			// GPX emitted by BRouter spreads root attributes over multiple lines, so the
+			// attribute suffix must match newlines as well as ordinary spaces.
+			const opening = /^([A-Za-z_:][A-Za-z0-9_.:-]*)([\s\S]*)$/.exec(selfClosing ? token.replace(/\/\s*$/, "") : token);
 			if (!opening || !validXmlAttributes(opening[2])) return false;
 			const name = opening[1];
 			if (!rootSeen) {

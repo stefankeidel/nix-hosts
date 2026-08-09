@@ -1,6 +1,6 @@
 ---
 name: bike-route-planner
-description: Plan cycling routes with BRouter/bikerouter.de, generate clickable route-review links and GPX files, and—only after separate confirmations—hand an approved course to Garmin Connect. Trigger for cycling route planning, BRouter, bikerouter.de links, cycling GPX creation, or sending an approved course to Garmin.
+description: Plan cycling routes with BRouter/bikerouter.de, generate clickable route-review links and GPX files, and—after one explicit route approval—hand the course to Garmin Connect. Trigger for cycling route planning, BRouter, bikerouter.de links, cycling GPX creation, or sending an approved course to Garmin.
 ---
 
 # Bike route planner
@@ -51,30 +51,20 @@ Keep and reuse the `routeSpecification` returned in tool details. Translate feed
 
 Never rely solely on a candidate ID. Before finalizing, ensure the selected normalized specification is exactly the one the user inspected and approved.
 
-## 5. Route approval and GPX (first boundary)
+## 5. Route approval, GPX, and Garmin handoff (one boundary)
 
-Do **not** call `brouter_download_gpx` merely because a candidate exists or a link was opened. First obtain an explicit approval of the selected route, for example: “I approve Loop 2.”
+Do **not** call `brouter_download_gpx` merely because a candidate exists or a link was opened. First obtain one explicit approval of the selected route. The approval question must make the consequence clear, for example: “Approve Loop 2? It will be uploaded to Garmin as `YYYY-MM-DD <shortname>` with type `gravel_cycling`.”
 
-After approval:
+Use `YYYY-MM-DD <shortname>` as the default course-name schema, using the current date and a concise route name. Use an appropriate type (usually `gravel_cycling` for gravel, otherwise an appropriate cycling type). The user may override either value before approving.
 
-1. Confirm the desired Garmin course name and propose an appropriate type (usually `gravel_cycling` for gravel, otherwise an appropriate cycling type).
-2. Call `brouter_download_gpx` using the exact approved `routeSpecification`, with the confirmed course name. Omit `outputPath` for a temporary GPX. Provide `outputPath` only when the user asks to retain a copy.
-3. Check the returned specification still matches the approved candidate. The tool validates GPX before writing it.
-4. Show the course name, proposed type, approximate distance, path, and intended device. A GPX download is **not** authorization to mutate Garmin.
+That route approval authorizes all of the following:
 
-Temporary GPX files must be retained until Garmin import succeeds. A retained requested copy is never deleted automatically.
-
-## 6. Garmin handoff (second boundary)
-
-Only after a separate, explicit final confirmation that names the course/type and authorizes Garmin import/send, load and follow the `garmin-connect` skill. Then:
-
-1. Run `gccli auth status`.
-2. Import: `gccli courses import <gpx-path> --name <name> --type <type>`.
-3. Obtain the created course ID from the result.
-4. Query devices in JSON form: `gccli devices list --json` (or the CLI's supported JSON equivalent).
-5. Automatically select a device only if **exactly one** device matches `Edge 540`. If none or multiple match, present the candidates and ask the user which device to use.
-6. Send: `gccli courses send <course-id> <device-id>`.
-7. Report the course ID and send result.
-8. Delete a temporary GPX only after successful import. If import fails, retain it and report the path. Never delete a user-requested retained copy.
+1. Call `brouter_download_gpx` using the exact approved `routeSpecification` and course name. Omit `outputPath` for a temporary GPX. Provide `outputPath` only when the user asks to retain a copy.
+2. Check that the returned specification still matches the approved candidate. The tool validates GPX before writing it.
+3. Load and follow the `garmin-connect` skill. Run `gccli auth status`, then import with `gccli courses import <gpx-path> --name <name> --type <type>`.
+4. Obtain the created course ID and query devices in JSON form: `gccli devices list --json` (or the CLI's supported JSON equivalent).
+5. Automatically select a device only if **exactly one** device matches `Edge 540`. If none or multiple match, present the candidates and ask the user which device to use; this is device selection, not a further approval boundary.
+6. Send the course with `gccli courses send <course-id> <device-id>`, then report the course ID and send result.
+7. Delete a temporary GPX only after successful import. If import fails, retain it and report the path. Never delete a user-requested retained copy.
 
 Do not delete or replace existing Garmin courses automatically.
