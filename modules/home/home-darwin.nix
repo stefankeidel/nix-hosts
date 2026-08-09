@@ -93,6 +93,10 @@
     # all my dotfiles, should probably be modularized
     # at some point(tm)
     #
+    # agent skills
+    file.".agents/skills/stefan-debug-gitlab/SKILL.md".source = ./agent-skills/stefan-debug-gitlab/SKILL.md;
+    file.".agents/skills/stefan-gitlab-mr-feedback/SKILL.md".source = ./agent-skills/stefan-gitlab-mr-feedback/SKILL.md;
+
     # emacs config
     file.".config/doom" = {
       source = ../../dotfiles/doom-emacs;
