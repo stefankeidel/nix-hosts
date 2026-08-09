@@ -15,3 +15,5 @@ result
 # agent shell
 .agent-shell/
 
+# pi subagents
+.pi-subagents/

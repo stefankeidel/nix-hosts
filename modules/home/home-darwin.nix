@@ -27,6 +27,7 @@
       skills
     ]) ++ (with pkgs; [
       (callPackage ../../packages/garmin-cli.nix { })
+      (callPackage ../../packages/gccli.nix { })
       alejandra
       colima
       imagemagick
@@ -97,6 +98,7 @@
     #
     # agent skills
     file.".agents/skills/stefan-debug-gitlab/SKILL.md".source = ./agent-skills/stefan-debug-gitlab/SKILL.md;
+    file.".agents/skills/gccli/SKILL.md".source = ./agent-skills/gccli/SKILL.md;
     # toying with a pi extension that does similar things
     # file.".agents/skills/stefan-gitlab-mr-feedback/SKILL.md".source = ./agent-skills/stefan-gitlab-mr-feedback/SKILL.md;
 
