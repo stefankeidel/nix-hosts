@@ -13,6 +13,7 @@
       ./pi-extensions/extensions.ts
       ./pi-extensions/gitlab-mr-feedback.ts
       ./pi-extensions/permission-gate.ts
+      ./pi-extensions/stefan-path-protection.ts
     ];
   };
 }
