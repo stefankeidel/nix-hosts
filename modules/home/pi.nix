@@ -8,6 +8,10 @@
   programs.pi.coding-agent = {
     enable = true;
 
+    promptTemplates = [
+      ./pi-prompts/review.md
+    ];
+
     extensions = [
       ./pi-extensions/commands.ts
       ./pi-extensions/extensions.ts
