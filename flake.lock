@@ -550,23 +550,6 @@
         "type": "github"
       }
     },
-    "pi-subagents": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1786263499,
-        "narHash": "sha256-55nSlC3jbduJfREaFXC3GxB7URcVEF7/BpwanOGtx9g=",
-        "owner": "nicobailon",
-        "repo": "pi-subagents",
-        "rev": "7229707ba8232113203d4fb4feded8b71d9dc2f5",
-        "type": "github"
-      },
-      "original": {
-        "owner": "nicobailon",
-        "repo": "pi-subagents",
-        "rev": "7229707ba8232113203d4fb4feded8b71d9dc2f5",
-        "type": "github"
-      }
-    },
     "root": {
       "inputs": {
         "agenix": "agenix",
@@ -583,7 +566,6 @@
         "pi-gitlab": "pi-gitlab",
         "pi-memory": "pi-memory",
         "pi-rtk-optimizer": "pi-rtk-optimizer",
-        "pi-subagents": "pi-subagents",
         "stefan-website": "stefan-website"
       }
     },
