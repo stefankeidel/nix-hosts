@@ -57,7 +57,7 @@
     };
 
     pi-gitlab = {
-      url = "github:gaodes/pi-gitlab/4e27b49a6fe27ed2590c8a0121ed24dda75c8108";
+      url = "github:stefankeidel/pi-gitlab/3aa6737c0a790533c2507b2323fec9b2e8fdbae6";
       flake = false;
     };
   };

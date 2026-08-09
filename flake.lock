@@ -502,17 +502,17 @@
     "pi-gitlab": {
       "flake": false,
       "locked": {
-        "lastModified": 1780324732,
-        "narHash": "sha256-yYZgY5TH6ks9dRsEodnrkMD30CuekcS1PfG3ruKbCAU=",
-        "owner": "gaodes",
+        "lastModified": 1786296646,
+        "narHash": "sha256-sSlvuj1TE/VBh2fwBgkGX2mvnwEhAAZTkVYo4Z65Ff4=",
+        "owner": "stefankeidel",
         "repo": "pi-gitlab",
-        "rev": "4e27b49a6fe27ed2590c8a0121ed24dda75c8108",
+        "rev": "3aa6737c0a790533c2507b2323fec9b2e8fdbae6",
         "type": "github"
       },
       "original": {
-        "owner": "gaodes",
+        "owner": "stefankeidel",
         "repo": "pi-gitlab",
-        "rev": "4e27b49a6fe27ed2590c8a0121ed24dda75c8108",
+        "rev": "3aa6737c0a790533c2507b2323fec9b2e8fdbae6",
         "type": "github"
       }
     },
