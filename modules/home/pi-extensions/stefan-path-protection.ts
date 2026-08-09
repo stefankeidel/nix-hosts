@@ -27,6 +27,7 @@ type SessionPermission = {
 const home = homedir();
 const codeRoot = resolve(home, "code");
 const piRoot = resolve(home, ".pi");
+const agentsRoot = resolve(home, ".agents");
 const nixStore = "/nix/store";
 const temporaryRoots = [...new Set([tmpdir(), "/tmp", "/var/tmp"])].map((path) => resolve(path));
 
@@ -81,12 +82,12 @@ async function accessRequest(path: string, access: Access, cwd: string): Promise
 		};
 	}
 
-	if (isWithin(target, codeRoot) || isWithin(target, nixStore) || isWithin(target, piRoot) || temporaryRoots.some((root) => isWithin(target, root))) {
+	if (isWithin(target, codeRoot) || isWithin(target, nixStore) || isWithin(target, piRoot) || isWithin(target, agentsRoot) || temporaryRoots.some((root) => isWithin(target, root))) {
 		return { target };
 	}
 	return {
 		target,
-		reason: `Read outside ~/code, /nix/store, ~/.pi, or a temporary directory: ${path}`,
+		reason: `Read outside ~/code, /nix/store, ~/.pi, ~/.agents, or a temporary directory: ${path}`,
 	};
 }
 
