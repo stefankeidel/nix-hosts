@@ -499,6 +499,23 @@
         "type": "github"
       }
     },
+    "pi-memory": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1786237160,
+        "narHash": "sha256-l2FYszkCBJEOmEFPg6Y/oiL8S3iJca0wn88dzlQaYCM=",
+        "owner": "jayzeng",
+        "repo": "pi-memory",
+        "rev": "6b31b462a7b7f8e5c99134166471e090101280b1",
+        "type": "github"
+      },
+      "original": {
+        "owner": "jayzeng",
+        "repo": "pi-memory",
+        "rev": "6b31b462a7b7f8e5c99134166471e090101280b1",
+        "type": "github"
+      }
+    },
     "pi-rtk-optimizer": {
       "flake": false,
       "locked": {
@@ -546,6 +563,7 @@
         "nixpkgs": "nixpkgs_3",
         "nixpkgs-darwin-pinned": "nixpkgs-darwin-pinned",
         "pi": "pi",
+        "pi-memory": "pi-memory",
         "pi-rtk-optimizer": "pi-rtk-optimizer",
         "pi-subagents": "pi-subagents",
         "stefan-website": "stefan-website"

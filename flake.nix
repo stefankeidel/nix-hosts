@@ -50,6 +50,11 @@
       url = "github:nicobailon/pi-subagents/7229707ba8232113203d4fb4feded8b71d9dc2f5";
       flake = false;
     };
+
+    pi-memory = {
+      url = "github:jayzeng/pi-memory/6b31b462a7b7f8e5c99134166471e090101280b1";
+      flake = false;
+    };
   };
 
   # Load the blueprint
