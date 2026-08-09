@@ -11,7 +11,7 @@
     extensions = [
       ./pi-extensions/commands.ts
       ./pi-extensions/extensions.ts
-      ./pi-extensions/gitlab-mr-feedback.ts
+      "${inputs.pi-gitlab}/src/index.ts"
       ./pi-extensions/permission-gate.ts
       "${inputs.pi-memory}/index.ts"
       "${inputs.pi-subagents}/index.ts"

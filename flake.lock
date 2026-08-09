@@ -499,6 +499,23 @@
         "type": "github"
       }
     },
+    "pi-gitlab": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1780324732,
+        "narHash": "sha256-yYZgY5TH6ks9dRsEodnrkMD30CuekcS1PfG3ruKbCAU=",
+        "owner": "gaodes",
+        "repo": "pi-gitlab",
+        "rev": "4e27b49a6fe27ed2590c8a0121ed24dda75c8108",
+        "type": "github"
+      },
+      "original": {
+        "owner": "gaodes",
+        "repo": "pi-gitlab",
+        "rev": "4e27b49a6fe27ed2590c8a0121ed24dda75c8108",
+        "type": "github"
+      }
+    },
     "pi-memory": {
       "flake": false,
       "locked": {
@@ -563,6 +580,7 @@
         "nixpkgs": "nixpkgs_3",
         "nixpkgs-darwin-pinned": "nixpkgs-darwin-pinned",
         "pi": "pi",
+        "pi-gitlab": "pi-gitlab",
         "pi-memory": "pi-memory",
         "pi-rtk-optimizer": "pi-rtk-optimizer",
         "pi-subagents": "pi-subagents",

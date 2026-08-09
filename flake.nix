@@ -55,6 +55,11 @@
       url = "github:jayzeng/pi-memory/6b31b462a7b7f8e5c99134166471e090101280b1";
       flake = false;
     };
+
+    pi-gitlab = {
+      url = "github:gaodes/pi-gitlab/4e27b49a6fe27ed2590c8a0121ed24dda75c8108";
+      flake = false;
+    };
   };
 
   # Load the blueprint
