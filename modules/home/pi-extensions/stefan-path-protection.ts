@@ -120,10 +120,12 @@ function bashPaths(command: string): string[] {
 export default function stefanPathProtection(pi: ExtensionAPI) {
 	const sessionPermissions: SessionPermission[] = [];
 
+	let allowAllForSession = false;
+
 	function hasSessionPermission(request: AccessRequest): boolean {
-		return sessionPermissions.some(
+		return allowAllForSession || sessionPermissions.some(
 			(permission) =>
-				permission.target === request.target &&
+				isWithin(request.target, permission.target) &&
 				(permission.access === request.access || permission.access === "write"),
 		);
 	}
@@ -137,11 +139,20 @@ export default function stefanPathProtection(pi: ExtensionAPI) {
 
 			const choice = await ctx.ui.select(
 				`Filesystem permission requested\n\n${access.toUpperCase()}: ${request.target}\n\n${request.reason}`,
-				["Yes for this call", "Yes for the entire session", "No"],
+				[
+					"Yes for this call",
+					"Allow this path and everything under it for this session",
+					"Allow all paths for this session",
+					"No",
+				],
 			);
 			if (choice === "Yes for this call") return undefined;
-			if (choice === "Yes for the entire session") {
+			if (choice === "Allow this path and everything under it for this session") {
 				sessionPermissions.push({ access, target: request.target });
+				return undefined;
+			}
+			if (choice === "Allow all paths for this session") {
+				allowAllForSession = true;
 				return undefined;
 			}
 			return `Blocked by user: ${request.reason}`;
