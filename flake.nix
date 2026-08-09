@@ -40,6 +40,16 @@
 
     # pi coding agent
     pi.url = "github:lukasl-dev/pi.nix";
+
+    pi-rtk-optimizer = {
+      url = "github:MasuRii/pi-rtk-optimizer/v0.9.0";
+      flake = false;
+    };
+
+    pi-subagents = {
+      url = "github:nicobailon/pi-subagents/7229707ba8232113203d4fb4feded8b71d9dc2f5";
+      flake = false;
+    };
   };
 
   # Load the blueprint

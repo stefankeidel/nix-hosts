@@ -499,6 +499,40 @@
         "type": "github"
       }
     },
+    "pi-rtk-optimizer": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1783048218,
+        "narHash": "sha256-Cw0oLzVv674vpC3g5oteCNZSkHpfBN+IdnYDbkai4q4=",
+        "owner": "MasuRii",
+        "repo": "pi-rtk-optimizer",
+        "rev": "d155d253cb2f1358e34e717d47a82ebccb08cb8e",
+        "type": "github"
+      },
+      "original": {
+        "owner": "MasuRii",
+        "ref": "v0.9.0",
+        "repo": "pi-rtk-optimizer",
+        "type": "github"
+      }
+    },
+    "pi-subagents": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1786263499,
+        "narHash": "sha256-55nSlC3jbduJfREaFXC3GxB7URcVEF7/BpwanOGtx9g=",
+        "owner": "nicobailon",
+        "repo": "pi-subagents",
+        "rev": "7229707ba8232113203d4fb4feded8b71d9dc2f5",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nicobailon",
+        "repo": "pi-subagents",
+        "rev": "7229707ba8232113203d4fb4feded8b71d9dc2f5",
+        "type": "github"
+      }
+    },
     "root": {
       "inputs": {
         "agenix": "agenix",
@@ -512,6 +546,8 @@
         "nixpkgs": "nixpkgs_3",
         "nixpkgs-darwin-pinned": "nixpkgs-darwin-pinned",
         "pi": "pi",
+        "pi-rtk-optimizer": "pi-rtk-optimizer",
+        "pi-subagents": "pi-subagents",
         "stefan-website": "stefan-website"
       }
     },

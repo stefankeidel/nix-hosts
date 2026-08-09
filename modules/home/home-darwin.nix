@@ -22,6 +22,7 @@
     packages = (with inputs.llm-agents.packages.${pkgs.stdenv.hostPlatform.system}; [
       copilot-cli
       codex
+      rtk
       skills
     ]) ++ (with pkgs; [
       #(callPackage ../../packages/garmin-cli.nix { })

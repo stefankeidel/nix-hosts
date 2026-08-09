@@ -13,6 +13,9 @@
       ./pi-extensions/extensions.ts
       ./pi-extensions/gitlab-mr-feedback.ts
       ./pi-extensions/permission-gate.ts
+      "${inputs.pi-subagents}/index.ts"
+      "${inputs.pi-rtk-optimizer}/index.ts"
+      # Keep the boundary last so it checks commands after RTK rewrites them.
       ./pi-extensions/stefan-path-protection.ts
     ];
   };
