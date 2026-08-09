@@ -42,18 +42,23 @@
     pi.url = "github:lukasl-dev/pi.nix";
 
     pi-rtk-optimizer = {
-      url = "github:MasuRii/pi-rtk-optimizer/v0.9.0";
+      url = "github:MasuRii/pi-rtk-optimizer";
       flake = false;
     };
 
     pi-memory = {
-      url = "github:jayzeng/pi-memory/6b31b462a7b7f8e5c99134166471e090101280b1";
+      url = "github:jayzeng/pi-memory";
       flake = false;
     };
 
     pi-gitlab = {
-      url = "github:stefankeidel/pi-gitlab/3aa6737c0a790533c2507b2323fec9b2e8fdbae6";
+      url = "github:stefankeidel/pi-gitlab";
       flake = false;
+    };
+
+    pi-confluence = {
+      url = "github:stefankeidel/pi-confluence";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
   };
 
