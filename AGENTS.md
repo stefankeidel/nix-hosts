@@ -6,14 +6,8 @@
 - Dotfiles synced through Home Manager are under `dotfiles/`; long-lived state belongs in `persistent/`.  
 - Encrypted material is in `secrets/*.age` with the manifest `secrets/secrets.nix` (kept sealed; avoid editing without key access).
 
-## Build, Test, and Development Commands
-- Build a macOS host: `nix run nix-darwin -- build --flake .#<darwin-host>`; switch locally with `HOME=/var/root sudo darwin-rebuild switch --keep-going -v --flake ~/code/nix-hosts#<darwin-host>`.  
-- Build a NixOS VM system: `nix run .#nixosConfigurations.<host>.config.system.build.vm -L`.  
-- General validation: `nix flake check` for evaluation sanity before pushing changes.
-
 ## Coding Style & Naming Conventions
-- Nix files use two-space indentation and trailing commas; prefer attrset ordering that groups related options.  
-- Format Nix with `alejandra` (via `nix fmt` when available) to keep diffs minimal.  
+- Nix files use two-space indentation and trailing commas; prefer attrset ordering that groups related options.    
 - Keep host names and module files lower-case with hyphens or simple words (`vm-base.nix`, `from-qemu-vm.nix`).  
 - Keep secrets out of the tree; if adding new ones, wrap with agenix and update `secrets.nix`.
 
