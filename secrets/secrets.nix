@@ -33,4 +33,5 @@ in
   "lldap-admin-password.age".publicKeys = users ++ systems;
   "lldap-jwt-secret.age".publicKeys = users ++ systems;
   "gitlab-token.age".publicKeys = users ++ systems;
+  "atlassian-token.age".publicKeys = users ++ systems;
 }

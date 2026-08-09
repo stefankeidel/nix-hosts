@@ -70,6 +70,13 @@
       group = "staff";
       mode = "600";
     };
+    atlassian-token = {
+      file = ../../secrets/atlassian-token.age;
+      path = "/Users/stefan.keidel@lichtblick.de/.config/atlassian-token";
+      owner = "stefan.keidel@lichtblick.de";
+      group = "staff";
+      mode = "600";
+    };
   };
 
   # Let nix-darwin manage Homebrew itself

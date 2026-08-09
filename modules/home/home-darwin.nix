@@ -187,9 +187,12 @@
 
         export PATH=$HOME/.local/bin:$PATH
 
-        # Mounted by agenix on Home Manager hosts; keep it out of the Nix store.
+        # Mounted by agenix on Home Manager hosts; keep them out of the Nix store.
         if [[ -r "$HOME/.config/gitlab-token" ]]; then
           export GITLAB_TOKEN="$(<"$HOME/.config/gitlab-token")"
+        fi
+        if [[ -r "$HOME/.config/atlassian-token" ]]; then
+          export ATLASSIAN_API_TOKEN="$(<"$HOME/.config/atlassian-token")"
         fi
 
         source ~/.functions

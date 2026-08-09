@@ -80,6 +80,13 @@
       group = "staff";
       mode = "600";
     };
+    atlassian-token = {
+      file = ../../secrets/atlassian-token.age;
+      path = "/Users/stefan/.config/atlassian-token";
+      owner = "stefan";
+      group = "staff";
+      mode = "600";
+    };
   };
 
   # Let nix-darwin manage Homebrew itself
