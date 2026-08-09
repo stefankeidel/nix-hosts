@@ -26,7 +26,7 @@
       qmd
       skills
     ]) ++ (with pkgs; [
-      #(callPackage ../../packages/garmin-cli.nix { })
+      (callPackage ../../packages/garmin-cli.nix { })
       alejandra
       colima
       imagemagick
