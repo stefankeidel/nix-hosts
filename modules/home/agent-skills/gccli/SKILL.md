@@ -2,7 +2,6 @@
 name: garmin-connect
 description: Garmin Connect CLI for activities, health, body composition, workouts, devices, gear, goals, and more.
 homepage: https://github.com/bpauli/gccli
-metadata: {"clawdbot":{"emoji":"⌚","os":["darwin","linux"],"requires":{"bins":["gccli"]},"install":[{"id":"homebrew","kind":"brew","formula":"bpauli/tap/gccli","bins":["gccli"],"label":"Homebrew (recommended)"},{"id":"source","kind":"source","url":"https://github.com/bpauli/gccli","bins":["gccli"],"label":"Build from source (Go 1.24+)"}]}}
 ---
 
 # gccli
