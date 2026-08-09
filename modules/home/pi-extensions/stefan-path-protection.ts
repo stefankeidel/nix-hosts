@@ -2,7 +2,7 @@
  * Stefan's filesystem boundary for Pi tool calls.
  *
  * Paths are canonicalised before checking so `..` and existing symlinks cannot
- * escape an allowed root.  This intentionally protects only agent tool calls;
+ * escape an allowed root. This intentionally protects only agent tool calls;
  * it is not an OS sandbox for arbitrary programs.
  */
 
@@ -13,6 +13,17 @@ import { dirname, relative, resolve, sep } from "node:path";
 
 type Access = "read" | "write";
 
+type AccessRequest = {
+	access: Access;
+	reason?: string;
+	target: string;
+};
+
+type SessionPermission = {
+	access: Access;
+	target: string;
+};
+
 const home = homedir();
 const codeRoot = resolve(home, "code");
 const piRoot = resolve(home, ".pi");
@@ -20,125 +31,159 @@ const nixStore = "/nix/store";
 const temporaryRoots = [...new Set([tmpdir(), "/tmp", "/var/tmp"])].map((path) => resolve(path));
 
 function isWithin(path: string, root: string): boolean {
-  const pathRelative = relative(root, path);
-  return pathRelative === "" || (!pathRelative.startsWith(`..${sep}`) && pathRelative !== "..");
+	const pathRelative = relative(root, path);
+	return pathRelative === "" || (!pathRelative.startsWith(`..${sep}`) && pathRelative !== "..");
 }
 
 async function canonicalPath(path: string, cwd: string): Promise<string> {
-  const absolute = resolve(cwd, path.replace(/^@/, ""));
-  let candidate = absolute;
-  const missingParts: string[] = [];
+	const absolute = resolve(cwd, path.replace(/^@/, ""));
+	let candidate = absolute;
+	const missingParts: string[] = [];
 
-  // realpath() also resolves symlinks.  For a new target, resolve its nearest
-  // existing ancestor and append the missing components afterwards.
-  while (true) {
-    try {
-      await lstat(candidate);
-      return resolve(await realpath(candidate), ...missingParts.reverse());
-    } catch (error: unknown) {
-      if (!(error instanceof Error) || !("code" in error) || error.code !== "ENOENT") throw error;
-      const parent = dirname(candidate);
-      if (parent === candidate) return absolute;
-      missingParts.push(candidate.slice(parent.length + (parent.endsWith(sep) ? 0 : 1)));
-      candidate = parent;
-    }
-  }
+	// realpath() also resolves symlinks. For a new target, resolve its nearest
+	// existing ancestor and append the missing components afterwards.
+	while (true) {
+		try {
+			await lstat(candidate);
+			return resolve(await realpath(candidate), ...missingParts.reverse());
+		} catch (error: unknown) {
+			if (!(error instanceof Error) || !("code" in error) || error.code !== "ENOENT") throw error;
+			const parent = dirname(candidate);
+			if (parent === candidate) return absolute;
+			missingParts.push(candidate.slice(parent.length + (parent.endsWith(sep) ? 0 : 1)));
+			candidate = parent;
+		}
+	}
 }
 
 function projectHasProtectedComponent(path: string, projectRoot: string): boolean {
-  if (!isWithin(path, projectRoot)) return false;
-  return relative(projectRoot, path).split(sep).some((part) => part === "node_modules" || part === ".venv");
+	if (!isWithin(path, projectRoot)) return false;
+	return relative(projectRoot, path).split(sep).some((part) => part === "node_modules" || part === ".venv");
 }
 
-async function denial(path: string, access: Access, cwd: string): Promise<string | undefined> {
-  const target = await canonicalPath(path, cwd);
-  const projectRoot = await canonicalPath(cwd, cwd);
+async function accessRequest(path: string, access: Access, cwd: string): Promise<AccessRequest> {
+	const target = await canonicalPath(path, cwd);
+	const projectRoot = await canonicalPath(cwd, cwd);
 
-  if (access === "write") {
-    if (projectHasProtectedComponent(target, projectRoot)) {
-      return `Blocked direct write to protected dependency environment: ${path}. Use its package manager instead.`;
-    }
-    if (isWithin(target, projectRoot) || isWithin(target, piRoot) || temporaryRoots.some((root) => isWithin(target, root))) {
-      return undefined;
-    }
-    return `Blocked write outside the current project, ~/.pi, or a temporary directory: ${path}`;
-  }
+	if (access === "write") {
+		if (projectHasProtectedComponent(target, projectRoot)) {
+			return {
+				target,
+				reason: `Direct write to protected dependency environment: ${path}. Use its package manager instead.`,
+			};
+		}
+		if (isWithin(target, projectRoot) || isWithin(target, piRoot) || temporaryRoots.some((root) => isWithin(target, root))) {
+			return { target };
+		}
+		return {
+			target,
+			reason: `Write outside the current project, ~/.pi, or a temporary directory: ${path}`,
+		};
+	}
 
-  if (isWithin(target, codeRoot) || isWithin(target, nixStore) || isWithin(target, piRoot) || temporaryRoots.some((root) => isWithin(target, root))) {
-    return undefined;
-  }
-  return `Blocked read outside ~/code, /nix/store, ~/.pi, or a temporary directory: ${path}`;
+	if (isWithin(target, codeRoot) || isWithin(target, nixStore) || isWithin(target, piRoot) || temporaryRoots.some((root) => isWithin(target, root))) {
+		return { target };
+	}
+	return {
+		target,
+		reason: `Read outside ~/code, /nix/store, ~/.pi, or a temporary directory: ${path}`,
+	};
 }
 
 function bashIsClearlyUnsafe(command: string): boolean {
-  // Shell syntax prevents reliable per-path enforcement.  Keep bash calls
-  // simple and reject syntax that can hide a path or execute a second command.
-  return /[\n;|&><`$(){}*?\[\]]/.test(command);
+	// Shell syntax prevents reliable per-path enforcement. Keep bash calls
+	// simple and reject syntax that can hide a path or execute a second command.
+	return /[\n;|&><`$(){}*?\[\]]/.test(command);
 }
 
 function bashPaths(command: string): string[] {
-  // This is deliberately conservative: tokens that look like paths are
-  // checked; shell syntax itself is rejected above.
-  return command
-    .trim()
-    .split(/\s+/)
-    .filter((word) =>
-      word === "." ||
-      word === ".." ||
-      word.startsWith("/") ||
-      word.startsWith("~/") ||
-      word.startsWith("./") ||
-      word.startsWith("../") ||
-      word.includes("/"),
-    )
-    .map((word) => (word.startsWith("~/") ? resolve(home, word.slice(2)) : word));
+	// This is deliberately conservative: tokens that look like paths are
+	// checked; shell syntax itself is rejected above.
+	return command
+		.trim()
+		.split(/\s+/)
+		.filter(
+			(word) =>
+				word === "." ||
+				word === ".." ||
+				word.startsWith("/") ||
+				word.startsWith("~/") ||
+				word.startsWith("./") ||
+				word.startsWith("../") ||
+				word.includes("/"),
+		)
+		.map((word) => (word.startsWith("~/") ? resolve(home, word.slice(2)) : word));
 }
 
-export default function (pi: ExtensionAPI) {
-  pi.on("tool_call", async (event, ctx) => {
-    const notifyAndBlock = (reason: string) => {
-      if (ctx.hasUI) ctx.ui.notify(reason, "warning");
-      return { block: true, reason };
-    };
+export default function stefanPathProtection(pi: ExtensionAPI) {
+	const sessionPermissions: SessionPermission[] = [];
 
-    if (event.toolName === "write" || event.toolName === "edit") {
-      const reason = await denial(String(event.input.path ?? ""), "write", ctx.cwd);
-      return reason ? notifyAndBlock(reason) : undefined;
-    }
+	function hasSessionPermission(request: AccessRequest): boolean {
+		return sessionPermissions.some(
+			(permission) =>
+				permission.target === request.target &&
+				(permission.access === request.access || permission.access === "write"),
+		);
+	}
 
-    if (["read", "grep", "find", "ls"].includes(event.toolName)) {
-      const reason = await denial(String(event.input.path ?? "."), "read", ctx.cwd);
-      return reason ? notifyAndBlock(reason) : undefined;
-    }
+	pi.on("tool_call", async (event, ctx) => {
+		const requestPermission = async (path: string, access: Access): Promise<string | undefined> => {
+			const request = await accessRequest(path, access, ctx.cwd);
+			if (!request.reason || hasSessionPermission(request)) return undefined;
 
-    if (event.toolName === "bash") {
-      const command = String(event.input.command ?? "").trim();
-      if (!command || bashIsClearlyUnsafe(command)) {
-        return notifyAndBlock("Blocked bash command: use a simple command without shell syntax so paths can be checked.");
-      }
+			if (!ctx.hasUI) return `Blocked ${request.reason} (no UI available to request permission)`;
 
-      const words = command.split(/\s+/);
-      const program = words[0] ?? "";
-      const mutatesPaths = /^(rm|mv|cp|mkdir|touch|chmod|chown|ln|install)$/.test(program);
-      const paths = new Set(bashPaths(command));
-      if (mutatesPaths) {
-        // Treat every non-option operand of a mutating command as a target.
-        // This catches simple relative names such as `rm -rf node_modules`.
-        for (const operand of words.slice(1)) {
-          if (operand && !operand.startsWith("-")) paths.add(operand);
-        }
-      }
+			const choice = await ctx.ui.select(
+				`Filesystem permission requested\n\n${access.toUpperCase()}: ${request.target}\n\n${request.reason}`,
+				["Yes for this call", "Yes for the entire session", "No"],
+			);
+			if (choice === "Yes for this call") return undefined;
+			if (choice === "Yes for the entire session") {
+				sessionPermissions.push({ access, target: request.target });
+				return undefined;
+			}
+			return `Blocked by user: ${request.reason}`;
+		};
 
-      for (const path of paths) {
-        const reason = await denial(path, "read", ctx.cwd);
-        if (reason) return notifyAndBlock(reason);
-        if (mutatesPaths) {
-          const writeReason = await denial(path, "write", ctx.cwd);
-          if (writeReason) return notifyAndBlock(writeReason);
-        }
-      }
-    }
+		const notifyAndBlock = (reason: string) => {
+			if (ctx.hasUI) ctx.ui.notify(reason, "warning");
+			return { block: true, reason };
+		};
 
-    return undefined;
-  });
+		if (event.toolName === "write" || event.toolName === "edit") {
+			const reason = await requestPermission(String(event.input.path ?? ""), "write");
+			return reason ? notifyAndBlock(reason) : undefined;
+		}
+
+		if (["read", "grep", "find", "ls"].includes(event.toolName)) {
+			const reason = await requestPermission(String(event.input.path ?? "."), "read");
+			return reason ? notifyAndBlock(reason) : undefined;
+		}
+
+		if (event.toolName === "bash") {
+			const command = String(event.input.command ?? "").trim();
+			if (!command || bashIsClearlyUnsafe(command)) {
+				return notifyAndBlock("Blocked bash command: use a simple command without shell syntax so paths can be checked.");
+			}
+
+			const words = command.split(/\s+/);
+			const program = words[0] ?? "";
+			const mutatesPaths = /^(rm|mv|cp|mkdir|touch|chmod|chown|ln|install)$/.test(program);
+			const paths = new Set(bashPaths(command));
+			if (mutatesPaths) {
+				// Treat every non-option operand of a mutating command as a target.
+				// This catches simple relative names such as `rm -rf node_modules`.
+				for (const operand of words.slice(1)) {
+					if (operand && !operand.startsWith("-")) paths.add(operand);
+				}
+			}
+
+			for (const path of paths) {
+				const reason = await requestPermission(path, mutatesPaths ? "write" : "read");
+				if (reason) return notifyAndBlock(reason);
+			}
+		}
+
+		return undefined;
+	});
 }
