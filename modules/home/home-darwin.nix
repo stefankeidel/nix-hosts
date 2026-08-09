@@ -29,6 +29,7 @@
       #(callPackage ../../packages/garmin-cli.nix { })
       (callPackage ../../packages/gccli.nix { })
       alejandra
+      acli
       colima
       imagemagick
       copilot-language-server
