@@ -23,6 +23,7 @@
       copilot-cli
       codex
       rtk
+      qmd
       skills
     ]) ++ (with pkgs; [
       #(callPackage ../../packages/garmin-cli.nix { })
