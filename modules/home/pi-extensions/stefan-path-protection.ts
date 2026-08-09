@@ -92,9 +92,10 @@ async function accessRequest(path: string, access: Access, cwd: string): Promise
 }
 
 function bashIsClearlyUnsafe(command: string): boolean {
-	// Shell syntax prevents reliable per-path enforcement. Keep bash calls
-	// simple and reject syntax that can hide a path or execute a second command.
-	return /[\n;|&><`$(){}*?\[\]]/.test(command);
+	// Chaining commands, pipelines, and globs are common, and static paths in
+	// them remain inspectable. Reject only dynamic expansion and redirection,
+	// which can hide a path or write to an unchecked target.
+	return /[\n`$<>]/.test(command);
 }
 
 function bashPaths(command: string): string[] {
@@ -164,12 +165,11 @@ export default function stefanPathProtection(pi: ExtensionAPI) {
 		if (event.toolName === "bash") {
 			const command = String(event.input.command ?? "").trim();
 			if (!command || bashIsClearlyUnsafe(command)) {
-				return notifyAndBlock("Blocked bash command: use a simple command without shell syntax so paths can be checked.");
+				return notifyAndBlock("Blocked bash command: avoid dynamic expansion or redirection so paths can be checked.");
 			}
 
 			const words = command.split(/\s+/);
-			const program = words[0] ?? "";
-			const mutatesPaths = /^(rm|mv|cp|mkdir|touch|chmod|chown|ln|install)$/.test(program);
+			const mutatesPaths = /(?:^|(?:&&|\|\||[;|])\s*)(?:rm|mv|cp|mkdir|touch|chmod|chown|ln|install)(?:\s|$)/.test(command);
 			const paths = new Set(bashPaths(command));
 			if (mutatesPaths) {
 				// Treat every non-option operand of a mutating command as a target.
