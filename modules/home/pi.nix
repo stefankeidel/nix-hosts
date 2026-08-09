@@ -10,6 +10,7 @@
 
     extensions = [
       ./pi-extensions/commands.ts
+      ./pi-extensions/extensions.ts
       ./pi-extensions/gitlab-mr-feedback.ts
       ./pi-extensions/permission-gate.ts
     ];
