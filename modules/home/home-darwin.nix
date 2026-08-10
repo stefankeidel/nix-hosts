@@ -30,6 +30,7 @@
       (callPackage ../../packages/gccli.nix { })
       alejandra
       acli
+      gh
       colima
       imagemagick
       copilot-language-server
