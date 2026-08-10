@@ -506,11 +506,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1786305628,
-        "narHash": "sha256-OcwINn82cevFs++Rm+Tf73EDYO52vFf8pyeL3HH/eYk=",
+        "lastModified": 1786355608,
+        "narHash": "sha256-pK5tiTw+rgkhKPtEeMYKHDO0+meBcJCfpl9PtCaarww=",
         "owner": "stefankeidel",
         "repo": "pi-confluence",
-        "rev": "f15896cdd8f45bad76be10f7018ee6ebe9607a17",
+        "rev": "5e207e347dd176bee0ef0bae81f2f8bee568322e",
         "type": "github"
       },
       "original": {
