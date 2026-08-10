@@ -28,16 +28,16 @@
     ]) ++ (with pkgs; [
       #(callPackage ../../packages/garmin-cli.nix { })
       (callPackage ../../packages/gccli.nix { })
-      alejandra
       acli
-      gh
+      alejandra
       colima
-      imagemagick
       copilot-language-server
       docker-buildx
       docker-client
       emacs-lsp-booster
       feishin
+      gh
+      imagemagick
       lazydocker
       mise
       nixd
