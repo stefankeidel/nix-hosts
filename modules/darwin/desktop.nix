@@ -34,15 +34,6 @@
   # terraform is unfree :-/
   nixpkgs.config.allowUnfree = true;
 
-  # nix linux builder
-  nix.linux-builder = {
-    enable = true;
-    ephemeral = true;
-    # config = ({ ... }: {
-    #   virtualisation.darwin-builder.diskSize = 30 * 1024;
-    # });
-  };
-
   # Disable auto-start, use 'sudo launchctl start org.nixos.linux-builder'
   launchd.daemons.linux-builder.serviceConfig = {
     KeepAlive = lib.mkForce false;
