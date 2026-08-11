@@ -2,7 +2,52 @@
   pkgs,
   inputs,
   ...
-}: {
+}:
+let
+  immichBackup = pkgs.writeShellScriptBin "immich-backup" ''
+    set -euo pipefail
+
+    source="sb:immich/"
+    destination="/Volumes/SAM/immich/current/"
+    lock="''${TMPDIR:-/tmp}/immich-backup.lock"
+
+    if [[ ! -d /Volumes/SAM || ! -w /Volumes/SAM ]]; then
+      echo "Immich backup skipped: /Volumes/SAM is not mounted and writable" >&2
+      exit 0
+    fi
+
+    if ! mkdir "$lock" 2>/dev/null; then
+      echo "Immich backup skipped: another backup is already running" >&2
+      exit 0
+    fi
+    trap 'rmdir "$lock"' EXIT
+
+    mkdir -p "$destination"
+    echo "Starting Immich backup at $(date -Iseconds)"
+    ${pkgs.rclone}/bin/rclone copy "$source" "$destination" \
+      --config /Users/stefan/.config/rclone/rclone.conf \
+      --create-empty-src-dirs \
+      --checkers 8 \
+      --transfers 4
+    echo "Completed Immich backup at $(date -Iseconds)"
+  '';
+
+  immichBackupCheck = pkgs.writeShellScriptBin "immich-backup-check" ''
+    set -euo pipefail
+
+    if [[ ! -d /Volumes/SAM || ! -w /Volumes/SAM ]]; then
+      echo "Immich backup check skipped: /Volumes/SAM is not mounted and writable" >&2
+      exit 0
+    fi
+
+    echo "Starting Immich backup check at $(date -Iseconds)"
+    ${pkgs.rclone}/bin/rclone check sb:immich/ /Volumes/SAM/immich/current/ \
+      --config /Users/stefan/.config/rclone/rclone.conf \
+      --one-way
+    echo "Completed Immich backup check at $(date -Iseconds)"
+  '';
+in
+{
   imports = [
     inputs.self.homeModules.home-shared
     inputs.self.homeModules.home-darwin
@@ -13,6 +58,8 @@
       yt-dlp
       ffmpeg
       immich-go
+      immichBackup
+      immichBackupCheck
       (writeShellScriptBin "do_bak" ''
         #!/usr/bin/env zsh
         set -e
