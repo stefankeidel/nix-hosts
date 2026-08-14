@@ -87,7 +87,15 @@
       "s-m b" #'magit-blame)
 
 (setq git-commit-summary-max-length 80)
-(setq projectile-auto-update-cache-with-watches t)
+
+;; Projectile creates a file-notify watch for every cached project when this is
+;; enabled.  Large Python virtual environments can exhaust macOS' per-process
+;; open-file limit as their contents are replaced during an environment update.
+;; Cache updates remain available via `projectile-invalidate-cache'.
+(after! projectile
+  (setq projectile-auto-update-cache-with-watches nil)
+  (dolist (directory '(".venv" "venv" ".direnv"))
+    (add-to-list 'projectile-globally-ignored-directories directory)))
 
 ; random functions for dbt navigation enhancements
 (defun kill-buffer-basename ()
