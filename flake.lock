@@ -486,11 +486,11 @@
         "systems": "systems_5"
       },
       "locked": {
-        "lastModified": 1786513695,
-        "narHash": "sha256-IJeMryqfJ2mCHt+PrV1URY331taw1EKicxyECx8RiJU=",
+        "lastModified": 1786686555,
+        "narHash": "sha256-SYUk3eOh41HTID5wIkuPKE2ekeJ1I80bhXBcSAT0cQ8=",
         "owner": "lukasl-dev",
         "repo": "pi.nix",
-        "rev": "a11f08b4b0f889038874a7255ed487ccdb141d4d",
+        "rev": "35b2161cf96d07169bedb8b89a811adf2610ddbc",
         "type": "github"
       },
       "original": {
@@ -538,11 +538,11 @@
     "pi-memory": {
       "flake": false,
       "locked": {
-        "lastModified": 1786237160,
-        "narHash": "sha256-l2FYszkCBJEOmEFPg6Y/oiL8S3iJca0wn88dzlQaYCM=",
+        "lastModified": 1786428952,
+        "narHash": "sha256-20hbBZ3loTvpun+CTUp2dRU77eKtSw4J2bS8rvsRGgM=",
         "owner": "jayzeng",
         "repo": "pi-memory",
-        "rev": "6b31b462a7b7f8e5c99134166471e090101280b1",
+        "rev": "39e6b998a2279c8fad4a2c6c64e26828c1d6023e",
         "type": "github"
       },
       "original": {
