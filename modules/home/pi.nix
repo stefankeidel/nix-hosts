@@ -16,8 +16,6 @@
       ./pi-prompts/review.md
     ];
 
-    models = ./pi-models.json;
-
     extensions = [
       ./pi-extensions/commands.ts
       ./pi-extensions/extensions.ts
