@@ -92,10 +92,42 @@ async function accessRequest(path: string, access: Access, cwd: string): Promise
 }
 
 function bashIsClearlyUnsafe(command: string): boolean {
-	// Chaining commands, pipelines, and globs are common, and static paths in
-	// them remain inspectable. Reject only dynamic expansion and redirection,
-	// which can hide a path or write to an unchecked target.
-	return /[\n`$<>]/.test(command);
+	// Only reject syntax that can dynamically hide a path. Dollar signs and
+	// backticks inside single quotes are literals (common in awk and Nix), while
+	// static redirections are checked separately below.
+	let quote: "single" | "double" | undefined;
+	for (let index = 0; index < command.length; index += 1) {
+		const character = command[index];
+		if (character === "\\" && quote !== "single") {
+			index += 1;
+			continue;
+		}
+		if (character === "'" && quote !== "double") {
+			quote = quote === "single" ? undefined : "single";
+			continue;
+		}
+		if (character === '"' && quote !== "single") {
+			quote = quote === "double" ? undefined : "double";
+			continue;
+		}
+		if (quote !== "single" && (character === "$" || character === "`")) return true;
+		if (quote === undefined && (character === "<" || character === ">") && command[index + 1] === "(") return true;
+	}
+	return false;
+}
+
+function bashRedirectionPaths(command: string): { read: string[]; write: string[] } {
+	const paths = { read: [] as string[], write: [] as string[] };
+	const redirection = /\d*(<<-?|<<<|>>?|<)\s*("[^"]*"|'[^']*'|[^\s;|&<>]+)/g;
+
+	for (const match of command.matchAll(redirection)) {
+		const operator = match[1];
+		const rawTarget = match[2];
+		if (!operator || !rawTarget || operator.startsWith("<<") || /^&\d+$/.test(rawTarget)) continue;
+		const target = rawTarget.replace(/^(?:"([\s\S]*)"|'([\s\S]*)')$/, "$1$2");
+		paths[operator === "<" ? "read" : "write"].push(target);
+	}
+	return paths;
 }
 
 function bashPaths(command: string): string[] {
@@ -176,12 +208,13 @@ export default function stefanPathProtection(pi: ExtensionAPI) {
 		if (event.toolName === "bash") {
 			const command = String(event.input.command ?? "").trim();
 			if (!command || bashIsClearlyUnsafe(command)) {
-				return notifyAndBlock("Blocked bash command: avoid dynamic expansion or redirection so paths can be checked.");
+				return notifyAndBlock("Blocked bash command: avoid evaluated variable, command, or process expansion so paths can be checked.");
 			}
 
 			const words = command.split(/\s+/);
 			const mutatesPaths = /(?:^|(?:&&|\|\||[;|])\s*)(?:rm|mv|cp|mkdir|touch|chmod|chown|ln|install)(?:\s|$)/.test(command);
 			const paths = new Set(bashPaths(command));
+			const redirectedPaths = bashRedirectionPaths(command);
 			if (mutatesPaths) {
 				// Treat every non-option operand of a mutating command as a target.
 				// This catches simple relative names such as `rm -rf node_modules`.
@@ -190,8 +223,14 @@ export default function stefanPathProtection(pi: ExtensionAPI) {
 				}
 			}
 
-			for (const path of paths) {
+			for (const path of new Set([...paths, ...redirectedPaths.read])) {
+				if (path === "/dev/null") continue;
 				const reason = await requestPermission(path, mutatesPaths ? "write" : "read");
+				if (reason) return notifyAndBlock(reason);
+			}
+			for (const path of new Set(redirectedPaths.write)) {
+				if (path === "/dev/null") continue;
+				const reason = await requestPermission(path, "write");
 				if (reason) return notifyAndBlock(reason);
 			}
 		}
