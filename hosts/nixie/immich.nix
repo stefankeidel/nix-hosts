@@ -68,15 +68,17 @@ in
   # Immich uses Redis for cache/queues; avoid failed RDB snapshots blocking writes.
   services.redis.servers.immich.save = [ ];
 
+  # Stop/restart Immich together with the rclone mount. The ordering also
+  # makes systemd wait for rclone's ExecStartPost mountpoint check.
   systemd.services.immich-server = {
-    requires = [ "rclone-mount-sb.service" ];
+    bindsTo = [ "rclone-mount-sb.service" ];
+    partOf = [ "rclone-mount-sb.service" ];
     after = [ "rclone-mount-sb.service" ];
-    unitConfig.RequiresMountsFor = [ "/mnt/sb" ];
   };
 
   systemd.services.immich-machine-learning = {
-    requires = [ "rclone-mount-sb.service" ];
+    bindsTo = [ "rclone-mount-sb.service" ];
+    partOf = [ "rclone-mount-sb.service" ];
     after = [ "rclone-mount-sb.service" ];
-    unitConfig.RequiresMountsFor = [ "/mnt/sb" ];
   };
 }
