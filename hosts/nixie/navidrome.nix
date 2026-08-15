@@ -24,8 +24,10 @@
   };
 
   systemd.services.navidrome = {
-    requires = [ "rclone-mount-sb.service" ];
+    # Stop/restart Navidrome together with the rclone mount. The ordering also
+    # makes systemd wait for rclone's ExecStartPost mountpoint check.
+    bindsTo = [ "rclone-mount-sb.service" ];
+    partOf = [ "rclone-mount-sb.service" ];
     after = [ "rclone-mount-sb.service" ];
-    unitConfig.RequiresMountsFor = [ "/mnt/sb" ];
   };
 }
