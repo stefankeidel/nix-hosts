@@ -4,7 +4,6 @@
   # Add all your dependencies here
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs?ref=nixos-unstable";
-    nixpkgs-darwin-pinned.url = "github:NixOS/nixpkgs?ref=nixos-unstable"; #"github:NixOS/nixpkgs/567a49d1913ce81ac6e9582e3553dd90a955875f";
 
     # some of my "hosted" systems are on stable :shrug:
     nix-stable.url = "github:NixOS/nixpkgs/nixos-26.05";
@@ -68,13 +67,13 @@
     let
       blueprintOutputs = inputs.blueprint { inherit inputs; };
 
-      mkPinnedDarwin =
+      mkDarwin =
         {
           host,
           user,
         }:
         inputs.nix-darwin.lib.darwinSystem {
-          pkgs = import inputs.nixpkgs-darwin-pinned {
+          pkgs = import inputs.nixpkgs {
             system = "aarch64-darwin";
             config.allowUnfree = true;
           };
@@ -100,11 +99,11 @@
     blueprintOutputs
     // {
       darwinConfigurations = blueprintOutputs.darwinConfigurations // {
-        mini = mkPinnedDarwin {
+        mini = mkDarwin {
           host = "mini";
           user = "stefan";
         };
-        lichtblick = mkPinnedDarwin {
+        lichtblick = mkDarwin {
           host = "lichtblick";
           user = "stefan.keidel@lichtblick.de";
         };
