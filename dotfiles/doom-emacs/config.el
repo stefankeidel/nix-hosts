@@ -269,7 +269,7 @@ that open a ghostel buffer LABEL, optionally sending COMMAND."
 ; projectile bindings
 (map! :map projectile-mode-map
       "s-p" #'projectile-command-map
-      "s-f" #'projectile-search-regexp-review);#'+default/search-project-for-symbol-at-point)
+      "s-f" #'projectile-ripgrep);#'+default/search-project-for-symbol-at-point)
 
 (map! :map projectile-command-map
       "v"   #'stefan-projectile-run-ghostel
