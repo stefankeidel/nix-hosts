@@ -125,6 +125,7 @@
       "s-i c" #'org-capture
       ;"s-i l" #'agent-shell
       "s-i o" #'stefan/open-current-gitlab-project
+      "s-i m" #'lab-list-branch-merge-requests
       "M-y"   #'browse-kill-ring)
 
 (bind-key "s-l" lab-map)
