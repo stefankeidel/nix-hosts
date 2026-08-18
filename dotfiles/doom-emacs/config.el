@@ -126,6 +126,7 @@
       ;"s-i l" #'agent-shell
       "s-i o" #'stefan/open-current-gitlab-project
       "s-i m" #'lab-list-branch-merge-requests
+      "s-i p" #'lab-list-project-pipelines
       "M-y"   #'browse-kill-ring)
 
 (bind-key "s-l" lab-map)
