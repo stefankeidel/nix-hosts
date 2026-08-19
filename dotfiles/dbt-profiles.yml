@@ -70,7 +70,7 @@ data_platform:
 
       database: DATA_PLATFORM_DEV
       warehouse: "{{ env_var('SNOWFLAKE_WAREHOUSE', 'COMPUTE_WH') }}"
-      role: DEV_TRANSFORMER
+      role: CENTRAL_DATA_DEV_TRANSFORMER
       schema: INTERMEDIATE
       threads: 4
       client_session_keep_alive: False
