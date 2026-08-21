@@ -22,6 +22,7 @@
       "${inputs.pi-gitlab}/src/index.ts"
       "${inputs.pi-confluence.packages.${pkgs.stdenv.hostPlatform.system}.pi-confluence}/index.ts"
       ./pi-extensions/permission-gate.ts
+      ./pi-extensions/jira.ts
       "${inputs.pi-memory}/index.ts"
       "${inputs.pi-rtk-optimizer}/index.ts"
       # Keep the boundary last so it checks commands after RTK rewrites them.
