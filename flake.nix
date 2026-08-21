@@ -88,7 +88,7 @@
                 useGlobalPkgs = true;
                 useUserPackages = true;
                 extraSpecialArgs = {
-                  inherit inputs;
+                  inherit inputs host;
                 };
                 users.${user} = import (./. + "/hosts/${host}/users/${user}/home-configuration.nix");
               };

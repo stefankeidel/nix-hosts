@@ -1,5 +1,7 @@
 {
+  host,
   inputs,
+  lib,
   pkgs,
   ...
 }:
@@ -19,12 +21,14 @@
     extensions = [
       ./pi-extensions/commands.ts
       ./pi-extensions/extensions.ts
-      "${inputs.pi-gitlab}/src/index.ts"
-      "${inputs.pi-confluence.packages.${pkgs.stdenv.hostPlatform.system}.pi-confluence}/index.ts"
       ./pi-extensions/permission-gate.ts
-      ./pi-extensions/jira.ts
       "${inputs.pi-memory}/index.ts"
       "${inputs.pi-rtk-optimizer}/index.ts"
+    ] ++ lib.optionals (host == "lichtblick") [
+      "${inputs.pi-gitlab}/src/index.ts"
+      "${inputs.pi-confluence.packages.${pkgs.stdenv.hostPlatform.system}.pi-confluence}/index.ts"
+      ./pi-extensions/jira.ts
+    ] ++ [
       # Keep the boundary last so it checks commands after RTK rewrites them.
       ./pi-extensions/stefan-path-protection.ts
     ];
