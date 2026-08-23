@@ -1,7 +1,9 @@
 {
   config,
-  pkgs,
+  host,
   inputs,
+  lib,
+  pkgs,
   ...
 }: {
   imports = [
@@ -98,33 +100,39 @@
     # all my dotfiles, should probably be modularized
     # at some point(tm)
     #
-    # agent skills
-    file.".agents/skills/stefan-debug-gitlab/SKILL.md".source = ./agent-skills/stefan-debug-gitlab/SKILL.md;
-    file.".agents/skills/stefan-gitlab-pipeline/SKILL.md".source = ./agent-skills/stefan-gitlab-pipeline/SKILL.md;
-    file.".agents/skills/gccli/SKILL.md".source = ./agent-skills/gccli/SKILL.md;
-    # toying with a pi extension that does similar things
-    # file.".agents/skills/stefan-gitlab-mr-feedback/SKILL.md".source = ./agent-skills/stefan-gitlab-mr-feedback/SKILL.md;
+    file = lib.mkMerge [
+      {
+        # agent skills
+        ".agents/skills/gccli/SKILL.md".source = ./agent-skills/gccli/SKILL.md;
 
-    # emacs config
-    file.".config/doom" = {
-      source = ../../dotfiles/doom-emacs;
-      recursive = true;
-    };
+        # emacs config
+        ".config/doom" = {
+          source = ../../dotfiles/doom-emacs;
+          recursive = true;
+        };
 
-    file.".vimrc".source = ../../dotfiles/vim_config;
-    file.".functions".source = ../../dotfiles/functions;
-    file.".hushlogin".source = ../../dotfiles/hushlogin;
-    # probably replaced by inline config, i.e. properly nixified
-    # file.".gitconfig".source = ../../dotfiles/gitconfig;
-    file."./.dbt/profiles.yml".source = ../../dotfiles/dbt-profiles.yml;
-    file.".config/direnv/direnv.toml".source = ../../dotfiles/direnv.toml;
+        ".vimrc".source = ../../dotfiles/vim_config;
+        ".functions".source = ../../dotfiles/functions;
+        ".hushlogin".source = ../../dotfiles/hushlogin;
+        # probably replaced by inline config, i.e. properly nixified
+        # ".gitconfig".source = ../../dotfiles/gitconfig;
+        "./.dbt/profiles.yml".source = ../../dotfiles/dbt-profiles.yml;
+        ".config/direnv/direnv.toml".source = ../../dotfiles/direnv.toml;
 
-    file.".vim/backups/.keep".source = builtins.toFile "keep" "";
-    file.".vim/swaps/.keep".source = builtins.toFile "keep" "";
-    file.".vim/undo/.keep".source = builtins.toFile "keep" "";
-    file."Proton".source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/Library/CloudStorage/ProtonDrive-stefan@keidel.me-folder";
-    file."/Library/Application Support/Code/User/settings.json".source = ../../dotfiles/vscode-settings.json;
-    file."/Library/Application Support/Code - Insiders/User/settings.json".source = ../../dotfiles/vscode-settings.json;
+        ".vim/backups/.keep".source = builtins.toFile "keep" "";
+        ".vim/swaps/.keep".source = builtins.toFile "keep" "";
+        ".vim/undo/.keep".source = builtins.toFile "keep" "";
+        "Proton".source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/Library/CloudStorage/ProtonDrive-stefan@keidel.me-folder";
+        "/Library/Application Support/Code/User/settings.json".source = ../../dotfiles/vscode-settings.json;
+        "/Library/Application Support/Code - Insiders/User/settings.json".source = ../../dotfiles/vscode-settings.json;
+      }
+      (lib.mkIf (host == "lichtblick") {
+        ".agents/skills/stefan-debug-gitlab/SKILL.md".source = ./agent-skills/stefan-debug-gitlab/SKILL.md;
+        ".agents/skills/stefan-gitlab-pipeline/SKILL.md".source = ./agent-skills/stefan-gitlab-pipeline/SKILL.md;
+        # toying with a pi extension that does similar things
+        # ".agents/skills/stefan-gitlab-mr-feedback/SKILL.md".source = ./agent-skills/stefan-gitlab-mr-feedback/SKILL.md;
+      })
+    ];
   };
 
   programs = {
