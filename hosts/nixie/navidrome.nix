@@ -24,10 +24,14 @@
   };
 
   systemd.services.navidrome = {
-    # Stop/restart Navidrome together with the rclone mount. The ordering also
-    # makes systemd wait for rclone's ExecStartPost mountpoint check.
+    # Stop/restart Navidrome together with the rclone mount. The assertion
+    # prevents a start without the mount, while BindPaths pins the mounted
+    # filesystem in Navidrome's namespace instead of ever exposing the bare
+    # local directory.
     bindsTo = [ "rclone-mount-sb.service" ];
     partOf = [ "rclone-mount-sb.service" ];
     after = [ "rclone-mount-sb.service" ];
+    unitConfig.AssertPathIsMountPoint = "/mnt/sb";
+    serviceConfig.BindPaths = [ "/mnt/sb" ];
   };
 }
