@@ -28,6 +28,7 @@
     ./immich.nix
     ./auth.nix
     ./actualbudget.nix
+    ./wanderer.nix
   ];
 
   # secrets
@@ -260,7 +261,10 @@
         ${config.systemd.package}/bin/systemctl stop \
           navidrome.service \
           immich-server.service \
-          immich-machine-learning.service
+          immich-machine-learning.service \
+          podman-wanderer-web.service \
+          podman-wanderer-db.service \
+          wanderer-init.service
         if ${pkgs.util-linux}/bin/mountpoint -q /mnt/sb; then
           ${pkgs.fuse}/bin/fusermount -u /mnt/sb
         fi
