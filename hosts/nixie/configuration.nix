@@ -101,6 +101,10 @@
   # it's just me, so :shrug:
   security.sudo.wheelNeedsPassword = false;
 
+  nixpkgs.config.permittedInsecurePackages = [
+    "immich-2.7.5"
+  ];
+
   # yes, flakes
   nix.settings.experimental-features = [
     "nix-command"
