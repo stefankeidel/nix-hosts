@@ -40,11 +40,6 @@
     # pi coding agent
     pi.url = "github:lukasl-dev/pi.nix";
 
-    pi-rtk-optimizer = {
-      url = "github:MasuRii/pi-rtk-optimizer";
-      flake = false;
-    };
-
     pi-memory = {
       url = "github:jayzeng/pi-memory";
       flake = false;

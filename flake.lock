@@ -536,22 +536,6 @@
         "type": "github"
       }
     },
-    "pi-rtk-optimizer": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1783048218,
-        "narHash": "sha256-Cw0oLzVv674vpC3g5oteCNZSkHpfBN+IdnYDbkai4q4=",
-        "owner": "MasuRii",
-        "repo": "pi-rtk-optimizer",
-        "rev": "d155d253cb2f1358e34e717d47a82ebccb08cb8e",
-        "type": "github"
-      },
-      "original": {
-        "owner": "MasuRii",
-        "repo": "pi-rtk-optimizer",
-        "type": "github"
-      }
-    },
     "root": {
       "inputs": {
         "agenix": "agenix",
@@ -567,7 +551,6 @@
         "pi-confluence": "pi-confluence",
         "pi-gitlab": "pi-gitlab",
         "pi-memory": "pi-memory",
-        "pi-rtk-optimizer": "pi-rtk-optimizer",
         "stefan-website": "stefan-website"
       }
     },

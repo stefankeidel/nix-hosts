@@ -23,7 +23,6 @@
       ./pi-extensions/extensions.ts
       ./pi-extensions/permission-gate.ts
       "${inputs.pi-memory}/index.ts"
-      "${inputs.pi-rtk-optimizer}/index.ts"
     ]
     ++ lib.optionals (host == "lichtblick") [
       "${inputs.pi-gitlab}/src/index.ts"
