@@ -1,0 +1,9 @@
+{
+  "name": "pi-snowflake",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "dependencies": {
+    "snowflake-sdk": "3.3.0"
+  }
+}

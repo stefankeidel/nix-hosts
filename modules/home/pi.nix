@@ -24,11 +24,14 @@
       ./pi-extensions/permission-gate.ts
       "${inputs.pi-memory}/index.ts"
       "${inputs.pi-rtk-optimizer}/index.ts"
-    ] ++ lib.optionals (host == "lichtblick") [
+    ]
+    ++ lib.optionals (host == "lichtblick") [
       "${inputs.pi-gitlab}/src/index.ts"
       "${inputs.pi-confluence.packages.${pkgs.stdenv.hostPlatform.system}.pi-confluence}/index.ts"
+      "${inputs.self.packages.${pkgs.stdenv.hostPlatform.system}.pi-snowflake}/index.ts"
       ./pi-extensions/jira.ts
-    ] ++ [
+    ]
+    ++ [
       # Keep the boundary last so it checks commands after RTK rewrites them.
       ./pi-extensions/stefan-path-protection.ts
     ];
