@@ -45,7 +45,7 @@ let
       )
       {
         search = "curl --fail --max-time 5 http://localhost:7700/health";
-        db = "/curl --fail --max-time 5 http://localhost:8090/health";
+        db = "curl --fail --max-time 5 http://localhost:8090/health";
         web = "curl --fail --max-time 5 http://localhost:3000/";
       };
 in
