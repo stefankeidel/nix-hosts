@@ -44,9 +44,9 @@ let
         )
       )
       {
-        search = "curl --fail --max-time 5 http://localhost:7700/health";
-        db = "curl --fail --max-time 5 http://localhost:8090/api/health";
-        web = "curl --fail --max-time 5 http://localhost:3000/";
+        search = "wget -q -O /dev/null http://localhost:7700/health";
+        db = "wget -q -O /dev/null http://localhost:8090/api/health";
+        web = "wget -q -O /dev/null http://localhost:3000/";
       };
 in
 {
