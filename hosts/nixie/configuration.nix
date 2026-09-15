@@ -247,9 +247,20 @@
 
     serviceConfig = {
       Type = "simple";
-      # Keep the bare mountpoint inaccessible. Doing this immediately before
-      # mounting avoids chmodding the remote during a configuration switch.
-      ExecStartPre = "${pkgs.coreutils}/bin/chmod 0000 /mnt/sb";
+      # A stale Navidrome process can retain the old FUSE mount through its
+      # bind-mounted namespace. Catch that state before every mount attempt;
+      # the normal dependency ordering already keeps it stopped during boot.
+      ExecStartPre = [
+        (pkgs.writeShellScript "stop-stale-navidrome" ''
+          if ! ${pkgs.util-linux}/bin/mountpoint -q /mnt/sb \
+            && ${config.systemd.package}/bin/systemctl is-active --quiet navidrome.service; then
+            ${config.systemd.package}/bin/systemctl stop navidrome.service
+          fi
+        '')
+        # Keep the bare mountpoint inaccessible. Doing this immediately before
+        # mounting avoids chmodding the remote during a configuration switch.
+        "${pkgs.coreutils}/bin/chmod 0000 /mnt/sb"
+      ];
       ExecStart = "${pkgs.rclone}/bin/rclone mount sb: /mnt/sb --config /etc/rclone/rclone.conf --allow-other --umask 002 --dir-cache-time 5m --poll-interval 1m --cache-dir /var/cache/rclone/sb --vfs-cache-mode writes --vfs-cache-max-age 1h --vfs-cache-max-size 7G --vfs-cache-poll-interval 1m";
       ExecStartPost = "${pkgs.bash}/bin/bash -c 'for i in {1..30}; do ${pkgs.util-linux}/bin/mountpoint -q /mnt/sb && exit 0; sleep 1; done; exit 1'";
       ExecReload = "${pkgs.coreutils}/bin/kill -HUP $MAINPID";
@@ -258,6 +269,10 @@
       # if those jobs were submitted in an unfortunate order. Do not use a
       # lazy unmount: it would expose /mnt/sb while a user was still alive.
       ExecStop = pkgs.writeShellScript "stop-rclone-mount-sb" ''
+        set -euo pipefail
+
+        # This call is synchronous: fusermount is never invoked until every
+        # storage consumer, especially Navidrome, has fully stopped.
         ${config.systemd.package}/bin/systemctl stop \
           navidrome.service \
           immich-server.service \

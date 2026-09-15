@@ -32,6 +32,14 @@
     partOf = [ "rclone-mount-sb.service" ];
     after = [ "rclone-mount-sb.service" ];
     unitConfig.AssertPathIsMountPoint = "/mnt/sb";
-    serviceConfig.BindPaths = [ "/mnt/sb" ];
+    serviceConfig = {
+      BindPaths = [ "/mnt/sb" ];
+      # Do not let a stuck scanner retain the FUSE mount indefinitely.
+      # systemd escalates to SIGKILL after this timeout and waits for the
+      # complete service cgroup to disappear before considering it stopped.
+      KillMode = "control-group";
+      SendSIGKILL = true;
+      TimeoutStopSec = "15s";
+    };
   };
 }
