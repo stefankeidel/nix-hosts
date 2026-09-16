@@ -32,7 +32,7 @@
     ]
     ++ [
       # Keep the boundary last so it checks commands after RTK rewrites them.
-      ./pi-extensions/stefan-path-protection.ts
+      # ./pi-extensions/stefan-path-protection.ts
     ];
   };
 }
