@@ -83,3 +83,6 @@
 (package! lab
   :recipe
   (:host github :repo "isamert/lab.el"))
+
+
+(package! jj-mode :recipe (:host github :repo "bolivier/jj-mode.el"))
