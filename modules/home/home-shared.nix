@@ -85,6 +85,14 @@
       treesit-grammars.with-all-grammars
       vterm
     ];
+
+    # jj-mode requires Magit at compile time, but upstream does not declare it
+    # in Package-Requires.
+    emacsPackageOverrides = eself: esuper: {
+      jj-mode = esuper.jj-mode.overrideAttrs (old: {
+        packageRequires = (old.packageRequires or [ ]) ++ [ eself.magit ];
+      });
+    };
   };
 
   home.stateVersion = "24.11"; # initial home-manager state

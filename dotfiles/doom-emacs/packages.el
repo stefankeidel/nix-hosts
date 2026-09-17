@@ -85,4 +85,6 @@
   (:host github :repo "isamert/lab.el"))
 
 
-(package! jj-mode :recipe (:host github :repo "bolivier/jj-mode.el"))
+(package! jj-mode
+  :recipe (:host github :repo "bolivier/jj-mode.el")
+  :pin "7e299b60e536d61e694f75fb7a2d1b922f09a5a5")
