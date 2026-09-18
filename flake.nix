@@ -45,6 +45,11 @@
       flake = false;
     };
 
+    pi-observational-memory = {
+      url = "github:elpapi42/pi-observational-memory";
+      flake = false;
+    };
+
     pi-gitlab = {
       url = "github:stefankeidel/pi-gitlab";
       flake = false;

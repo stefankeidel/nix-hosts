@@ -535,6 +535,22 @@
         "type": "github"
       }
     },
+    "pi-observational-memory": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1789533755,
+        "narHash": "sha256-E6ldxcWo3CWM6ugCEsobesRFkn7J9AtQFd0GFXqhMLI=",
+        "owner": "elpapi42",
+        "repo": "pi-observational-memory",
+        "rev": "cba03347a60af8b8afbb35677ade4d6bb05d4c5a",
+        "type": "github"
+      },
+      "original": {
+        "owner": "elpapi42",
+        "repo": "pi-observational-memory",
+        "type": "github"
+      }
+    },
     "root": {
       "inputs": {
         "agenix": "agenix",
@@ -550,6 +566,7 @@
         "pi-confluence": "pi-confluence",
         "pi-gitlab": "pi-gitlab",
         "pi-memory": "pi-memory",
+        "pi-observational-memory": "pi-observational-memory",
         "stefan-website": "stefan-website"
       }
     },

@@ -23,6 +23,7 @@
       ./pi-extensions/extensions.ts
       ./pi-extensions/permission-gate.ts
       "${inputs.pi-memory}/index.ts"
+      "${inputs.pi-observational-memory}/src/index.ts"
     ]
     ++ lib.optionals (host == "lichtblick") [
       "${inputs.pi-gitlab}/src/index.ts"
