@@ -90,6 +90,14 @@
       cleanup = "zap";
     };
 
+    # Third-party taps must be explicitly trusted by Homebrew.
+    taps = [
+      {
+        name = "abue-ammar/tinycast";
+        trusted = true;
+      }
+    ];
+
     # Formulae = `brew install`
     brews = [
       "duckdb"
@@ -100,6 +108,7 @@
     casks = [
       "firefox"
       "marta"
+      "tinycast"
       "proton-drive"
     ];
 

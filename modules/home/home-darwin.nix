@@ -54,7 +54,6 @@
       proton-vpn
       pwgen
       python314
-      raycast
       starship
       tidy-viewer
       tree-sitter
