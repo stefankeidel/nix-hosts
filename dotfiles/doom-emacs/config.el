@@ -23,7 +23,7 @@
 ;;
 
 ; remove frame decoration
-(add-to-list 'default-frame-alist '(undecorated . t))
+;(add-to-list 'default-frame-alist '(undecorated . t))
 
 (setq doom-font (font-spec :family "Hack Nerd Font" :size 19 :weight 'semi-light)
       doom-variable-pitch-font (font-spec :family "Hack Nerd Font" :size 19))
