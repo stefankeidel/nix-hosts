@@ -100,6 +100,14 @@
       # cleanup = "zap";
     };
 
+    # Third-party taps must be explicitly trusted by Homebrew.
+    taps = [
+      {
+        name = "abue-ammar/tinycast";
+        trusted = true;
+      }
+    ];
+
     # Formulae = `brew install`
     # brews = [
     # ];
@@ -110,6 +118,7 @@
       "musicbrainz-picard"
       "marta"
       "proton-drive"
+      "tinycast"
       "transmission"
     ];
 
