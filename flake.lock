@@ -346,6 +346,22 @@
         "type": "sourcehut"
       }
     },
+    "kev": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1790128524,
+        "narHash": "sha256-Zi4ZRBG1xwuwkFjndJkF09/zzt9d462EgM4n0BfFl+A=",
+        "owner": "jaredpalmer",
+        "repo": "kev",
+        "rev": "557598fced1dada75dfbf36ed144dce309ac6ceb",
+        "type": "github"
+      },
+      "original": {
+        "owner": "jaredpalmer",
+        "repo": "kev",
+        "type": "github"
+      }
+    },
     "llm-agents": {
       "inputs": {
         "bun2nix": "bun2nix",
@@ -618,6 +634,7 @@
         "blueprint": "blueprint",
         "comin": "comin",
         "home-manager": "home-manager",
+        "kev": "kev",
         "llm-agents": "llm-agents",
         "nix-darwin": "nix-darwin",
         "nix-doom-emacs-unstraightened": "nix-doom-emacs-unstraightened",

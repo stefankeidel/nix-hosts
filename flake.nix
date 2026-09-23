@@ -59,6 +59,11 @@
       url = "github:stefankeidel/pi-confluence";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    kev = {
+      url = "github:jaredpalmer/kev";
+      flake = false;
+    };
   };
 
   # Load the blueprint
