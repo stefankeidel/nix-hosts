@@ -1,4 +1,4 @@
-{ lib, ... }:
+{ inputs, lib, pkgs, ... }:
 let
   immichOidcClientSecret = ../../secrets/immich-oidc-client-secret.age;
   haveImmichOidcClientSecret = builtins.pathExists immichOidcClientSecret;
@@ -17,6 +17,15 @@ in
     group = "immich";
     mode = "600";
   };
+
+  # Keep nixie on stable while using the matching newer Immich packages from
+  # unstable. The overlay is limited to Immich and its machine-learning service.
+  nixpkgs.overlays = [
+    (final: prev: {
+      immich = inputs.nixpkgs.legacyPackages.${pkgs.system}.immich;
+      immich-machine-learning = inputs.nixpkgs.legacyPackages.${pkgs.system}.immich-machine-learning;
+    })
+  ];
 
   services.immich = {
     enable = true;
