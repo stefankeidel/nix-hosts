@@ -598,6 +598,7 @@ that open a ghostel buffer LABEL, optionally sending COMMAND."
         ("https://ourworldindata.org/atom-data-insights.xml" blog)
         ("https://ourworldindata.org/atom.xml" blog)
         ("https://michael.stapelberg.ch/feed.xml" blog)
+        ("https://gregorygundersen.com/feed.xml" blog)
 
         ; econ and random stuff
         ("https://www.lesswrong.com/feed.xml?view=curated-rss" blog)
