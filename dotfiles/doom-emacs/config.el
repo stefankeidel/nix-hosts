@@ -371,18 +371,6 @@ that open a ghostel buffer LABEL, optionally sending COMMAND."
 ;;   (add-to-list 'copilot-indentation-alist '(clojure-mode 2))
 ;;   (add-to-list 'copilot-indentation-alist '(emacs-lisp-mode 2)))
 
-;; (after! copilot
-;;   (setopt copilot-lsp-settings '(:github-enterprise (:uri "https://lichtblick-se.ghe.com")))
-;;   (setopt copilot-chat-use-agent-mode t)
-
-;;   (setopt copilot-mcp-servers
-;;         '(:fetch (:command "uvx" :args ["mcp-server-fetch"])
-;;           :gitlab-cicd-catalog (
-;;                 :command "/Users/stefan.keidel@lichtblick.de/code/lichtblick/agent-tools/gitlab-cicd-catalog-mcp/serve.sh"
-;;                          :args []
-;;                          :env (:SSL_VERIFY "false" :GITLAB_TOKEN "glpat-lkK4kCC3HrDel0X4J_Yn1W86MQp1OjE1Mwk.01.0z1ygcn4y"))))
-;; )
-
 ; my legacy org mode clusterfuck of a configuration
 ; should be at the very bottom and refactored at some point
 (after! org
