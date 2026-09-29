@@ -520,11 +520,11 @@
         "nixpkgs-x86_64-darwin": "nixpkgs-x86_64-darwin"
       },
       "locked": {
-        "lastModified": 1790503368,
-        "narHash": "sha256-WHBSMxk+w2cLC0OZjG8dtzalKP8R7XdFH/qC+hMzVQE=",
+        "lastModified": 1790705482,
+        "narHash": "sha256-yA7XEcXfb+8WtlsqEPdIrRwOnmOGApHj6LCfrdKYTzg=",
         "owner": "lukasl-dev",
         "repo": "pi.nix",
-        "rev": "2e30a696b6e52d731a235cd5a52fea252457c941",
+        "rev": "cf1f0f67725755a1440630fcbfe49485865ef8da",
         "type": "github"
       },
       "original": {
