@@ -6,7 +6,14 @@
   pkgs,
   ...
 }:
-
+let
+  xlsxPackage = pkgs.callPackage ../../packages/pi-xlsx.nix { };
+  xlsxExtension = pkgs.runCommand "pi-xlsx-extension" { } ''
+    mkdir -p $out
+    cp ${./pi-extensions/xlsx.ts} $out/index.ts
+    ln -s ${xlsxPackage}/lib/node_modules/pi-xlsx/node_modules $out/node_modules
+  '';
+in
 {
   imports = [
     inputs.pi.homeModules.default
@@ -26,6 +33,7 @@
       ./pi-extensions/extensions.ts
       ./pi-extensions/permission-gate.ts
       ./pi-extensions/kev.ts
+      "${xlsxExtension}/index.ts"
       "${inputs.pi-memory}/index.ts"
       "${inputs.pi-observational-memory}/src/index.ts"
     ]
