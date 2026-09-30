@@ -15,6 +15,8 @@
   programs.pi.coding-agent = {
     enable = true;
 
+    settings.defaultTools = [ "+codemode" ];
+
     promptTemplates = [
       ./pi-prompts/review.md
     ];
