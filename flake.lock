@@ -588,11 +588,11 @@
     "pi-observational-memory": {
       "flake": false,
       "locked": {
-        "lastModified": 1790543679,
-        "narHash": "sha256-u8R/BLqAC7BOH2lYnCz7RCIFLtXh2YJfeOF94dHvd6o=",
+        "lastModified": 1790649418,
+        "narHash": "sha256-pmvkMJvhPAR+S2rgHQP7X5fUGE8eSRd7Ni4HGxza3xs=",
         "owner": "elpapi42",
         "repo": "pi-observational-memory",
-        "rev": "1529e144575da19ce6f877eeec42199a04925983",
+        "rev": "731c3d49288580f4d79cabdbfbc0d16b34db0f41",
         "type": "github"
       },
       "original": {
