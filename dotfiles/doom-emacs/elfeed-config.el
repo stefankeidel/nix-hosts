@@ -35,6 +35,7 @@
           ("https://ourworldindata.org/atom.xml" blog)
           ("https://michael.stapelberg.ch/feed.xml" blog)
           ("https://gregorygundersen.com/feed.xml" blog)
+          ("https://www.natesilver.net/feed" blog)
 
           ;; Economics and other reading
           ("https://www.lesswrong.com/feed.xml?view=curated-rss" blog)
