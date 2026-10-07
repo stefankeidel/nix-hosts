@@ -16,6 +16,11 @@
 ;;; Editing and session behavior
 (setq confirm-kill-emacs nil)
 
+;; Start maximized, not in a macOS native-fullscreen Space, so external
+;; window managers can still move and resize the frame.
+(add-to-list 'default-frame-alist '(fullscreen . maximized))
+(add-to-list 'default-frame-alist '(undecorated . t))
+
 (use-package! browse-kill-ring
   :defer
   :config
