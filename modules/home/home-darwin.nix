@@ -14,6 +14,9 @@
     inputs.nix-doom-emacs-unstraightened.homeModule
   ];
 
+  # Replace only the GUI launcher; retain the upstream Doom CLI package.
+  programs.doom-emacs.provideEmacs = false;
+
   home = {
     # enableNixpkgsReleaseCheck = false;
 
@@ -28,6 +31,9 @@
       qmd
       skills
     ]) ++ (with pkgs; [
+      (callPackage ../../support/doom-emacs-darwin-gui.nix {
+        emacsWithDoom = config.programs.doom-emacs.finalEmacsPackage;
+      })
       #(callPackage ../../packages/garmin-cli.nix { })
       (callPackage ../../packages/gccli.nix { })
       acli
