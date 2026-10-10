@@ -13,13 +13,15 @@ let
   readinessServices =
     lib.mapAttrs'
       (
-        name: healthCommand:
+        name: healthUrl:
         lib.nameValuePair "podman-wanderer-${name}" ({
           requires = [ "wanderer-init.service" ];
           after = [ "wanderer-init.service" ];
           serviceConfig.ExecStartPost = pkgs.writeShellScript "wanderer-${name}-ready" ''
             for attempt in {1..90}; do
-              if ${pkgs.podman}/bin/podman exec wanderer-${name} ${healthCommand}; then
+              pid=$(${pkgs.podman}/bin/podman inspect --format '{{.State.Pid}}' wanderer-${name})
+              if [ "$pid" -gt 0 ] && ${pkgs.util-linux}/bin/nsenter --target "$pid" --net \
+                ${pkgs.curl}/bin/curl --fail --silent --show-error --max-time 5 ${healthUrl} > /dev/null; then
                 exit 0
               fi
               sleep 2
@@ -29,9 +31,9 @@ let
         })
       )
       {
-        search = "wget -q -O /dev/null http://127.0.0.1:7700/health";
-        db = "wget -q -O /dev/null http://127.0.0.1:8090/api/health";
-        web = "wget -q -O /dev/null http://127.0.0.1:3000/";
+        search = "http://127.0.0.1:7700/health";
+        db = "http://127.0.0.1:8090/api/health";
+        web = "http://127.0.0.1:3000/";
       };
 in
 {
