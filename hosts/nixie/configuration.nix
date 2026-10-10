@@ -28,7 +28,7 @@
     ./immich.nix
     ./auth.nix
     ./actualbudget.nix
-    #./wanderer.nix
+    ./wanderer.nix
   ];
 
   # secrets
