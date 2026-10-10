@@ -22,8 +22,8 @@ in
   # unstable. The overlay is limited to Immich and its machine-learning service.
   nixpkgs.overlays = [
     (final: prev: {
-      immich = inputs.nixpkgs.legacyPackages.${pkgs.system}.immich;
-      immich-machine-learning = inputs.nixpkgs.legacyPackages.${pkgs.system}.immich-machine-learning;
+      immich = inputs.nixpkgs.legacyPackages.${pkgs.stdenv.hostPlatform.system}.immich;
+      immich-machine-learning = inputs.nixpkgs.legacyPackages.${pkgs.stdenv.hostPlatform.system}.immich-machine-learning;
     })
   ];
 

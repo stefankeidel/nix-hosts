@@ -29,9 +29,9 @@ let
         })
       )
       {
-        search = "wget -q -O /dev/null http://localhost:7700/health";
-        db = "wget -q -O /dev/null http://localhost:8090/api/health";
-        web = "wget -q -O /dev/null http://localhost:3000/";
+        search = "wget -q -O /dev/null http://127.0.0.1:7700/health";
+        db = "wget -q -O /dev/null http://127.0.0.1:8090/api/health";
+        web = "wget -q -O /dev/null http://127.0.0.1:3000/";
       };
 in
 {
