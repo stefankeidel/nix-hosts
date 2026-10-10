@@ -15,8 +15,9 @@ let
       (
         name: healthUrl:
         lib.nameValuePair "podman-wanderer-${name}" ({
-          requires = [ "wanderer-init.service" ] ++ lib.optional (name != "search") "agenix.service";
-          after = [ "wanderer-init.service" ] ++ lib.optional (name != "search") "agenix.service";
+          # Agenix decrypts secrets during NixOS activation, before units start.
+          requires = [ "wanderer-init.service" ];
+          after = [ "wanderer-init.service" ];
           serviceConfig.ExecStartPost = pkgs.writeShellScript "wanderer-${name}-ready" ''
             for attempt in {1..90}; do
               pid=$(${pkgs.podman}/bin/podman inspect --format '{{.State.Pid}}' wanderer-${name})
