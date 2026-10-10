@@ -125,6 +125,7 @@
   environment.systemPackages = with pkgs; [
     fuse
     git
+    ghostty.terminfo
     htop
     rclone
     restic
