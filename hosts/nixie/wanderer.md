@@ -5,6 +5,32 @@ attachments in `pb_data/storage`), Meilisearch, plugins, uploads and the generat
 `search.env` / `db.env` secrets. Back up this entire directory; preserve the
 existing encryption keys when migrating. Wanderer no longer depends on rclone.
 
+## Upgrading to v0.21.0
+
+The database and web containers share `POCKETBASE_PROXY_SECRET` via
+`secrets/wanderer-proxy.env.age`, decrypted by agenix to
+`/run/agenix/wanderer-proxy-env`. Its plaintext is an environment file containing
+`POCKETBASE_PROXY_SECRET=<random value>`. Keep this encrypted file backed up too.
+The existing `db.env` and `search.env` keys must not be replaced.
+
+Before deploying, take a consistent backup on nixie (contains secrets; keep private):
+
+```sh
+sudo bash -c '
+  set -euo pipefail
+  install -d -m 0700 /var/backups/wanderer
+  systemctl stop podman-wanderer-web.service podman-wanderer-db.service podman-wanderer-search.service
+  trap "systemctl start podman-wanderer-web.service" EXIT
+  umask 077
+  tar -C /var/lib -czf "/var/backups/wanderer/pre-v0.21.0-$(date +%Y%m%d-%H%M%S).tar.gz" wanderer
+'
+```
+
+After deployment, verify login, existing trails and attachments, and container
+logs. Database migrations may run at startup; rolling images back alone is not a
+safe rollback. Restore the pre-upgrade data backup with all containers stopped
+if rollback is required.
+
 ## Before deploying
 
 If there is existing data, stop any running Wanderer containers before copying:

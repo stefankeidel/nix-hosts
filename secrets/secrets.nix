@@ -34,4 +34,5 @@ in
   "lldap-jwt-secret.age".publicKeys = users ++ systems;
   "gitlab-token.age".publicKeys = users ++ systems;
   "atlassian-token.age".publicKeys = users ++ systems;
-}
+  "wanderer-proxy.env.age".publicKeys = users ++ [ nixie ];
+ }

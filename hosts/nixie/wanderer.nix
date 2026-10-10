@@ -1,4 +1,4 @@
-{ lib, pkgs, ... }:
+{ config, lib, pkgs, ... }:
 let
   stateDir = "/var/lib/wanderer";
   commonEnvironment = {
@@ -15,8 +15,8 @@ let
       (
         name: healthUrl:
         lib.nameValuePair "podman-wanderer-${name}" ({
-          requires = [ "wanderer-init.service" ];
-          after = [ "wanderer-init.service" ];
+          requires = [ "wanderer-init.service" ] ++ lib.optional (name != "search") "agenix.service";
+          after = [ "wanderer-init.service" ] ++ lib.optional (name != "search") "agenix.service";
           serviceConfig.ExecStartPost = pkgs.writeShellScript "wanderer-${name}-ready" ''
             for attempt in {1..90}; do
               pid=$(${pkgs.podman}/bin/podman inspect --format '{{.State.Pid}}' wanderer-${name})
@@ -39,7 +39,13 @@ in
 {
   # Back up stateDir, including encryption keys, attachments and uploads.
   # See wanderer.md for migration steps before deploying.
-  # Secrets are generated once on the host, never placed in the Nix store.
+  # Existing search/database keys remain host-local; the proxy secret uses agenix.
+  age.secrets.wanderer-proxy-env = {
+    file = ../../secrets/wanderer-proxy.env.age;
+    owner = "root";
+    mode = "0400";
+  };
+
   systemd.services = {
     wanderer-init = {
       description = "Prepare Wanderer storage, secrets and container network";
@@ -86,10 +92,13 @@ in
     };
 
     wanderer-db = commonContainer // {
-      image = "docker.io/flomp/wanderer-db:v0.20.0";
+      image = "docker.io/flomp/wanderer-db:v0.21.0";
       dependsOn = [ "wanderer-search" ];
       environment = commonEnvironment;
-      environmentFiles = commonContainer.environmentFiles ++ [ "${stateDir}/db.env" ];
+      environmentFiles = commonContainer.environmentFiles ++ [
+        "${stateDir}/db.env"
+        config.age.secrets.wanderer-proxy-env.path
+      ];
       volumes = [
         "${stateDir}/pb_data:/pb_data"
         "${stateDir}/plugins:/data/plugins"
@@ -97,7 +106,7 @@ in
     };
 
     wanderer-web = commonContainer // {
-      image = "docker.io/flomp/wanderer-web:v0.20.0";
+      image = "docker.io/flomp/wanderer-web:v0.21.0";
       dependsOn = [
         "wanderer-search"
         "wanderer-db"
@@ -113,6 +122,7 @@ in
         NOMINATIM_URL = "https://nominatim.openstreetmap.org";
         PUBLIC_MAP_MAX_POLYLINES = "100";
       };
+      environmentFiles = commonContainer.environmentFiles ++ [ config.age.secrets.wanderer-proxy-env.path ];
       ports = [ "127.0.0.1:3000:3000" ];
       volumes = [ "${stateDir}/uploads:/app/uploads" ];
     };
