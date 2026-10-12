@@ -36,7 +36,8 @@
           ("https://michael.stapelberg.ch/feed.xml" blog)
           ("https://gregorygundersen.com/feed.xml" blog)
           ("https://www.natesilver.net/feed" blog)
-          ("https://frogandtoadai.substack.com/feed" blob)
+          ("https://frogandtoadai.substack.com/feed" blog)
+          ("https://www.theclimatebrink.com/feed" blog)
 
           ;; Economics and other reading
           ("https://www.lesswrong.com/feed.xml?view=curated-rss" blog)
