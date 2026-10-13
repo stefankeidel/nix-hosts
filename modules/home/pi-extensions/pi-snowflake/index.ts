@@ -4,6 +4,9 @@ import { Type } from "typebox";
 
 import { snowflakePolicy } from "./policy.ts";
 
+// Keep driver diagnostics out of pi's TUI; query failures are returned by the tool.
+snowflake.configure({ logLevel: "ERROR" });
+
 type BindValue = string | number | boolean | null;
 type SnowflakeConnection = ReturnType<typeof snowflake.createConnection>;
 
