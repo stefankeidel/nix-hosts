@@ -49,6 +49,11 @@
       flake = false;
     };
 
+    pi-web-access = {
+      url = "github:nicobailon/pi-web-access";
+      flake = false;
+    };
+
     pi-gitlab = {
       url = "github:stefankeidel/pi-gitlab";
       flake = false;

@@ -601,6 +601,22 @@
         "type": "github"
       }
     },
+    "pi-web-access": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1791874748,
+        "narHash": "sha256-9+C1qhUzib1s4Y/SI7ZXiW/cyha86OcCL+L7ugPRBAg=",
+        "owner": "nicobailon",
+        "repo": "pi-web-access",
+        "rev": "9861ad72a11c9af419b39f9b00860708407f7025",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nicobailon",
+        "repo": "pi-web-access",
+        "type": "github"
+      }
+    },
     "root": {
       "inputs": {
         "agenix": "agenix",
@@ -618,6 +634,7 @@
         "pi-gitlab": "pi-gitlab",
         "pi-memory": "pi-memory",
         "pi-observational-memory": "pi-observational-memory",
+        "pi-web-access": "pi-web-access",
         "stefan-website": "stefan-website"
       }
     },

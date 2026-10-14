@@ -34,6 +34,7 @@ in
       ./pi-extensions/permission-gate.ts
       ./pi-extensions/kev.ts
       "${xlsxExtension}/index.ts"
+      "${inputs.self.packages.${pkgs.stdenv.hostPlatform.system}.pi-web-access}/index.ts"
       "${inputs.pi-memory}/index.ts"
       "${inputs.pi-observational-memory}/src/index.ts"
     ]
