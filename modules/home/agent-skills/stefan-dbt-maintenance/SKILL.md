@@ -15,12 +15,14 @@ description: >-
 2. **Trace the production run.** In Airflow, inspect recent runs of
    `data_platform_dbt` around the alert time. Find the failed `dbt` task, read
    its logs (paginate fully), and record the failing test/model names, result
-   counts, and relevant error/query details. Distinguish data-test failures
-   from compilation, database, or infrastructure errors.
+   counts, and relevant error/query details. Use read-only Snowflake queries to
+   inspect affected `DATA_PLATFORM_DEV` relations and verify the failing rows.
+   Distinguish data-test failures from compilation, database, or infrastructure
+   errors.
 3. **Reproduce in the dbt repository.** Assume the clone to shared
    `DATA_PLATFORM_DEV` has run. Run only the relevant tests first, using the
-   repo's configured dev target, e.g.:
-   `uv run dbt test --select <failed-test-selector> --target <dev-target>`
+   `DATA_PLATFORM_DEV` target:
+   `uv run dbt test --select <failed-test-selector> --target dev`
    Never target production. If the clone appears missing/stale or the failure
    cannot be reproduced, report that rather than changing test logic to silence
    the alert.
