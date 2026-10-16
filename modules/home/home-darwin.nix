@@ -133,6 +133,7 @@
       }
       (lib.mkIf (host == "lichtblick") {
         ".agents/skills/stefan-debug-gitlab/SKILL.md".source = ./agent-skills/stefan-debug-gitlab/SKILL.md;
+        ".agents/skills/stefan-dbt-maintenance/SKILL.md".source = ./agent-skills/stefan-dbt-maintenance/SKILL.md;
         ".agents/skills/stefan-gitlab-pipeline/SKILL.md".source = ./agent-skills/stefan-gitlab-pipeline/SKILL.md;
         # toying with a pi extension that does similar things
         # ".agents/skills/stefan-gitlab-mr-feedback/SKILL.md".source = ./agent-skills/stefan-gitlab-mr-feedback/SKILL.md;
