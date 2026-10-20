@@ -138,15 +138,15 @@ in
       inherit image;
       user = "${uid}:${gid}";
       environment = providerEnvironment // {
+        # Canonical public issuer for CLI login discovery and OAuth redirects.
+        # Do not rely on forwarded headers from the container bridge.
+        PROXY_BASE_URL = "https://llm.keidel.me";
         # Prisma's host query parameter selects a Unix socket, not TCP.
         DATABASE_URL = "postgresql://litellm@localhost/litellm?host=/run/postgresql";
       };
       environmentFiles = [ "${stateDir}/proxy.env" ];
-      # Match nixie's existing static Tailscale address; never publish on 0.0.0.0.
-      ports = [
-        "127.0.0.1:4000:4000"
-        "100.96.176.26:4000:4000"
-      ];
+      # Only nginx may reach the published port; remote access uses HTTPS.
+      ports = [ "127.0.0.1:4000:4000" ];
       volumes = [
         "${proxyConfig}:/etc/litellm/config.yaml:ro"
         "${stateDir}:${stateDir}"
@@ -182,7 +182,36 @@ in
     serviceConfig.UMask = "0077";
   };
 
-  networking.firewall.interfaces.tailscale0.allowedTCPPorts = [ 4000 ];
+  services.nginx.virtualHosts."llm.keidel.me" = {
+    forceSSL = true;
+    enableACME = true;
+
+    # LiteLLM authenticates UI users and API keys. Browser-only forward auth
+    # would break API clients such as Pi.
+    locations."/" = {
+      proxyPass = "http://127.0.0.1:4000";
+      proxyWebsockets = true;
+      extraConfig = ''
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_set_header X-Forwarded-Host $host;
+
+        # LiteLLM inference responses can exceed nginx's default header buffer.
+        # Keep buffer sizes consistent even though response-body buffering is off.
+        proxy_buffer_size 32k;
+        proxy_buffers 8 32k;
+        proxy_busy_buffers_size 64k;
+
+        # Stream tokens immediately and allow long-running model requests.
+        proxy_buffering off;
+        proxy_cache off;
+        proxy_read_timeout 600s;
+        proxy_send_timeout 600s;
+      '';
+    };
+  };
 
   environment.systemPackages = [ login ];
 }

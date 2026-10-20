@@ -2,16 +2,28 @@
 
 ## Use it
 
-Connect to Tailscale, then:
+No VPN is required for the UI or API:
 
-- **Web UI:** http://nixie:4000/ui — sign in with your personal admin account.
-- **API base:** `http://nixie:4000/v1` — use a virtual key from the UI, not the master key.
+- **Web UI:** https://llm.keidel.me/ui — sign in with your personal admin account.
+- **API base:** `https://llm.keidel.me/v1` — use a virtual key from the UI, not the master key.
 - **Models:** `chatgpt/<model-id>` or `github_copilot/<model-id>`, depending on what your subscription supports.
 
-The service is only exposed on localhost and Tailscale. Shared admin/master-key
-UI login is disabled; the master key still works for API administration.
+nginx exposes the service over HTTPS with a Let's Encrypt certificate. Port 4000
+is bound only to localhost, with no direct Tailscale or public access.
+Shared admin/master-key UI login is disabled; the master key still works for API
+administration. Pi uses `https://llm.keidel.me` as its provider base URL.
+
+Unlike apps protected by Authelia, this endpoint relies on LiteLLM's own login
+and API-key authentication so API clients can connect without browser redirects.
+The login page and any unauthenticated LiteLLM routes are internet-accessible;
+this is not a network-level restriction to your laptop. Use a strong, unique
+admin password and a dedicated virtual key for Pi with appropriate model/budget
+limits. Anyone holding that key can use its permissions; revoke it if leaked.
 
 ## Log in to subscriptions
+
+Server administration still requires Tailscale (or another existing private
+route to nixie); SSH is not exposed publicly.
 
 ```sh
 ssh -t stefan@nixie
@@ -40,7 +52,10 @@ curl --fail http://127.0.0.1:4000/health/liveliness
 
 Configuration and model aliases live in `hosts/nixie/litellm.nix`, not the UI.
 The service uses Podman and native PostgreSQL. Startup may take a moment.
-If nixie's Tailscale IP changes, update the explicit port binding in that file.
+DNS for `llm.keidel.me` must point to nixie; ports 80/443 must be reachable for
+certificate issuance and HTTPS. After deployment, check the UI and confirm an
+unauthenticated request to `/v1/models` is rejected, then test with a virtual key.
+Check a streamed model request too; nginx buffering is disabled for token streaming.
 
 For a fresh install, temporarily disable `disable_env_credential_login`, deploy,
 and use `admin` plus `LITELLM_MASTER_KEY` from `/var/lib/litellm/proxy.env` to create

@@ -31,9 +31,7 @@ in
       defaultTools = [ "+codemode" ];
       litellm = {
         providers.litellm = {
-          baseUrl = "http://nixie:4000";
-          # HTTP runs inside Tailscale's encrypted tunnel.
-          allowInsecureHttp = true;
+          baseUrl = "https://llm.keidel.me";
         };
         # Use this extension for models, not remote tools or prompt injection.
         mcp.enabled = false;
