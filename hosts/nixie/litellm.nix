@@ -34,6 +34,15 @@ let
       store_model_in_db = true;
       store_prompts_in_spend_logs = true;
     };
+    litellm_settings = {
+      cache = true;
+      cache_params = {
+        type = "redis";
+        # Use the host Valkey Unix socket; the container runs with matching GID.
+        url = "unix:///run/redis-litellm/redis.sock";
+        ttl = 600;
+      };
+    };
   };
   login = pkgs.writeShellApplication {
     name = "litellm-login";
@@ -83,6 +92,29 @@ in
     group = "litellm";
     home = stateDir;
   };
+
+  # LiteLLM only needs a bounded, ephemeral response cache. The NixOS Redis
+  # module manages Valkey here and also serves Immich with the compatible binary.
+  services.redis = {
+    package = pkgs.valkey;
+    servers.litellm = {
+      enable = true;
+      user = "redis-litellm";
+      group = "litellm";
+      port = 0;
+      unixSocket = "/run/redis-litellm/redis.sock";
+      unixSocketPerm = 660;
+      save = [ ];
+      appendOnly = false;
+      settings = {
+        maxmemory = 268435456;
+        maxmemory-policy = "allkeys-lru";
+      };
+    };
+  };
+
+  # Keep the service's total resident memory bounded beyond Valkey's dataset cap.
+  systemd.services.redis-litellm.serviceConfig.MemoryMax = "384M";
 
   services.postgresql = {
     ensureDatabases = [ "litellm" ];
@@ -150,6 +182,7 @@ in
         "${proxyConfig}:/etc/litellm/config.yaml:ro"
         "${stateDir}:${stateDir}"
         "/run/postgresql:/run/postgresql:ro"
+        "/run/redis-litellm:/run/redis-litellm:ro"
       ];
       cmd = [
         "--config"
@@ -171,10 +204,12 @@ in
     requires = [
       "litellm-init.service"
       "postgresql-setup.service"
+      "redis-litellm.service"
     ];
     after = [
       "litellm-init.service"
       "postgresql-setup.service"
+      "redis-litellm.service"
     ];
     # A socket-directory bind mount must be recreated after PostgreSQL restarts.
     partOf = [ "postgresql.service" ];
