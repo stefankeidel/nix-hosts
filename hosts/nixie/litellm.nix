@@ -31,9 +31,8 @@ let
       # Named proxy-admin accounts only; keep the master key for API access.
       disable_env_credential_login = true;
       database_url = "os.environ/DATABASE_URL";
-      store_model_in_db = false;
-      # Do not persist prompts/responses in spend logs.
-      store_prompts_in_spend_logs = false;
+      store_model_in_db = true;
+      store_prompts_in_spend_logs = true;
     };
   };
   login = pkgs.writeShellApplication {
