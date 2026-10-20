@@ -54,6 +54,11 @@
       flake = false;
     };
 
+    pi-provider-litellm = {
+      url = "github:balcsida/pi-provider-litellm";
+      flake = false;
+    };
+
     pi-gitlab = {
       url = "github:stefankeidel/pi-gitlab";
       flake = false;

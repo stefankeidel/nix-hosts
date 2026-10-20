@@ -601,6 +601,22 @@
         "type": "github"
       }
     },
+    "pi-provider-litellm": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1792447143,
+        "narHash": "sha256-Dkl2TujYv+K4YscOY+pVOprlH4LNp3nwIk9EYH2CboY=",
+        "owner": "balcsida",
+        "repo": "pi-provider-litellm",
+        "rev": "823125f13b375b6a2a0041e765fb3a71ac1c2a0c",
+        "type": "github"
+      },
+      "original": {
+        "owner": "balcsida",
+        "repo": "pi-provider-litellm",
+        "type": "github"
+      }
+    },
     "pi-web-access": {
       "flake": false,
       "locked": {
@@ -634,6 +650,7 @@
         "pi-gitlab": "pi-gitlab",
         "pi-memory": "pi-memory",
         "pi-observational-memory": "pi-observational-memory",
+        "pi-provider-litellm": "pi-provider-litellm",
         "pi-web-access": "pi-web-access",
         "stefan-website": "stefan-website"
       }

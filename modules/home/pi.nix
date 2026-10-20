@@ -27,7 +27,19 @@ in
   programs.pi.coding-agent = {
     enable = true;
 
-    settings.defaultTools = [ "+codemode" ];
+    settings = {
+      defaultTools = [ "+codemode" ];
+      litellm = {
+        providers.litellm = {
+          baseUrl = "http://nixie:4000";
+          # HTTP runs inside Tailscale's encrypted tunnel.
+          allowInsecureHttp = true;
+        };
+        # Use this extension for models, not remote tools or prompt injection.
+        mcp.enabled = false;
+        skills.enabled = false;
+      };
+    };
 
     promptTemplates = [
       ./pi-prompts/review.md
@@ -42,6 +54,7 @@ in
       "${inputs.self.packages.${pkgs.stdenv.hostPlatform.system}.pi-web-access}/index.ts"
       "${inputs.pi-memory}/index.ts"
       "${inputs.pi-observational-memory}/src/index.ts"
+      "${inputs.pi-provider-litellm}/src/index.ts"
     ]
     ++ lib.optionals (host == "lichtblick") [
       "${inputs.pi-gitlab}/src/index.ts"

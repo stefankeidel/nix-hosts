@@ -29,6 +29,7 @@
     ./auth.nix
     ./actualbudget.nix
     ./wanderer.nix
+    ./litellm.nix
   ];
 
   # secrets
