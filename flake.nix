@@ -89,7 +89,11 @@
         inputs.nix-darwin.lib.darwinSystem {
           pkgs = import inputs.nixpkgs {
             system = "aarch64-darwin";
-            config.allowUnfree = true;
+            config = {
+              allowUnfree = true;
+              # Upstream marks Fabric broken with Invoke >= 3; allow it explicitly.
+              problems.handlers.fabric.broken = "warn";
+            };
           };
           specialArgs = {
             inherit inputs;
