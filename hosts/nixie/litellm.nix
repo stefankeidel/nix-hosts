@@ -48,7 +48,7 @@ let
       cache = true;
       cache_params = {
         type = "redis";
-        # Use the host Valkey Unix socket; the container runs with matching GID.
+        # Use the host Redis Unix socket; the container runs with matching GID.
         url = "unix:///run/redis-litellm/redis.sock";
         ttl = 600;
       };
@@ -110,10 +110,9 @@ in
     home = stateDir;
   };
 
-  # LiteLLM only needs a bounded, ephemeral response cache. The NixOS Redis
-  # module manages Valkey here and also serves Immich with the compatible binary.
+  # LiteLLM only needs a bounded, ephemeral response cache. Keep the default
+  # Redis package: this module also manages Nextcloud and Immich instances.
   services.redis = {
-    package = pkgs.valkey;
     servers.litellm = {
       enable = true;
       user = "redis-litellm";
@@ -130,7 +129,7 @@ in
     };
   };
 
-  # Keep the service's total resident memory bounded beyond Valkey's dataset cap.
+  # Keep the service's total resident memory bounded beyond Redis's dataset cap.
   systemd.services.redis-litellm.serviceConfig.MemoryMax = "384M";
 
   services.postgresql = {

@@ -50,8 +50,8 @@ curl --fail http://127.0.0.1:4000/health/liveliness
 ```
 
 Configuration and model aliases live in `hosts/nixie/litellm.nix`, not the UI.
-The service uses Podman, native PostgreSQL, and a Nix-managed Valkey cache.
-Valkey is local-only over a Unix socket, capped at 256 MiB with LRU eviction
+The service uses Podman, native PostgreSQL, and a Nix-managed Redis cache.
+Redis is local-only over a Unix socket, capped at 256 MiB with LRU eviction
 and a 384 MiB systemd memory limit; cache entries expire after 10 minutes and
 are not persisted. Startup may take a moment.
 DNS for `llm.keidel.me` must point to nixie; ports 80/443 must be reachable for
