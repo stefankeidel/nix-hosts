@@ -34,8 +34,9 @@ let
     ];
     general_settings = {
       master_key = "os.environ/LITELLM_MASTER_KEY";
-      # Named proxy-admin accounts only; keep the master key for API access.
+      # Require SSO for UI login; keep the master key for API access.
       disable_env_credential_login = true;
+      disable_password_login_when_sso_enabled = true;
       database_url = "os.environ/DATABASE_URL";
       store_model_in_db = true;
       store_prompts_in_spend_logs = true;
