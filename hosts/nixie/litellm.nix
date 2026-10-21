@@ -11,6 +11,11 @@ let
     GITHUB_COPILOT_DEVICE_CODE_URL = "https://lichtblick-se.ghe.com/login/device/code";
     GITHUB_COPILOT_ACCESS_TOKEN_URL = "https://lichtblick-se.ghe.com/login/oauth/access_token";
     GITHUB_COPILOT_API_KEY_URL = "https://lichtblick-se.ghe.com/api/v3/copilot_internal/v2/token";
+    GENERIC_CLIENT_ID = "litellm";
+    GENERIC_AUTHORIZATION_ENDPOINT = "https://auth.keidel.me/api/oidc/authorization";
+    GENERIC_TOKEN_ENDPOINT = "https://auth.keidel.me/api/oidc/token";
+    GENERIC_USERINFO_ENDPOINT = "https://auth.keidel.me/api/oidc/userinfo";
+    ALLOWED_EMAIL_DOMAINS = "keidel.me";
     HOME = stateDir;
     XDG_CACHE_HOME = "${stateDir}/cache";
     DO_NOT_TRACK = "True";
@@ -88,6 +93,13 @@ let
   };
 in
 {
+  age.secrets.litellm-oidc-client-env = {
+    file = ../../secrets/litellm-oidc-client.env.age;
+    owner = "litellm";
+    group = "litellm";
+    mode = "400";
+  };
+
   # Stable host/container identity is needed for PostgreSQL peer authentication.
   users.groups.litellm.gid = lib.toInt gid;
   users.users.litellm = {
@@ -179,7 +191,10 @@ in
         # Prisma's host query parameter selects a Unix socket, not TCP.
         DATABASE_URL = "postgresql://litellm@localhost/litellm?host=/run/postgresql";
       };
-      environmentFiles = [ "${stateDir}/proxy.env" ];
+      environmentFiles = [
+        "${stateDir}/proxy.env"
+        "/run/agenix/litellm-oidc-client-env"
+      ];
       # Only nginx may reach the published port; remote access uses HTTPS.
       ports = [ "127.0.0.1:4000:4000" ];
       volumes = [

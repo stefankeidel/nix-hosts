@@ -8,6 +8,7 @@ let
     "authelia-oidc-issuer-private-key"
     "authelia-storage-encryption-key"
     "immich-oidc-client-secret-digest"
+    "authelia-litellm-oidc-client-digest"
     "lldap-admin-password"
     "lldap-jwt-secret"
   ];
@@ -52,6 +53,12 @@ in
     };
     immich-oidc-client-secret-digest = {
       file = secretFile "immich-oidc-client-secret-digest";
+      owner = "authelia-main";
+      group = "authelia-main";
+      mode = "600";
+    };
+    authelia-litellm-oidc-client-digest = {
+      file = secretFile "authelia-litellm-oidc-client-digest";
       owner = "authelia-main";
       group = "authelia-main";
       mode = "600";
@@ -169,6 +176,23 @@ in
 
       identity_providers.oidc = {
         clients = [
+          {
+            client_id = "litellm";
+            client_name = "LiteLLM";
+            client_secret = ''{{ secret "/run/agenix/authelia-litellm-oidc-client-digest" }}'';
+            public = false;
+            authorization_policy = "two_factor";
+            consent_mode = "implicit";
+            redirect_uris = [ "https://llm.keidel.me/sso/callback" ];
+            scopes = [
+              "openid"
+              "profile"
+              "email"
+            ];
+            grant_types = [ "authorization_code" ];
+            response_types = [ "code" ];
+            token_endpoint_auth_method = "client_secret_basic";
+          }
           {
             client_id = "immich";
             client_name = "Immich";

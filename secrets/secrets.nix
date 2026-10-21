@@ -30,6 +30,8 @@ in
   "authelia-storage-encryption-key.age".publicKeys = users ++ systems;
   "immich-oidc-client-secret.age".publicKeys = users ++ systems;
   "immich-oidc-client-secret-digest.age".publicKeys = users ++ systems;
+  "authelia-litellm-oidc-client-digest.age".publicKeys = users ++ systems;
+  "litellm-oidc-client.env.age".publicKeys = users ++ systems;
   "lldap-admin-password.age".publicKeys = users ++ systems;
   "lldap-jwt-secret.age".publicKeys = users ++ systems;
   "gitlab-token.age".publicKeys = users ++ systems;

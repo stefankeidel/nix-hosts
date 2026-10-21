@@ -13,12 +13,11 @@ is bound only to localhost, with no direct Tailscale or public access.
 Shared admin/master-key UI login is disabled; the master key still works for API
 administration. Pi uses `https://llm.keidel.me` as its provider base URL.
 
-Unlike apps protected by Authelia, this endpoint relies on LiteLLM's own login
-and API-key authentication so API clients can connect without browser redirects.
+The Admin UI uses Authelia OIDC sign-in with its two-factor policy. API
+requests still use LiteLLM virtual keys and do not go through browser redirects.
 The login page and any unauthenticated LiteLLM routes are internet-accessible;
-this is not a network-level restriction to your laptop. Use a strong, unique
-admin password and a dedicated virtual key for Pi with appropriate model/budget
-limits. Anyone holding that key can use its permissions; revoke it if leaked.
+this is not a network-level restriction to your laptop. Use a dedicated
+virtual key for Pi with appropriate model/budget limits. Anyone holding that key can use its permissions; revoke it if leaked.
 
 ## Log in to subscriptions
 
@@ -61,10 +60,11 @@ unauthenticated request to `/v1/models` is rejected, then test with a virtual ke
 Check a streamed model request too; nginx buffering is disabled for token streaming.
 The authenticated `/cache/ping` endpoint verifies the cache backend.
 
-For a fresh install, temporarily disable `disable_env_credential_login`, deploy,
-and use `admin` plus `LITELLM_MASTER_KEY` from `/var/lib/litellm/proxy.env` to create
-a personal proxy-admin account with a password. Re-enable the setting and deploy
-again, then test your personal login in a private window.
+SSO is restricted to `keidel.me` email addresses. On first login, identify the
+Authelia user ID shown by LiteLLM and add `PROXY_ADMIN_ID=<user-id>` to the
+protected `proxy.env` on nixie, then restart `podman-litellm`. This grants that
+identity proxy-admin access. Keep the master key as the break-glass/API admin
+credential; do not use it for routine UI login.
 
 ## Back up before upgrades
 
