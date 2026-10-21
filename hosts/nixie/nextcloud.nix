@@ -25,10 +25,33 @@
     };
   };
 
-  services.nginx.virtualHosts = lib.mkIf config.services.nextcloud.enable {
-    ${config.services.nextcloud.hostName} = {
-      forceSSL = true;
-      enableACME = true;
-    };
+  # Keep ownership and the local database intact while the app is disabled.
+  users.users.nextcloud = lib.mkIf (!config.services.nextcloud.enable) {
+    home = config.services.nextcloud.home;
+    group = "nextcloud";
+    isSystemUser = true;
+  };
+  users.groups.nextcloud = {};
+
+  services.mysql = lib.mkIf (!config.services.nextcloud.enable) {
+    enable = true;
+    package = pkgs.mariadb;
+    ensureDatabases = [ config.services.nextcloud.config.dbname ];
+    ensureUsers = [
+      {
+        name = config.services.nextcloud.config.dbuser;
+        ensurePermissions = {
+          "${config.services.nextcloud.config.dbname}.*" = "ALL PRIVILEGES";
+        };
+      }
+    ];
+  };
+
+  services.nginx.virtualHosts.${config.services.nextcloud.hostName} = {
+    forceSSL = true;
+    enableACME = true;
+    extraConfig = lib.mkIf (!config.services.nextcloud.enable) ''
+      return 503;
+    '';
   };
 }

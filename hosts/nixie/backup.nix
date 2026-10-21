@@ -1,4 +1,4 @@
-{ ... }:
+{ config, lib, ... }:
 {
   systemd.timers."nextcloud-bak" = {
     wantedBy = [ "timers.target" ];
@@ -14,14 +14,18 @@
       set -euo pipefail
       d=`date +"%Y%m%d-%H%M"`
 
-      /run/current-system/sw/bin/nextcloud-occ maintenance:mode --on
+      ${lib.optionalString config.services.nextcloud.enable ''
+        /run/current-system/sw/bin/nextcloud-occ maintenance:mode --on
+      ''}
 
       /run/current-system/sw/bin/mysqldump --add-drop-database \
                 --complete-insert \
                 --create-options \
                 nextcloud > /var/lib/nextcloud/db_$d.sql
 
-      /run/current-system/sw/bin/nextcloud-occ maintenance:mode --off
+      ${lib.optionalString config.services.nextcloud.enable ''
+        /run/current-system/sw/bin/nextcloud-occ maintenance:mode --off
+      ''}
 
       /run/current-system/sw/bin/restic \
         --password-file /run/agenix/restic \
