@@ -14,6 +14,7 @@ let
     HOME = stateDir;
     XDG_CACHE_HOME = "${stateDir}/cache";
     DO_NOT_TRACK = "True";
+    LITELLM_MODE = "PRODUCTION";
   };
   proxyConfig = (pkgs.formats.yaml { }).generate "litellm.yaml" {
     model_list = [
@@ -33,8 +34,11 @@ let
       database_url = "os.environ/DATABASE_URL";
       store_model_in_db = true;
       store_prompts_in_spend_logs = true;
+      proxy_batch_write_at = 60;
+      database_connection_pool_limit = 10;
     };
     litellm_settings = {
+      request_timeout = 600;
       cache = true;
       cache_params = {
         type = "redis";
