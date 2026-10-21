@@ -5,8 +5,10 @@
   inputs,
   ...
 }: {
+  # Temporarily disabled while the PHP zero-day is being patched. This only
+  # stops the application; Nextcloud data and database configuration are kept.
   services.nextcloud = {
-    enable = true;
+    enable = false;
 
     package = pkgs.nextcloud34;
     hostName = "cloud.keidel.me";
@@ -23,8 +25,10 @@
     };
   };
 
-  services.nginx.virtualHosts.${config.services.nextcloud.hostName} = {
-    forceSSL = true;
-    enableACME = true;
+  services.nginx.virtualHosts = lib.mkIf config.services.nextcloud.enable {
+    ${config.services.nextcloud.hostName} = {
+      forceSSL = true;
+      enableACME = true;
+    };
   };
 }
