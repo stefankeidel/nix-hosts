@@ -20,13 +20,13 @@ function requiredEnvironment(name: string): string {
   return value;
 }
 
-function connectionOptions() {
+function connectionOptions(role: string) {
   return {
     account: requiredEnvironment("SNOWFLAKE_ACCOUNT"),
     username: requiredEnvironment("SNOWFLAKE_USER"),
     database: requiredEnvironment("SNOWFLAKE_DATABASE"),
     warehouse: process.env.SNOWFLAKE_WAREHOUSE?.trim() || "COMPUTE_WH",
-    role: requiredEnvironment("SNOWFLAKE_ROLE"),
+    role,
     authenticator: "SNOWFLAKE_JWT" as const,
     privateKeyPath: requiredEnvironment("SNOWFLAKE_KEYFILE_PATH"),
     privateKeyPass: requiredEnvironment("SNOWFLAKE_KEYFILE_PASSWORD"),
@@ -181,45 +181,47 @@ function toolError(error: unknown) {
 }
 
 export default function piSnowflake(pi: ExtensionAPI) {
-  let connectionPromise: Promise<SnowflakeConnection> | undefined;
+  // Separate sessions prevent concurrent queries from changing each other's primary role.
+  const connections = new Map<string, Promise<SnowflakeConnection>>();
 
-  function connection(): Promise<SnowflakeConnection> {
-    if (!connectionPromise) {
-      connectionPromise = new Promise((resolve, reject) => {
-        const candidate = snowflake.createConnection(connectionOptions());
+  function connection(role: string): Promise<SnowflakeConnection> {
+    let pending = connections.get(role);
+    if (!pending) {
+      pending = new Promise<SnowflakeConnection>((resolve, reject) => {
+        const candidate = snowflake.createConnection(connectionOptions(role));
         candidate.connect((error, establishedConnection) => {
-          if (error) {
-            connectionPromise = undefined;
-            reject(error);
-          } else {
-            resolve(establishedConnection);
-          }
+          if (error) reject(error);
+          else resolve(establishedConnection);
         });
+      }).catch((error) => {
+        connections.delete(role);
+        throw error;
       });
+      connections.set(role, pending);
     }
-    return connectionPromise;
+    return pending;
   }
 
   pi.on("session_shutdown", async () => {
-    const pendingConnection = connectionPromise;
-    connectionPromise = undefined;
-    if (!pendingConnection) return;
-
-    try {
-      const activeConnection = await pendingConnection;
+    const pendingConnections = [...connections.values()];
+    connections.clear();
+    await Promise.allSettled(pendingConnections.map(async (pending) => {
+      const activeConnection = await pending;
       await new Promise<void>((resolve) => activeConnection.destroy(() => resolve()));
-    } catch {
-      // A failed connection has nothing to clean up.
-    }
+    }));
   });
 
   pi.registerTool({
     name: "snowflake_query",
     label: "Query Snowflake",
     description:
-      "Execute one policy-checked, read-only Snowflake query and inspect a bounded JSON result. Mutations, multiple statements, and SYSTEM$ functions are rejected.",
+      "Execute one policy-checked, read-only Snowflake query and inspect a bounded JSON result. Optionally select the primary role for this query; omitted roles default to SNOWFLAKE_ROLE, not the previous query's role. Mutations, multiple statements, and SYSTEM$ functions are rejected.",
     parameters: Type.Object({
       sql: Type.String({ minLength: 1, description: "One read-only Snowflake SQL statement" }),
+      role: Type.Optional(Type.String({
+        minLength: 1,
+        description: "Primary Snowflake role for this query; defaults to SNOWFLAKE_ROLE",
+      })),
       binds: Type.Optional(
         Type.Array(
           Type.Union([Type.String(), Type.Number(), Type.Boolean(), Type.Null()]),
@@ -236,14 +238,18 @@ export default function piSnowflake(pi: ExtensionAPI) {
     }),
     async execute(
       _toolCallId,
-      { sql, binds = [], maxRows = snowflakePolicy.maxRows }: { sql: string; binds?: BindValue[]; maxRows?: number },
+      { sql, role, binds = [], maxRows = snowflakePolicy.maxRows }: {
+        sql: string; role?: string; binds?: BindValue[]; maxRows?: number;
+      },
       signal,
     ) {
       try {
         validateQuery(sql);
         if (signal?.aborted) throw new Error("Query cancelled.");
 
-        const activeConnection = await connection();
+        const primaryRole = role === undefined ? requiredEnvironment("SNOWFLAKE_ROLE") : role.trim();
+        if (!primaryRole) throw new Error("Role must not be empty.");
+        const activeConnection = await connection(primaryRole);
         const startedAt = Date.now();
         const execution = await new Promise<{ statement: any; rows: unknown[] }>((resolve, reject) => {
           let statement: any;
@@ -289,6 +295,7 @@ export default function piSnowflake(pi: ExtensionAPI) {
         const allRows = execution.rows;
         const limitedRows = allRows.slice(0, maxRows);
         const metadata = {
+          role: primaryRole,
           queryId: execution.statement.getStatementId?.() ?? null,
           durationMs: Date.now() - startedAt,
           totalRowCount: allRows.length,
