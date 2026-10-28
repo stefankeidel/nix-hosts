@@ -241,4 +241,34 @@
       };
     };
   };
+
+  launchd.agents.zsh-history-backup = {
+    enable = true;
+    domain = "gui";
+    config = {
+      ProgramArguments = [
+        (toString (pkgs.writeShellScript "zsh-history-backup" ''
+          set -euo pipefail
+          history_file="${config.home.homeDirectory}/.zsh_history"
+          backup_dir="${config.home.homeDirectory}/.local/state/zsh-history-backups"
+
+          [[ -s "$history_file" ]] || exit 0
+
+          umask 077
+          /bin/mkdir -p "$backup_dir"
+          /bin/chmod 700 "$backup_dir"
+
+          snapshot="$backup_dir/history-$(/bin/date '+%Y-%m-%d-%H%M%S')"
+          /bin/cp "$history_file" "$snapshot.tmp"
+          /bin/chmod 600 "$snapshot.tmp"
+          /bin/mv "$snapshot.tmp" "$snapshot"
+        ''))
+      ];
+      StartCalendarInterval = {
+        Hour = 3;
+        Minute = 15;
+      };
+      ProcessType = "Background";
+    };
+  };
 }
