@@ -251,6 +251,9 @@ in
         proxy_set_header X-Forwarded-Proto $scheme;
         proxy_set_header X-Forwarded-Host $host;
 
+        # Large prompts and multimodal inputs can exceed nginx's 1 MiB default.
+        client_max_body_size 100m;
+
         # LiteLLM inference responses can exceed nginx's default header buffer.
         # Keep buffer sizes consistent even though response-body buffering is off.
         proxy_buffer_size 32k;
