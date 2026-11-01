@@ -3,6 +3,10 @@ name: Test Build on Linux
 on:
   pull_request:
 
+permissions:
+  contents: read
+  pull-requests: write
+
 jobs:
   build-nixie:
     name: Build Nix Flake Nixie
@@ -18,5 +22,31 @@ jobs:
       - name: Check Flake Inputs
         uses: DeterminateSystems/flake-checker-action@main
 
-      - name: Build Nix Flake
-        run: nix build '.#nixosConfigurations.nixie.config.system.build.toplevel'
+      - name: Build PR and base Nixie systems
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+        run: |
+          nix build '.#nixosConfigurations.nixie.config.system.build.toplevel' -o result-pr
+          git worktree add /tmp/nixie-base "$BASE_SHA"
+          nix build '/tmp/nixie-base#nixosConfigurations.nixie.config.system.build.toplevel' -o result-base
+
+      - name: Compare Nixie systems
+        run: nix run nixpkgs#nvd -- diff result-base result-pr > nixie-diff.txt || test "$?" -eq 1
+
+      - name: Comment Nixie changes on PR
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const marker = '<!-- nixie-system-diff -->';
+            const diff = fs.readFileSync('nixie-diff.txt', 'utf8').trim();
+            const body = `${marker}\n### Nixie system changes\n\n${diff ? `\`\`\`diff\n${diff.slice(0, 60000)}\n\`\`\`` : 'No package or store-path changes.'}`;
+            const { owner, repo } = context.repo;
+            const issue_number = context.issue.number;
+            const comments = await github.rest.issues.listComments({ owner, repo, issue_number });
+            const existing = comments.data.find(comment => comment.body.includes(marker));
+            if (existing) {
+              await github.rest.issues.updateComment({ owner, repo, comment_id: existing.id, body });
+            } else {
+              await github.rest.issues.createComment({ owner, repo, issue_number, body });
+            }
