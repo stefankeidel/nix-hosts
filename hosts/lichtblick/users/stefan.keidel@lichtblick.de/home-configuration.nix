@@ -11,8 +11,8 @@
 
   home = {
     packages = with pkgs; [
-      (callPackage ../../../../packages/akv-tui-rs.nix { })
-      (callPackage ../../../../packages/squad-cli.nix { })
+      #(callPackage ../../../../packages/akv-tui-rs.nix { })
+      #(callPackage ../../../../packages/squad-cli.nix { })
       # Use the stable Python closure so Azure CLI comes from the binary cache.
       inputs.nix-stable.legacyPackages.${pkgs.stdenv.hostPlatform.system}.azure-cli
       azure-storage-azcopy
