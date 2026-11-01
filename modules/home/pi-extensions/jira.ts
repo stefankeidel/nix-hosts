@@ -482,6 +482,94 @@ export default function jiraRead(pi: ExtensionAPI) {
   });
 
   pi.registerTool({
+    name: "list_issue_transitions",
+    label: "List Jira issue transitions",
+    description: "List currently available workflow transitions for a Jira issue. Use the returned transition ID, not a status ID, with transition_issue.",
+    parameters: issueKeyParameters,
+    async execute(_toolCallId, { issueKey }: JiraReadInput, signal) {
+      try {
+        const key = normalizedIssueKey(issueKey);
+        const page = await jiraGet(
+          `/rest/api/3/issue/${encodeURIComponent(key)}/transitions?expand=transitions.fields`,
+          signal,
+        );
+        const transitions = (page.transitions ?? []).map((transition: Record<string, any>) => ({
+          id: transition.id,
+          name: transition.name,
+          toStatus: transition.to?.name ?? null,
+          requiredFields: Object.entries(transition.fields ?? {})
+            .filter(([, field]) => (field as { required?: boolean }).required)
+            .map(([id, field]) => ({ id, name: (field as { name?: string }).name ?? id })),
+        }));
+        return {
+          content: [{ type: "text", text: JSON.stringify({ key, transitions }, null, 2) }],
+          details: { issueKey: key, transitionCount: transitions.length },
+        };
+      } catch (error) {
+        return toolError("Unable to list Jira issue transitions", error);
+      }
+    },
+  });
+
+  pi.registerTool({
+    name: "transition_issue",
+    label: "Transition Jira issue",
+    description: "Change a Jira issue's status using a currently available transition ID from list_issue_transitions. Requires interactive confirmation. Transitions requiring additional fields may fail; arbitrary field updates are not supported.",
+    parameters: Type.Intersect([
+      issueKeyParameters,
+      Type.Object({ transitionId: Type.String({ minLength: 1, pattern: "^[0-9]+$", description: "Workflow transition ID from list_issue_transitions, not the destination status ID" }) }),
+    ]),
+    async execute(_toolCallId, { issueKey, transitionId }: JiraReadInput & { transitionId: string }, signal, _onUpdate, ctx) {
+      try {
+        const key = normalizedIssueKey(issueKey);
+        if (!/^[0-9]+$/.test(transitionId)) throw new Error("Transition ID must contain only digits.");
+        const path = `/rest/api/3/issue/${encodeURIComponent(key)}/transitions`;
+        const page = await jiraGet(path, signal);
+        const transition = (page.transitions ?? []).find((candidate: { id: string }) => candidate.id === transitionId);
+        if (!transition) throw new Error("Transition is not currently available. List the issue's transitions again.");
+        await confirmJiraWrite(ctx, `Transition ${key} via "${transition.name}" to "${transition.to?.name ?? "unknown status"}" (transition ${transitionId})?`);
+        await jiraRequest(path, "POST", { transition: { id: transitionId } }, signal);
+        return {
+          content: [{ type: "text", text: `Applied transition "${transition.name}" to ${key}.` }],
+          details: { issueKey: key, transitionId },
+        };
+      } catch (error) {
+        return toolError("Unable to transition Jira issue", error);
+      }
+    },
+  });
+
+  pi.registerTool({
+    name: "assign_issue_to_me",
+    label: "Assign Jira issue to me",
+    description: "Assign a Jira issue only to the authenticated Jira user. No other assignee or unassignment is supported. Requires interactive confirmation.",
+    parameters: issueKeyParameters,
+    async execute(_toolCallId, { issueKey }: JiraReadInput, signal, _onUpdate, ctx) {
+      try {
+        const key = normalizedIssueKey(issueKey);
+        // Resolve identity from Jira, never from a caller-supplied account ID.
+        const user = await jiraGet("/rest/api/3/myself", signal);
+        if (typeof user.accountId !== "string" || !user.accountId.trim()) {
+          throw new Error("Jira did not return an account ID for the authenticated user.");
+        }
+        await confirmJiraWrite(ctx, `Assign ${key} to yourself (${user.displayName ?? user.accountId})?`);
+        await jiraRequest(
+          `/rest/api/3/issue/${encodeURIComponent(key)}/assignee`,
+          "PUT",
+          { accountId: user.accountId },
+          signal,
+        );
+        return {
+          content: [{ type: "text", text: `Assigned ${key} to ${user.displayName ?? user.accountId}.` }],
+          details: { issueKey: key, accountId: user.accountId },
+        };
+      } catch (error) {
+        return toolError("Unable to assign Jira issue to yourself", error);
+      }
+    },
+  });
+
+  pi.registerTool({
     name: "create_issue",
     label: "Create Jira issue",
     description: "Create a Jira issue in the CD (Central Data) project only. The optional epicKey links the new issue to an epic.",
