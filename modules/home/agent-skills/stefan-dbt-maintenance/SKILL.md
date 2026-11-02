@@ -7,23 +7,38 @@ description: >-
 
 # Data Platform dbt maintenance
 
-1. **Find the DM ticket first.** Search Jira project `DM` for the summary/text
-   `Data Platform dbt has errors`, prioritizing the newest ticket that is open
-   or In Progress and matches the alert. If multiple matching tickets are found,
-   consolidate all investigation, code, and MR work under the newest matching
-   active ticket; comment on every other matching ticket with the canonical
-   ticket key and a link or summary of the consolidated work. If there is no
-   active match, inspect recent matching Done tickets for context, but ask
-   before starting work against a closed ticket or inventing a DM key.
-2. **Set ownership and start work.** Read each matching active ticket and use
-   `assign_issue_to_me` for any that are unassigned; preserve existing assignees
-   and leave closed tickets unchanged. For the canonical ticket, use
-   `list_issue_transitions` to find the transition whose destination is
-   `In Progress`, then apply its ID with `transition_issue`. Skip the transition
-   if the ticket is already In Progress. Keep investigation and status movement
-   consolidated on the canonical ticket, not the older duplicates. Respect the
-   interactive confirmations; if assignment or transition is unavailable or
-   denied, report the blocker rather than claiming it succeeded.
+1. **Find the DM ticket first.** Search Jira project `DM` for both summary/text
+   patterns: `Data Platform dbt has errors` and
+   `Airflow DAG data_platform_daily_controller failed at` (for example,
+   `DM-3350`). Read matching tickets and compare the failure timestamps in the
+   alerts, using ticket creation times only when alert timestamps are absent.
+   If a dbt failure ticket and a controller failure ticket refer to the same
+   incident and their failure times are within one hour, use the controller
+   ticket as the canonical ticket for the fix, even if the dbt ticket is newer.
+   Do not merge unrelated failures solely because their timestamps are close.
+   Otherwise, prioritize the newest matching active ticket. If multiple active
+   controller tickets match the incident, use the newest. Consolidate all
+   investigation, code, and MR work under the canonical ticket. If the preferred
+   ticket is closed or there is no active match, inspect recent matching Done
+   tickets for context, but ask before starting work against a closed ticket or
+   inventing a DM key.
+2. **Set ownership, comment on duplicates, and start work.** For every matching
+   duplicate still in `TODO`, assign it to yourself with `assign_issue_to_me`
+   (even if it already has another assignee). Post a comment with `add_comment`
+   explicitly naming the canonical ticket number that will be used for the fix,
+   for example: `Duplicate alert for the same incident. The fix will be tracked
+   in DM-XXXX.` Verify that the comment was posted successfully before closing
+   the duplicate; the comment is mandatory. Then use `list_issue_transitions`
+   to find the transition whose destination is `Done` and apply its ID with
+   `transition_issue`. Never close a duplicate without the canonical-ticket
+   comment. Comment on other active duplicates with the same canonical ticket
+   reference, but preserve their assignees and statuses; leave closed tickets
+   unchanged. Assign the canonical ticket to yourself if it is unassigned;
+   otherwise preserve its existing assignee. Use `list_issue_transitions` to
+   find the transition whose destination is `In Progress`, then apply its ID
+   with `transition_issue`; skip this if already In Progress. Respect interactive
+   confirmations. If a comment, assignment, or transition fails or is denied,
+   report the blocker and any remaining cleanup rather than claiming success.
 3. **Trace the production run.** In Airflow, inspect recent runs of
    `data_platform_dbt` around the alert time. Find the failed `dbt` task, read
    its logs (paginate fully), and record the failing test/model names, result
