@@ -237,7 +237,7 @@
 
       oh-my-zsh = {
         enable = true;
-        plugins = ["git" "z" "terraform" "poetry"];
+        plugins = ["git" "z" "terraform"];
       };
     };
   };
