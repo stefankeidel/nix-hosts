@@ -2,7 +2,7 @@
 let
   stateDir = "/var/lib/litellm";
   # Match the working local stack; upgrade deliberately, including DB migrations.
-  image = "ghcr.io/berriai/litellm:v1.107.0-dev.1";
+  image = "ghcr.io/berriai/litellm:v1.108.0";
   uid = "65532";
   gid = "65532";
   providerEnvironment = {
@@ -188,8 +188,10 @@ in
         # Canonical public issuer for CLI login discovery and OAuth redirects.
         # Do not rely on forwarded headers from the container bridge.
         PROXY_BASE_URL = "https://llm.keidel.me";
-        # Prisma's host query parameter selects a Unix socket, not TCP.
-        DATABASE_URL = "postgresql://litellm@localhost/litellm?host=/run/postgresql";
+        # Prisma uses the host query parameter for Unix sockets. LiteLLM 1.108's
+        # migration coordinator strips that parameter before calling libpq, so
+        # also encode the socket directory in the authority for libpq clients.
+        DATABASE_URL = "postgresql://litellm@%2Frun%2Fpostgresql/litellm?host=/run/postgresql";
       };
       environmentFiles = [
         "${stateDir}/proxy.env"
