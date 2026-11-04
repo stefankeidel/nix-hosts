@@ -2,7 +2,7 @@
 let
   stateDir = "/var/lib/litellm";
   # Match the working local stack; upgrade deliberately, including DB migrations.
-  image = "ghcr.io/berriai/litellm:v1.107.0-dev.1";
+  image = "ghcr.io/berriai/litellm:v1.108.0";
   uid = "65532";
   gid = "65532";
   providerEnvironment = {
