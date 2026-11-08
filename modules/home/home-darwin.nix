@@ -61,7 +61,7 @@
       pwgen
       python314
       starship
-      tidy-viewer
+      #tidy-viewer
       tree-sitter
       ty
       uv
