@@ -6,6 +6,7 @@
   pkgs,
   lib,
   inputs,
+  hostName,
   ...
 }:
 
@@ -32,7 +33,24 @@
   nix.settings.experimental-features = "nix-command flakes";
 
   # terraform is unfree :-/
-  nixpkgs.config.allowUnfree = true;
+  nixpkgs = {
+    config = {
+      allowUnfree = true;
+      # Upstream marks Fabric broken with Invoke >= 3; allow it explicitly.
+      problems.handlers.fabric.broken = "warn";
+    };
+    overlays = [
+      (_final: prev: {
+        # Build dependencies need Swift, not its uncached LLDB REPL or LSP.
+        swift = prev.swift.override {
+          enableRepl = false;
+          enableSourceKitLSP = false;
+        };
+      })
+    ];
+  };
+
+  home-manager.extraSpecialArgs.host = hostName;
 
   # Disable auto-start, use 'sudo launchctl start org.nixos.linux-builder'
   launchd.daemons.linux-builder.serviceConfig = {

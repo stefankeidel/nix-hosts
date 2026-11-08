@@ -72,57 +72,7 @@
   };
 
   # Load the blueprint
-  outputs =
-    inputs:
-    let
-      blueprintOutputs = inputs.blueprint { inherit inputs; };
-
-      mkDarwin =
-        {
-          host,
-          user,
-        }:
-        inputs.nix-darwin.lib.darwinSystem {
-          pkgs = import inputs.nixpkgs {
-            system = "aarch64-darwin";
-            config = {
-              allowUnfree = true;
-              # Upstream marks Fabric broken with Invoke >= 3; allow it explicitly.
-              problems.handlers.fabric.broken = "warn";
-            };
-          };
-          specialArgs = {
-            inherit inputs;
-          };
-          modules = [
-            (./. + "/hosts/${host}/darwin-configuration.nix")
-            inputs.home-manager.darwinModules.home-manager
-            {
-              home-manager = {
-                useGlobalPkgs = true;
-                useUserPackages = true;
-                extraSpecialArgs = {
-                  inherit inputs host;
-                };
-                users.${user} = import (./. + "/hosts/${host}/users/${user}/home-configuration.nix");
-              };
-            }
-          ];
-        };
-    in
-    blueprintOutputs
-    // {
-      darwinConfigurations = blueprintOutputs.darwinConfigurations // {
-        mini = mkDarwin {
-          host = "mini";
-          user = "stefan";
-        };
-        lichtblick = mkDarwin {
-          host = "lichtblick";
-          user = "stefan.keidel@lichtblick.de";
-        };
-      };
-    };
+  outputs = inputs: inputs.blueprint { inherit inputs; };
 
   nixConfig = {
     extra-substituters = [
