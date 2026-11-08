@@ -136,8 +136,8 @@ in {
         ".vim/swaps/.keep".source = builtins.toFile "keep" "";
         ".vim/undo/.keep".source = builtins.toFile "keep" "";
         "Proton".source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/Library/CloudStorage/ProtonDrive-stefan@keidel.me-folder";
-        "/Library/Application Support/Code/User/settings.json".source = ../../dotfiles/vscode-settings.json;
-        "/Library/Application Support/Code - Insiders/User/settings.json".source = ../../dotfiles/vscode-settings.json;
+        #"/Library/Application Support/Code/User/settings.json".source = ../../dotfiles/vscode-settings.json;
+        #"/Library/Application Support/Code - Insiders/User/settings.json".source = ../../dotfiles/vscode-settings.json;
       }
       (lib.mkIf (host == "lichtblick") {
         ".agents/skills/stefan-debug-gitlab/SKILL.md".source = ./agent-skills/stefan-debug-gitlab/SKILL.md;
