@@ -16,7 +16,7 @@
       # Use the stable Python closure so Azure CLI comes from the binary cache.
       inputs.nix-stable.legacyPackages.${pkgs.stdenv.hostPlatform.system}.azure-cli
       azure-storage-azcopy
-      datadog-pup
+      #datadog-pup
       glab
       k9s
       kubectl
