@@ -116,7 +116,6 @@
     casks = [
       "soulseek"
       "musicbrainz-picard"
-      "marta"
       "proton-drive"
       "tinycast"
       "transmission"

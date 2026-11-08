@@ -107,7 +107,6 @@
     # Casks = `brew install --cask`
     casks = [
       "firefox"
-      "marta"
       "tinycast"
       "proton-drive"
     ];
