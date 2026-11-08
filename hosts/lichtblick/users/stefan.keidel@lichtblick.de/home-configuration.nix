@@ -23,6 +23,7 @@
       kubectx
       kubelogin
       kubernetes-helm
+      appcleaner
       (writeShellScriptBin "do_bak" ''
         #!/usr/bin/env zsh
         set -e
