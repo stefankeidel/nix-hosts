@@ -39,15 +39,6 @@
       # Upstream marks Fabric broken with Invoke >= 3; allow it explicitly.
       problems.handlers.fabric.broken = "warn";
     };
-    overlays = [
-      (_final: prev: {
-        # Build dependencies need Swift, not its uncached LLDB REPL or LSP.
-        swift = prev.swift.override {
-          enableRepl = false;
-          enableSourceKitLSP = false;
-        };
-      })
-    ];
   };
 
   home-manager.extraSpecialArgs.host = hostName;

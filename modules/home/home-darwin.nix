@@ -5,7 +5,13 @@
   lib,
   pkgs,
   ...
-}: {
+}:
+let
+  stablePkgs = import inputs.nix-stable {
+    system = pkgs.stdenv.hostPlatform.system;
+    config.allowUnfree = true;
+  };
+in {
   imports = [
     inputs.self.homeModules.ghostty
     inputs.self.homeModules.helix
@@ -43,7 +49,8 @@
       docker-buildx
       docker-client
       emacs-lsp-booster
-      feishin
+      # Keep the cached MPV dependency and avoid building the Swift toolchain.
+      stablePkgs.feishin
       gh
       imagemagick
       lazydocker
@@ -55,7 +62,8 @@
       podman-compose
       poppler-utils
       postgresql
-      pre-commit
+      # Unstable's test dependencies currently require a .NET source build.
+      stablePkgs.pre-commit
       proton-pass-cli
       proton-vpn
       pwgen
