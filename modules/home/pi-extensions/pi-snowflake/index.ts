@@ -10,6 +10,7 @@ snowflake.configure({ logLevel: "ERROR" });
 type BindValue = string | number | boolean | null;
 type SnowflakeConnection = ReturnType<typeof snowflake.createConnection>;
 
+const DEFAULT_ROLE = "CENTRAL_DATA_DATA_DEVELOPER";
 const readOnlyStarts = new Set(["SELECT", "WITH", "SHOW", "DESCRIBE", "DESC", "EXPLAIN"]);
 const forbiddenSql = /\b(?:INSERT|UPDATE|DELETE|MERGE|COPY|PUT|GET|REMOVE|CREATE|ALTER|DROP|TRUNCATE|UNDROP|GRANT|REVOKE|CALL|EXECUTE|USE|BEGIN|COMMIT|ROLLBACK)\b/i;
 const systemFunction = /\bSYSTEM\s*\$/i;
@@ -215,12 +216,12 @@ export default function piSnowflake(pi: ExtensionAPI) {
     name: "snowflake_query",
     label: "Query Snowflake",
     description:
-      "Execute one policy-checked, read-only Snowflake query and inspect a bounded JSON result. Optionally select the primary role for this query; omitted roles default to SNOWFLAKE_ROLE, not the previous query's role. Mutations, multiple statements, and SYSTEM$ functions are rejected.",
+      "Execute one policy-checked, read-only Snowflake query and inspect a bounded JSON result. Optionally select the primary role for this query; omitted roles default to CENTRAL_DATA_DATA_DEVELOPER, not the previous query's role. Mutations, multiple statements, and SYSTEM$ functions are rejected.",
     parameters: Type.Object({
       sql: Type.String({ minLength: 1, description: "One read-only Snowflake SQL statement" }),
       role: Type.Optional(Type.String({
         minLength: 1,
-        description: "Primary Snowflake role for this query; defaults to SNOWFLAKE_ROLE",
+        description: `Primary Snowflake role for this query; defaults to ${DEFAULT_ROLE}`,
       })),
       binds: Type.Optional(
         Type.Array(
@@ -247,7 +248,7 @@ export default function piSnowflake(pi: ExtensionAPI) {
         validateQuery(sql);
         if (signal?.aborted) throw new Error("Query cancelled.");
 
-        const primaryRole = role === undefined ? requiredEnvironment("SNOWFLAKE_ROLE") : role.trim();
+        const primaryRole = role === undefined ? DEFAULT_ROLE : role.trim();
         if (!primaryRole) throw new Error("Role must not be empty.");
         const activeConnection = await connection(primaryRole);
         const startedAt = Date.now();
