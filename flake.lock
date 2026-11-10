@@ -504,11 +504,11 @@
         "nixpkgs-x86_64-darwin": "nixpkgs-x86_64-darwin"
       },
       "locked": {
-        "lastModified": 1794151284,
-        "narHash": "sha256-IO8dFdt0gLRGuzIsmi9I1CjwTEwzM3h/9u9eGXMDJBc=",
+        "lastModified": 1794267401,
+        "narHash": "sha256-yeTD5gnq2jPZd4Q9BHgTpBNi8N6nulMmpWpDj6xE/+4=",
         "owner": "lukasl-dev",
         "repo": "pi.nix",
-        "rev": "44a222eff3a82ab6940913daba989f59e298c10d",
+        "rev": "fb02ea6dbc8d72185de7b70cf13b4df1c6a633d8",
         "type": "github"
       },
       "original": {
