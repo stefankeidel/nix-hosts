@@ -14,7 +14,7 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v3.7.0
         with:
           fetch-depth: 0
 
@@ -36,7 +36,7 @@ jobs:
         run: nix run nixpkgs#nvd -- diff result-base result-pr > nixie-diff.txt || test "$?" -eq 1
 
       - name: Comment Nixie changes on PR
-        uses: actions/github-script@v7
+        uses: actions/github-script@v7.1.0
         with:
           script: |
             const fs = require('fs');
