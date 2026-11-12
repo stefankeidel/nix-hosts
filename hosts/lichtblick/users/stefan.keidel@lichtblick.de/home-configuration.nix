@@ -24,7 +24,6 @@
       kubelogin
       kubernetes-helm
       appcleaner
-      snowflake-cli
       (writeShellScriptBin "do_bak" ''
         #!/usr/bin/env zsh
         set -e
