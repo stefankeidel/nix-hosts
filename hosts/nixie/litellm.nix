@@ -1,7 +1,7 @@
 { lib, pkgs, ... }:
 let
   stateDir = "/var/lib/litellm";
-  image = "ghcr.io/berriai/litellm:v1.108.5";
+  image = "ghcr.io/berriai/litellm:v1.109.1";
   uid = "65532";
   gid = "65532";
   providerEnvironment = {
