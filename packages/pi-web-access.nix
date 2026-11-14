@@ -4,7 +4,7 @@ pkgs.buildNpmPackage {
   pname = "pi-web-access";
   version = (builtins.fromJSON (builtins.readFile "${inputs.pi-web-access}/package.json")).version;
   src = inputs.pi-web-access;
-  npmDepsHash = "sha256-W8NDa2tq+qGxF4z4lTQXF6mNAOC3bWiuyeeNIIEbStc=";
+  npmDepsHash = "sha256-kmyoh7lvHssAhSBU2qKqk9ElGgm6Z5BZUtBjy1+hri4=";
 
   # Pi loads TypeScript directly; omit the build toolchain and host-provided peers.
   dontNpmBuild = true;

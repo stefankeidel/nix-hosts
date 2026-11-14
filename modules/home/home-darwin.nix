@@ -49,8 +49,7 @@ in {
       docker-buildx
       docker-client
       emacs-lsp-booster
-      # Keep the cached MPV dependency and avoid building the Swift toolchain.
-      stablePkgs.feishin
+      feishin
       gh
       imagemagick
       lazydocker
