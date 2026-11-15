@@ -6,12 +6,7 @@
   pkgs,
   ...
 }:
-let
-  stablePkgs = import inputs.nix-stable {
-    system = pkgs.stdenv.hostPlatform.system;
-    config.allowUnfree = true;
-  };
-in {
+{
   imports = [
     inputs.self.homeModules.ghostty
     inputs.self.homeModules.helix
@@ -61,8 +56,7 @@ in {
       podman-compose
       poppler-utils
       postgresql
-      # Unstable's test dependencies currently require a .NET source build.
-      stablePkgs.pre-commit
+      pre-commit
       proton-pass-cli
       proton-vpn
       pwgen
