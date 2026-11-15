@@ -20,6 +20,12 @@
 (package! ob-sql-mode)
 (package! org-modern)
 (package! org-present)
+(package! vulpea)
+(package! vulpea-ui)
+;; Not yet available in MELPA.
+(package! vulpea-para
+  :recipe (:host github :repo "d12frosted/vulpea-para")
+  :pin "c47ca23dd5d998236895571626b045f046d99659")
 (package! elfeed)
 
 ;; Development and GitLab

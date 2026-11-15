@@ -13,6 +13,7 @@
     pkgs.dua
     pkgs.eza
     pkgs.fd
+    pkgs.fswatch
     pkgs.git
     pkgs.httpie
     pkgs.jujutsu

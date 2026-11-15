@@ -1,6 +1,36 @@
 ;;; org-config.el -*- lexical-binding: t; -*-
-;;; Agenda, capture, Babel, and presentations.
+;;; Notes, agenda, capture, Babel, and presentations.
 ;; `org-directory' must be set in config.el before Org loads.
+
+(use-package! vulpea
+  :defer t
+  :after-call doom-first-input-hook
+  :init
+  (setq vulpea-db-sync-directories (list org-directory))
+  :config
+  (vulpea-db-autosync-mode +1))
+
+(use-package! vulpea-ui
+  :commands (vulpea-ui-sidebar-toggle))
+
+;; Keep the existing agenda, capture, and refile configuration for now.
+;; `vulpea-para-setup-defaults' opts into PARA's replacements for these.
+(use-package! vulpea-para
+  :after vulpea)
+
+(map! (:prefix ("s-i v" . "vulpea")
+       :desc "Find note" "f" #'vulpea-find
+       :desc "Insert note link" "i" #'vulpea-insert
+       :desc "Create note" "n" #'vulpea-create
+       :desc "Toggle sidebar" "s" #'vulpea-ui-sidebar-toggle
+       :desc "Check notes setup" "d" #'vulpea-doctor
+       (:prefix ("p" . "PARA")
+        :desc "Find area" "a" #'vulpea-para-find-area
+        :desc "Find project" "p" #'vulpea-para-find-project
+        :desc "Find resource" "r" #'vulpea-para-find-resource
+        :desc "Capture area" "A" #'vulpea-para-capture-area
+        :desc "Capture project" "P" #'vulpea-para-capture-project
+        :desc "Check PARA setup" "d" #'vulpea-para-doctor)))
 
 ;; SQL Babel blocks do not prompt; other languages retain confirmation.
 (setq org-confirm-babel-evaluate
