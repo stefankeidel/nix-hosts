@@ -77,7 +77,7 @@ another frame. When COMMAND is given, send it to a new buffer."
 
 (stefan--def-projectile-ghostel-commands "ghostel" "term")
 (stefan--def-projectile-ghostel-commands "copilot" "copilot" "copilot")
-(stefan--def-projectile-ghostel-commands "pi" "pi" "pi")
+(load! "pi-native")
 
 (defun stefan/open-current-gitlab-project ()
   "Open the current Projectile project in the GitLab browser."
@@ -140,6 +140,7 @@ another frame. When COMMAND is given, send it to a new buffer."
       "s-r"   #'+vertico/switch-workspace-buffer
       "s-e"   #'consult-buffer
       "s-i e" #'+workspace/switch-to
+      "s-i x" #'stefan-projectile-run-pi
       "C-c r" #'consult-ripgrep
       "C-s"   #'consult-line
       "s-z"   #'avy-goto-char
