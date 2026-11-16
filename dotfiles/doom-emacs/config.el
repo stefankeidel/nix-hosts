@@ -6,7 +6,7 @@
       doom-variable-pitch-font (font-spec :family "Hack Nerd Font" :size 19)
       doom-theme 'doom-one
       display-line-numbers-type nil
-      org-directory (file-name-as-directory (expand-file-name "~/Proton/orgmode/")))
+      org-directory (file-name-as-directory (expand-file-name "~/Proton/orgmode/para/")))
 
 (load! "navigation")
 (load! "development")

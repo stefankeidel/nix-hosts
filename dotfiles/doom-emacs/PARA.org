@@ -1,0 +1,64 @@
+#+title: A small PARA setup
+
+* Start fresh
+
+The active vault is =~/Proton/orgmode/para/=. The directory is created on
+startup, but notes are only created when you capture them. Older content
+outside it is neither indexed nor migrated. The database stays in Doom's
+local cache, separate from the old index.
+
+Create two or three areas with =s-o A=: ongoing responsibilities, not
+a taxonomy of everything you know. Each gets Notes, Tasks, and Archive.
+Projects are finite TODO headings under an area's Tasks, not separate files.
+Reference notes can live independently and be linked from wherever useful.
+
+* Familiar keys
+
+| Keys          | Action                                      |
+|---------------+---------------------------------------------|
+| s-i a / s-o G | Org agenda dispatcher; SPC opens stock PARA  |
+| s-i c / s-o c | Capture: i task, r read later, p project      |
+| s-o f / s-o n | Find a note; enter a new title to create one  |
+| s-o i         | Insert a note link                          |
+| s-o s         | Toggle the sidebar                          |
+| s-o a         | Find an area                                |
+| s-o p         | Find a project                              |
+| s-o r         | Find a resource                             |
+| s-o A         | Create an area                              |
+| s-o P         | Add a project directly to an area            |
+| s-o g         | Open the stock PARA agenda                  |
+| s-o v         | Agenda for one area                         |
+| s-o x         | Archive a project inside its area           |
+| s-o d         | Check notes setup                           |
+| s-o D         | Check PARA consistency                      |
+
+* Everyday use
+
+- Use =s-i c i= when you need to jot down a task without choosing a home.
+  =s-i c r= keeps Elfeed's read-later capture working as an ordinary task.
+- Finish capture with =C-c C-c=. Refile with =C-c C-w= to an area's Tasks
+  heading or a project. Remove the =REFILE= tag after filing it.
+- For a project, use =s-i c p=, choose its area, and describe a finish line.
+  Add ordinary TODO subtasks underneath it.
+- Keep states simple: =TODO=, =DONE=, =CANCELLED=. The stock agenda uses
+  tags: =FOCUS= for actions to foreground, =WAITING= for blocked work,
+  =HOLD= for paused work, and =REFILE= for unsorted captures. Set tags
+  with =C-c C-q=; no separate next-action state or review ritual required.
+- Save after editing: the =agenda= file tag and database update automatically.
+- Mark a project and its remaining tasks done/cancelled before archiving it.
+  History remains in its area's Archive subtree, outside active views.
+
+The stock setup also supplies person/meeting capture and quarter views;
+ignore them unless useful. No additional workflow is required to use them.
+
+* Applying
+
+Apply the repository's usual Home Manager / Darwin configuration and restart
+Emacs. No new packages or pin updates are needed. Prefer a restart over
+reloading into an Emacs session that still holds the old configuration.
+
+* Sources
+
+- https://www.d12frosted.io/posts/2026-06-18-para-not-gtd
+- https://fortelabs.com/blog/para/
+- https://github.com/d12frosted/vulpea-para/blob/master/docs/getting-started.org
