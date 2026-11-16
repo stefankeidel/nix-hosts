@@ -39,6 +39,15 @@ in
       };
     };
 
+    mcp = lib.optionalAttrs (host == "lichtblick") {
+      mcpServers.airflow-dev = {
+        url = "https://airflow-mcp.lichtblick-devapps.de/mcp";
+        description = "Dev Airflow MCP identity test (whoami only)";
+        exposure = "direct";
+        oauth.clientRegistration = "dcr";
+      };
+    };
+
     promptTemplates = [
       ./pi-prompts/review.md
     ];
