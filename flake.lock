@@ -601,6 +601,22 @@
         "type": "github"
       }
     },
+    "pi-subagents": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1794870914,
+        "narHash": "sha256-DTe0j9JQfsXD3O9eeu/Tz7cnvsdM2bjtn63wqHYphu8=",
+        "owner": "nicobailon",
+        "repo": "pi-subagents",
+        "rev": "4aa4ddb0ecb7ad56a6c9e56c96f39f7877a1550f",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nicobailon",
+        "repo": "pi-subagents",
+        "type": "github"
+      }
+    },
     "pi-web-access": {
       "flake": false,
       "locked": {
@@ -634,6 +650,7 @@
         "pi-memory": "pi-memory",
         "pi-observational-memory": "pi-observational-memory",
         "pi-provider-litellm": "pi-provider-litellm",
+        "pi-subagents": "pi-subagents",
         "pi-web-access": "pi-web-access",
         "stefan-website": "stefan-website"
       }

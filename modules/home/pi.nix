@@ -56,11 +56,13 @@ in
       ./pi-extensions/commands.ts
       ./pi-extensions/extensions.ts
       ./pi-extensions/permission-gate.ts
+      "${./pi-extensions/pi-vulpea}/index.ts"
       "${xlsxExtension}/index.ts"
       "${inputs.self.packages.${pkgs.stdenv.hostPlatform.system}.pi-web-access}/index.ts"
       "${inputs.pi-memory}/index.ts"
       "${inputs.pi-observational-memory}/src/index.ts"
       "${inputs.pi-provider-litellm}/src/index.ts"
+      "${inputs.self.packages.${pkgs.stdenv.hostPlatform.system}.pi-subagents}/index.ts"
     ]
     ++ lib.optionals (host == "lichtblick") [
       "${inputs.pi-gitlab}/src/index.ts"

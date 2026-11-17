@@ -59,6 +59,11 @@
       flake = false;
     };
 
+    pi-subagents = {
+      url = "github:nicobailon/pi-subagents";
+      flake = false;
+    };
+
     pi-gitlab = {
       url = "github:stefankeidel/pi-gitlab";
       flake = false;
