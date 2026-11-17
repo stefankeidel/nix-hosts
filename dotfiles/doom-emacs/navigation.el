@@ -79,6 +79,22 @@ another frame. When COMMAND is given, send it to a new buffer."
 (stefan--def-projectile-ghostel-commands "copilot" "copilot" "copilot")
 (stefan--def-projectile-ghostel-commands "pi" "pi" "pi")
 
+(defun stefan-personal-assistant ()
+  "Open or return to the personal assistant Pi session in the Org directory."
+  (interactive)
+  (require 'ghostel)
+  (let* ((buffer-name "**personal assistant**")
+         (existing (get-buffer buffer-name)))
+    (if existing
+        (switch-to-buffer existing)
+      (let ((default-directory (expand-file-name "~/Proton/orgmode/"))
+            (ghostel-buffer-name buffer-name))
+        (unless (file-directory-p default-directory)
+          (user-error "Org directory does not exist: %s" default-directory))
+        (with-current-buffer (ghostel)
+          (ghostel-send-string "pi --model chatgpt/gpt-6.1-sol --name 'personal assistant'")
+          (ghostel-send-string "\r"))))))
+
 (defun stefan/open-current-gitlab-project ()
   "Open the current Projectile project in the GitLab browser."
   (interactive)
@@ -139,6 +155,7 @@ another frame. When COMMAND is given, send it to a new buffer."
       "s-w"   #'next-multiframe-window
       "s-r"   #'+vertico/switch-workspace-buffer
       "s-e"   #'consult-buffer
+      "s-x"   #'stefan-personal-assistant
       "s-i e" #'+workspace/switch-to
       "C-c r" #'consult-ripgrep
       "C-s"   #'consult-line
