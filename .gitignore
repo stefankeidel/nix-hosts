@@ -1,5 +1,11 @@
 .DS_Store
 .idea
+
+# Emacs backups and autosaves
+*~
+\#*\#
+.\#*
+
 *.log
 tmp/
 
