@@ -8,7 +8,7 @@ Emacs. Installed globally by `modules/home/pi.nix` on Pi-enabled hosts.
 Keep the existing Org/Vulpea/PARA configuration and Emacs server. The extension
 loads `bridge.el` on demand through `emacsclient --eval`. Nothing is added to
 `config.el`, the Emacs load path, startup hooks, or the note files themselves
-until an approved write. Loading Pi does not connect to Emacs or read the vault.
+until a write. Loading Pi does not connect to Emacs or read the vault.
 There is no Emacs subprocess fallback, MCP server, npm runtime dependency, or
 agent-facing arbitrary-Elisp tool.
 
@@ -54,10 +54,15 @@ with Jira/GitLab. It does not inject the user's actual notes automatically.
 | `vulpea_search` | Literal file-content search, including archives, with line snippets |
 | `vulpea_create` | Resource/person file, or project/task/reference heading/meeting child |
 | `vulpea_update` | Append, exact body-fragment replacement, TODO, tags, index a heading, archive |
+| `vulpea_delete` | Move a standalone resource file to trash, with mandatory interactive approval |
 
 Resources are active **file-level** reference notes, without needing a `resource`
 tag. Areas are resources too. A heading with an ID inside an area is linkable and
-indexed, but not a file-level resource. People get `people`, not automatically
+indexed, but not a file-level resource. For `kind: "resource"` or `kind: "person"`,
+omit `parentId` and `revision`: these create standalone files. To keep reference
+content inside an area, use `kind: "heading"` with its Notes heading ID and latest
+revision instead. To extend an existing resource, prefer `vulpea_update` rather
+than creating a second copy. People get `people`, not automatically
 `area`; meetings go under Meetings. `peopleIds` generates the package's `@Name`
 tags for person agendas. Name/alias lookup follows the installed package. The Pi
 project list checks direct tags, rather than treating a task's inherited project
@@ -71,15 +76,24 @@ headings get new IDs automatically. The explicit `index` action can give an exis
 section/task an ID by exact relative outline, returning that heading for subsequent
 edits. Existing notes are not mass-migrated or backfilled.
 
-Current intentional limits: no implicit area creation, note deletion, whole-file
-archive, title/alias renaming, arbitrary metadata edits, scheduling/deadlines, or
+Current intentional limits: no implicit area creation, area/person deletion,
+heading deletion, permanent deletion, whole-file archive, title/alias renaming,
+arbitrary metadata edits, scheduling/deadlines, or
 cross-file refile. Use stock Org commands for these. No background agent watches
 or automatic conversation logging.
 
 ## Write safety
 
-- Every mutation requires Pi's interactive confirmation, including supplied text;
-  print/headless writes fail closed. This is in addition to any permission gate.
+- Create/update operations need no approval prompt, including in print/headless
+  mode. All vault, revision and buffer-safety checks still apply.
+- Only `vulpea_delete` requires interactive approval, showing the resource title,
+  file, revision and a warning that all children/archive content will go too.
+  Headless deletion fails closed; denial never sends a delete request to Emacs.
+  Areas, people and heading-level notes are protected. Trash failure never falls
+  back to permanent deletion. Existing links are not rewritten.
+- Deletion removes the file's active IDs/index entries and closes its clean visiting
+  buffers. It is not atomic across filesystem, database and hooks: if post-trash
+  cleanup fails, reconcile the index or restore from trash instead of retrying.
 - Existing-note writes require a fresh whole-file SHA-256 revision returned by
   read. Editing a sibling invalidates it. Dirty, read-only or externally changed
   buffers are refused, never force-saved/reverted. Save/reconcile them in Emacs.
@@ -90,7 +104,7 @@ or automatic conversation logging.
   inserted literally: even `%(...)` is never expanded as a capture template.
   File-local evaluation is disabled when visiting existing files via the bridge.
 - Buffer edits use change groups. Normal save hooks and an explicit database
-  refresh make approved writes visible to subsequent tools. Save/index failures
+  refresh make writes visible to subsequent tools. Save/index failures
   are not a cross-file transaction; read/reconcile before retrying.
 - Timeouts/aborts stop waiting, but cannot guarantee Emacs cancelled a write.
   Never retry blindly. Read the note or search for the proposed title first.
@@ -107,11 +121,11 @@ instructed not to bypass a refused bridge operation with raw file edits or Elisp
 ## Validation
 
 Bridge tests use real installed Org/Vulpea/PARA packages and a temporary vault
-and database, not the user's notes. The conflicts suite loads the lifecycle
-suite as well:
+and database, not the user's notes. The deletion suite loads the conflict and
+lifecycle suites as well; trash is simulated inside the temporary test directory:
 
 ```sh
-emacs --batch -l modules/home/pi-extensions/pi-vulpea/test/conflicts-test.el \
+emacs --batch -l modules/home/pi-extensions/pi-vulpea/test/delete-test.el \
   -f ert-run-tests-batch-and-exit
 node --test modules/home/pi-extensions/pi-vulpea/test/client.test.ts
 ```

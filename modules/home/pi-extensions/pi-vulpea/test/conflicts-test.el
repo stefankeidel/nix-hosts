@@ -1,6 +1,37 @@
 ;;; conflicts-test.el --- Conflict and boundary regressions -*- lexical-binding: t; -*-
 (load (expand-file-name "bridge-test.el" (file-name-directory load-file-name)) nil t)
 
+(ert-deftest pi-vulpea-resource-parent-error-and-corrected-requests ()
+  (pi-vulpea-test-vault
+   (let* ((before (pi-vulpea-test-revision area-id))
+          (err (should-error
+                (pi-vulpea-test-call "create" :kind "resource"
+                                     :title "Custom MCP implementation with Entra SSO"
+                                     :parentId area-id :revision before :body "Verified OAuth findings."))))
+     (should (string-match-p "omit parentId and revision" (error-message-string err)))
+     (should (equal before (pi-vulpea-test-revision area-id)))
+     (should-not (file-exists-p (expand-file-name "resource" org-directory))))
+   (let ((resource (pi-vulpea-test-call "create" :kind "resource"
+                                      :title "Custom MCP implementation with Entra SSO"
+                                      :body "Verified OAuth findings.")))
+     (should (= 0 (alist-get 'level (alist-get 'note resource))))
+     (should (string-prefix-p "resource/" (alist-get 'file (alist-get 'note resource)))))
+   (let* ((notes (pi-vulpea-test-call "update" :id area-id :revision (pi-vulpea-test-revision area-id)
+                                    :action "index" :outline '("Notes")))
+          (notes-id (pi-vulpea-test-id notes))
+          (heading (pi-vulpea-test-call "create" :kind "heading" :title "Area-specific OAuth findings"
+                                       :parentId notes-id :revision (pi-vulpea-test-revision notes-id)
+                                       :body "Verified implementation details.")))
+     (should (= 2 (alist-get 'level (alist-get 'note heading)))))))
+
+(ert-deftest pi-vulpea-summary-canonicalizes-symlinked-vault-paths ()
+  (pi-vulpea-test-vault
+   (let* ((alias (expand-file-name "vault-alias" temp))
+          (note (copy-vulpea-note (pi-vulpea--note area-id))))
+     (make-symbolic-link org-directory alias)
+     (setf (vulpea-note-path note) (expand-file-name "area.org" alias))
+     (should (equal "area.org" (alist-get 'file (pi-vulpea--summary note)))))))
+
 (ert-deftest pi-vulpea-external-change-does-not-prompt-or-revert ()
   (pi-vulpea-test-vault
    (let* ((revision (pi-vulpea-test-revision area-id))

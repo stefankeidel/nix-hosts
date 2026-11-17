@@ -80,7 +80,7 @@
 (defun pi-vulpea--summary (note)
   `((id . ,(vulpea-note-id note))
     (title . ,(vulpea-note-title note))
-    (file . ,(file-relative-name (vulpea-note-path note) (pi-vulpea--root)))
+    (file . ,(file-relative-name (pi-vulpea--path (vulpea-note-path note)) (pi-vulpea--root)))
     (level . ,(vulpea-note-level note))
     (tags . ,(vconcat (vulpea-note-tags note)))
     (todo . ,(vulpea-note-todo note))
@@ -293,7 +293,8 @@
       (error "A note with this exact title already exists; inspect it before creating another"))
     (pcase kind
       ((or "resource" "person")
-       (when parent (error "Resources and people are file-level notes; use heading for reference inside an area"))
+       (when parent
+         (error "Resources and people are standalone file-level notes: omit parentId and revision. To add a reference inside an area, use kind=heading with its Notes heading ID and current revision"))
        (when (member vulpea-para-area-tag tags) (error "New areas require a deliberate user decision outside this tool"))
        (pi-vulpea--body body 0)
        (setq id (org-id-new)
@@ -447,9 +448,59 @@
           (pi-vulpea--save))))
     (if (equal action "archive")
         `((archived . t) (id . ,(vulpea-note-id note))
-          (file . ,(file-relative-name (vulpea-note-path note) (pi-vulpea--root)))
+          (file . ,(file-relative-name (pi-vulpea--path (vulpea-note-path note)) (pi-vulpea--root)))
           (destination . "* Archive :ARCHIVE:") (search . "Archive is retained in the Org file, excluded from active index"))
       (pi-vulpea--read `(("id" . ,result-id) ("limit" . 4000))))))
+
+(defun pi-vulpea--delete (request)
+  "Trash a standalone resource after the Pi tool has obtained approval."
+  (require 'vulpea-db-sync)
+  (let* ((note (pi-vulpea--note (pi-vulpea--get request "id")))
+         (indexed-path (vulpea-note-path note))
+         (path (pi-vulpea--path indexed-path))
+         (revision (pi-vulpea--get request "revision"))
+         (summary (pi-vulpea--summary note))
+         buffers)
+    (unless (and (= 0 (vulpea-note-level note))
+                 (vulpea-para-resource-p note)
+                 (not (seq-intersection (vulpea-note-tags note)
+                                        (list vulpea-para-area-tag vulpea-para-people-tag))))
+      (error "Only standalone resource files can be deleted; areas, people and headings are protected"))
+    (when (file-symlink-p indexed-path)
+      (error "Refusing to delete a resource through a file symlink"))
+    (with-current-buffer (pi-vulpea--buffer path t revision)
+      (save-excursion
+        (save-restriction
+          (widen)
+          (pi-vulpea--goto note)
+          (when (seq-intersection (vulpea-buffer-tags-get t)
+                                  (list vulpea-para-area-tag vulpea-para-people-tag))
+            (error "Areas and people are protected, even if their index is stale")))))
+    ;; Check every visiting buffer, including duplicate/indirect views, before trashing.
+    (dolist (buffer (buffer-list))
+      (with-current-buffer buffer
+        (when (and buffer-file-name (equal path (file-truename buffer-file-name)))
+          (when (or buffer-read-only (buffer-modified-p)
+                    (not (verify-visited-file-modtime buffer))
+                    (not (equal revision (pi-vulpea--revision))))
+            (error "A visiting buffer is unsaved, read-only, stale or externally changed"))
+          (push buffer buffers))))
+    (let ((delete-by-moving-to-trash t))
+      (delete-file path t))
+    (condition-case err
+        (unwind-protect
+            (progn
+              ;; Sync maps canonical paths to configured symlinks; forget both spellings.
+              (vulpea-db--forget-file indexed-path)
+              (vulpea-db-sync--handle-removed-file indexed-path))
+          (dolist (buffer buffers)
+            (when (buffer-live-p buffer)
+              (with-current-buffer buffer
+                (let ((kill-buffer-query-functions nil)) (kill-buffer buffer))))))
+      (error (error "Resource moved to trash but cleanup failed: %s. Reconcile the index or restore from trash; do not retry deletion"
+                    (error-message-string err))))
+    `((deleted . t) (destination . "trash") (note . ,summary)
+      (warning . "Existing links were not rewritten. Restore from trash if needed."))))
 
 (defun pi-vulpea-dispatch (request)
   "Execute a structured REQUEST in the running Emacs, without arbitrary eval."
@@ -469,6 +520,7 @@
     ("read" (pi-vulpea--read request))
     ("create" (pi-vulpea--create request))
     ("update" (pi-vulpea--update request))
+    ("delete" (pi-vulpea--delete request))
     (_ (error "Unknown operation"))))
 
 (defun pi-vulpea-dispatch-json (encoded)

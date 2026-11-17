@@ -29,7 +29,7 @@ function harness() {
       const input = JSON.parse(Buffer.from(encoded, "base64").toString("utf8"));
       calls.push({ command, input, options });
       const data = input.operation === "status" ? { vault: "/tmp/pi-vulpea-unit-vault/" } :
-        input.operation === "read" ? { note: { file: "area.org", id: input.id }, revision: "a".repeat(64) } : { updated: true };
+        input.operation === "read" ? { note: { title: "OAuth resource", file: "resource/oauth.org", id: input.id }, revision: "a".repeat(64) } : { updated: true };
       return { code: 0, stderr: "", stdout: JSON.stringify(Buffer.from(JSON.stringify({ ok: true, data })).toString("base64")) };
     },
   });
@@ -44,14 +44,14 @@ function harness() {
 test("registration has no Emacs IO and permanent guidance covers the actual PARA model", () => {
   const h = harness();
   assert.equal(h.calls.length, 0);
-  assert.equal(h.tools.size, 6);
+  assert.equal(h.tools.size, 7);
   const prompt = h.handlers.get("before_agent_start")({ systemPrompt: "original" }).systemPrompt;
   assert.ok(prompt.startsWith("original"));
   for (const text of ["people", "@FirstLast", "FILE-LEVEL", "No resource tag", "unsaved", "untrusted", "Jira/GitLab"])
     assert.ok(prompt.includes(text), text);
   for (const name of ["vulpea_status", "vulpea_list", "vulpea_read", "vulpea_search"])
     assert.equal(h.tools.get(name).annotations.readOnlyHint, true);
-  for (const name of ["vulpea_create", "vulpea_update"])
+  for (const name of ["vulpea_create", "vulpea_update", "vulpea_delete"])
     assert.equal(h.tools.get(name).annotations.destructiveHint, true);
 });
 
@@ -62,21 +62,48 @@ test("read calls need no UI and return structured data", async () => {
   assert.deepEqual(JSON.parse(result.content[0].text), result.structuredContent);
 });
 
-test("denied and headless mutations never contact Emacs", async () => {
+test("create and update need no approval, including in headless mode", async () => {
+  for (const hasUI of [false, true]) {
+    const h = harness();
+    const ctx = { hasUI, ui: { confirm: async () => { assert.fail("Only deletion should prompt"); } } };
+    await h.call("vulpea_create", { kind: "resource", title: "OAuth" }, ctx);
+    const params = { id: "test-id", revision: "a".repeat(64), action: "append", text: "A reusable finding" };
+    const result = await h.call("vulpea_update", params, ctx);
+    assert.deepEqual(h.calls.map((call) => call.input.operation), ["create", "read", "status", "update"]);
+    assert.equal(h.calls.at(-1).input.revision, params.revision);
+    assert.equal(result.structuredContent.updated, true);
+  }
+});
+
+test("headless deletion is blocked before contacting Emacs", async () => {
   const h = harness();
-  const params = { kind: "resource", title: "OAuth" };
-  await assert.rejects(h.call("vulpea_create", params, { hasUI: false }), /interactive/);
-  await assert.rejects(h.call("vulpea_create", params, { hasUI: true, ui: { confirm: async () => false } }), /cancelled/);
+  await assert.rejects(h.call("vulpea_delete", { id: "test-id", revision: "a".repeat(64) }, { hasUI: false }), /interactive/);
   assert.equal(h.calls.length, 0);
 });
 
-test("approved existing-note writes preflight and queue the actual file", async () => {
+test("declining deletion performs only read-only preflight", async () => {
   const h = harness();
-  const params = { id: "test-id", revision: "a".repeat(64), action: "append", text: "A reusable finding" };
+  await assert.rejects(h.call("vulpea_delete", { id: "test-id", revision: "a".repeat(64) },
+    { hasUI: true, ui: { confirm: async () => false } }), /cancelled/);
+  assert.deepEqual(h.calls.map((call) => call.input.operation), ["read", "status"]);
+});
+
+test("approved deletion identifies the file and warns about children before executing", async () => {
+  const h = harness();
   let preview;
-  const result = await h.call("vulpea_update", params, { hasUI: true, ui: { confirm: async (_title, body) => { preview = body; return true; } } });
-  assert.ok(preview.includes(params.text));
-  assert.deepEqual(h.calls.map((call) => call.input.operation), ["read", "status", "update"]);
-  assert.equal(h.calls.at(-1).input.revision, params.revision);
-  assert.equal(result.structuredContent.updated, true);
+  await h.call("vulpea_delete", { id: "test-id", revision: "a".repeat(64) },
+    { hasUI: true, ui: { confirm: async (_title, body) => {
+      assert.deepEqual(h.calls.map((call) => call.input.operation), ["read", "status"]);
+      preview = body; return true;
+    } } });
+  for (const text of ["OAuth resource", "resource/oauth.org", "children", "archived", "dangling"])
+    assert.ok(preview.includes(text), text);
+  assert.deepEqual(h.calls.map((call) => call.input.operation), ["read", "status", "delete"]);
+});
+
+test("stale deletion revisions fail before prompting", async () => {
+  const h = harness();
+  await assert.rejects(h.call("vulpea_delete", { id: "test-id", revision: "b".repeat(64) },
+    { hasUI: true, ui: { confirm: async () => { assert.fail("Must re-read first"); } } }), /revision/);
+  assert.ok(!h.calls.some((call) => call.input.operation === "delete"));
 });

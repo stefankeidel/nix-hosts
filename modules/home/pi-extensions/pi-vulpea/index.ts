@@ -28,18 +28,26 @@ export default function vulpeaExtension(pi: ExtensionAPI) {
       annotations: { readOnlyHint: !write, destructiveHint: write, idempotentHint: !write, openWorldHint: false },
       async execute(_toolCallId, params: Static<T>, signal, _onUpdate, ctx) {
         const input = { ...params, operation } as Request;
-        if (write) {
-          if (!ctx.hasUI) throw new Error("Vulpea writes require interactive confirmation; headless writes are disabled.");
-          const approved = await ctx.ui.confirm("Update PARA notes?", JSON.stringify(input, null, 2));
-          if (!approved) throw new Error("Vulpea write cancelled; no changes made.");
-          signal?.throwIfAborted();
+        if (operation === "delete" && !ctx.hasUI) {
+          throw new Error("Resource deletion requires interactive confirmation; headless deletion is disabled.");
         }
         let data: Record<string, unknown>;
         if (write && (input.id || input.parentId)) {
           const target = await call({ operation: "read", id: input.id || input.parentId, limit: 1 }, signal);
           const status = await call({ operation: "status" }, signal);
           const note = target.note as { file: string };
-          data = await withFileMutationQueue(resolve(status.vault as string, note.file), () => call(input, signal));
+          data = await withFileMutationQueue(resolve(status.vault as string, note.file), async () => {
+            if (operation === "delete") {
+              if (target.revision !== input.revision) throw new Error("File revision changed; read the resource again before deleting.");
+              const approved = await ctx.ui.confirm("Move resource to trash?", JSON.stringify({
+                note: target.note, revision: input.revision,
+                warning: "Deletes the entire resource file, including all children and archived content. Existing links may become dangling. Areas and people notes are protected.",
+              }, null, 2));
+              if (!approved) throw new Error("Resource deletion cancelled; no changes made.");
+            }
+            signal?.throwIfAborted();
+            return call(input, signal);
+          });
         } else {
           data = await call(input, signal);
         }
@@ -61,14 +69,15 @@ export default function vulpeaExtension(pi: ExtensionAPI) {
   add("vulpea_search", "Search literal text throughout the vault, including archives, with bounded line snippets. Does not evaluate Org content. Paginate results; default 25, max 100.", Type.Object({
     query: Type.String({ minLength: 1, maxLength: 300 }), ...page,
   }), "search");
-  add("vulpea_create", "Create a resource/person FILE, or a project/task/heading/meeting under an existing parent. No new areas. Projects use area Tasks; meetings use person Meetings; file-level task parents use Tasks. Supply parentId and revision for children. Literal Org body, no template evaluation. Requires interactive confirmation; refuses unsaved targets.", Type.Object({
+  add("vulpea_create", "Create a standalone resource/person FILE (omit parentId and revision), or a project/task/heading/meeting under an existing parent. To store reference content inside an area, use kind=heading with its Notes heading ID, NOT kind=resource. No new areas. Projects use area Tasks; meetings use person Meetings; file-level task parents use Tasks. Supply parentId and revision for children. Literal Org body, no template evaluation. No approval prompt; refuses unsaved targets.", Type.Object({
     kind: enumOf(["resource", "person", "project", "task", "heading", "meeting"]),
     title: Type.String({ minLength: 1, maxLength: 300 }),
     body: Type.Optional(Type.String({ maxLength: 50000 })),
-    parentId: Type.Optional(id), revision: Type.Optional(revision),
+    parentId: Type.Optional(Type.String({ minLength: 1, maxLength: 128, description: "Required for project/task/heading/meeting; omit for standalone resource/person files. For area reference content use kind=heading and the Notes heading ID." })),
+    revision: Type.Optional(revision),
     tags: Type.Optional(tags), peopleIds,
   }), "create", true);
-  add("vulpea_update", "Update a read note using its exact ID and latest revision. append adds literal Org to its own body; replace edits one unique own-body fragment, not children or metadata; todo uses TODO/DONE/CANCELLED; tags uses addTags/removeTags/peopleIds; index gives an existing heading an ID using an exact relative outline path and returns that heading. archive requires all subtree tasks finished and moves it to same-file Archive tagged ARCHIVE. No deletes, arbitrary Elisp, or whole-file replacement. Interactive confirmation required.", Type.Object({
+  add("vulpea_update", "Update a read note using its exact ID and latest revision. append adds literal Org to its own body; replace edits one unique own-body fragment, not children or metadata; todo uses TODO/DONE/CANCELLED; tags uses addTags/removeTags/peopleIds; index gives an existing heading an ID using an exact relative outline path and returns that heading. archive requires all subtree tasks finished and moves it to same-file Archive tagged ARCHIVE. No deletes, arbitrary Elisp, or whole-file replacement. No approval prompt; revision and buffer-safety checks still apply.", Type.Object({
     id, revision,
     action: enumOf(["append", "replace", "todo", "tags", "index", "archive"]),
     outline: Type.Optional(Type.Array(Type.String({ minLength: 1, maxLength: 300 }), { minItems: 1, maxItems: 20, description: "For index: exact heading titles relative to the read note, e.g. [Notes, dbt triage]. Must be unique." })),
@@ -76,6 +85,10 @@ export default function vulpeaExtension(pi: ExtensionAPI) {
     oldText: Type.Optional(Type.String({ minLength: 1, maxLength: 50000 })),
     addTags: Type.Optional(tags), removeTags: Type.Optional(tags), peopleIds,
   }), "update", true);
+
+  add("vulpea_delete", "Move a standalone resource FILE to trash, including all children/archive content. Requires an exact file-level ID, fresh revision, and interactive approval showing the target. Refuses areas, people, headings, unsaved/read-only/externally changed files. Links are not rewritten. No headless deletion or permanent-delete fallback.", Type.Object({
+    id, revision,
+  }), "delete", true);
 
   pi.on("before_agent_start", (event) => ({
     systemPrompt: `${event.systemPrompt}\n\n<pi-vulpea>\n${workflow}\n</pi-vulpea>`,
