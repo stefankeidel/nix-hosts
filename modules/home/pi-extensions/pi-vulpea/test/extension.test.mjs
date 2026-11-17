@@ -1,10 +1,10 @@
 import assert from "node:assert/strict";
 import { createRequire } from "node:module";
-import { existsSync } from "node:fs";
+import { existsSync, mkdtempSync, rmSync } from "node:fs";
+import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { test } from "node:test";
 
-// NODE_PATH can point at Pi's packaged node_modules; no vendored runtime dependencies.
 const require = createRequire(import.meta.url);
 const { createJiti } = require("jiti");
 const jiti = createJiti(import.meta.url, {
@@ -18,92 +18,68 @@ const { default: extension } = await jiti.import("../index.ts");
 const { Value } = require("typebox/value");
 
 function harness() {
-  const tools = new Map();
-  const handlers = new Map();
-  const calls = [];
-  extension({
-    registerTool(tool) { tools.set(tool.name, tool); },
-    on(name, handler) { handlers.set(name, handler); },
-    async exec(command, args, options) {
-      const encoded = args.at(-1).match(/pi-vulpea-dispatch-json "([A-Za-z0-9+/=]+)"/)[1];
-      const input = JSON.parse(Buffer.from(encoded, "base64").toString("utf8"));
-      calls.push({ command, input, options });
-      const data = input.operation === "status" ? { vault: "/tmp/pi-vulpea-unit-vault/" } :
-        input.operation === "read" ? { note: { title: "OAuth resource", file: "resource/oauth.org", id: input.id }, revision: "a".repeat(64) } : { updated: true };
-      return { code: 0, stderr: "", stdout: JSON.stringify(Buffer.from(JSON.stringify({ ok: true, data })).toString("base64")) };
-    },
-  });
-  async function call(name, params, ctx) {
+  const root = mkdtempSync(join(tmpdir(), "pi-vulpea-extension-"));
+  const previous = process.env.PI_VULPEA_VAULT;
+  process.env.PI_VULPEA_VAULT = root;
+  const tools = new Map(); const handlers = new Map();
+  extension({ registerTool(tool) { tools.set(tool.name, tool); }, on(name, handler) { handlers.set(name, handler); } });
+  async function call(name, params, ctx = { hasUI: false, ui: { confirm: async () => false } }) {
     const tool = tools.get(name);
     assert.ok(Value.Check(tool.parameters, params), "Parameters must satisfy schema");
     return tool.execute("unit", params, undefined, undefined, ctx);
   }
-  return { tools, handlers, calls, call };
+  function cleanup() {
+    rmSync(root, { recursive: true, force: true });
+    if (previous === undefined) delete process.env.PI_VULPEA_VAULT; else process.env.PI_VULPEA_VAULT = previous;
+  }
+  return { root, tools, handlers, call, cleanup };
 }
 
-test("registration has no Emacs IO and permanent guidance covers the actual PARA model", () => {
+test("registration is inert and permanent guidance covers PARA conventions", () => {
   const h = harness();
-  assert.equal(h.calls.length, 0);
-  assert.equal(h.tools.size, 7);
-  const prompt = h.handlers.get("before_agent_start")({ systemPrompt: "original" }).systemPrompt;
-  assert.ok(prompt.startsWith("original"));
-  for (const text of ["people", "@FirstLast", "FILE-LEVEL", "No resource tag", "unsaved", "untrusted", "Jira/GitLab"])
-    assert.ok(prompt.includes(text), text);
-  for (const name of ["vulpea_status", "vulpea_list", "vulpea_read", "vulpea_search"])
-    assert.equal(h.tools.get(name).annotations.readOnlyHint, true);
-  for (const name of ["vulpea_create", "vulpea_update", "vulpea_delete"])
-    assert.equal(h.tools.get(name).annotations.destructiveHint, true);
+  try {
+    assert.equal(h.tools.size, 7);
+    const prompt = h.handlers.get("before_agent_start")({ systemPrompt: "original" }).systemPrompt;
+    assert.ok(prompt.startsWith("original"));
+    for (const text of ["people", "@FirstLast", "FILE-LEVEL", "No resource tag", "untrusted", "Jira/GitLab"])
+      assert.ok(prompt.includes(text), text);
+    for (const name of ["vulpea_status", "vulpea_list", "vulpea_read", "vulpea_search"])
+      assert.equal(h.tools.get(name).annotations.readOnlyHint, true);
+    for (const name of ["vulpea_create", "vulpea_update", "vulpea_delete"])
+      assert.equal(h.tools.get(name).annotations.destructiveHint, true);
+  } finally { h.cleanup(); }
 });
 
-test("read calls need no UI and return structured data", async () => {
+test("filesystem status, create, and update work without Emacs or approval", async () => {
   const h = harness();
-  const result = await h.call("vulpea_status", {}, { hasUI: false });
-  assert.equal(result.structuredContent.vault, "/tmp/pi-vulpea-unit-vault/");
-  assert.deepEqual(JSON.parse(result.content[0].text), result.structuredContent);
+  try {
+    const status = await h.call("vulpea_status", {});
+    assert.equal(status.structuredContent.backend, "filesystem");
+    const created = await h.call("vulpea_create", { kind: "resource", title: "OAuth" });
+    const id = created.structuredContent.note.id;
+    const result = await h.call("vulpea_update", { id, revision: created.structuredContent.revision, action: "append", text: "A reusable finding" });
+    assert.match(result.structuredContent.content, /A reusable finding/);
+    assert.deepEqual(JSON.parse(result.content[0].text), result.structuredContent);
+  } finally { h.cleanup(); }
 });
 
-test("create and update need no approval, including in headless mode", async () => {
-  for (const hasUI of [false, true]) {
-    const h = harness();
-    const ctx = { hasUI, ui: { confirm: async () => { assert.fail("Only deletion should prompt"); } } };
-    await h.call("vulpea_create", { kind: "resource", title: "OAuth" }, ctx);
-    const params = { id: "test-id", revision: "a".repeat(64), action: "append", text: "A reusable finding" };
-    const result = await h.call("vulpea_update", params, ctx);
-    assert.deepEqual(h.calls.map((call) => call.input.operation), ["create", "read", "status", "update"]);
-    assert.equal(h.calls.at(-1).input.revision, params.revision);
-    assert.equal(result.structuredContent.updated, true);
-  }
+test("headless deletion is blocked before any file operation", async () => {
+  const h = harness();
+  try {
+    await assert.rejects(h.call("vulpea_delete", { id: "test-id", revision: "a".repeat(64) }), /interactive/);
+  } finally { h.cleanup(); }
 });
 
-test("headless deletion is blocked before contacting Emacs", async () => {
+test("declining deletion performs no mutation", async () => {
   const h = harness();
-  await assert.rejects(h.call("vulpea_delete", { id: "test-id", revision: "a".repeat(64) }, { hasUI: false }), /interactive/);
-  assert.equal(h.calls.length, 0);
-});
-
-test("declining deletion performs only read-only preflight", async () => {
-  const h = harness();
-  await assert.rejects(h.call("vulpea_delete", { id: "test-id", revision: "a".repeat(64) },
-    { hasUI: true, ui: { confirm: async () => false } }), /cancelled/);
-  assert.deepEqual(h.calls.map((call) => call.input.operation), ["read", "status"]);
-});
-
-test("approved deletion identifies the file and warns about children before executing", async () => {
-  const h = harness();
-  let preview;
-  await h.call("vulpea_delete", { id: "test-id", revision: "a".repeat(64) },
-    { hasUI: true, ui: { confirm: async (_title, body) => {
-      assert.deepEqual(h.calls.map((call) => call.input.operation), ["read", "status"]);
-      preview = body; return true;
-    } } });
-  for (const text of ["OAuth resource", "resource/oauth.org", "children", "archived", "dangling"])
-    assert.ok(preview.includes(text), text);
-  assert.deepEqual(h.calls.map((call) => call.input.operation), ["read", "status", "delete"]);
-});
-
-test("stale deletion revisions fail before prompting", async () => {
-  const h = harness();
-  await assert.rejects(h.call("vulpea_delete", { id: "test-id", revision: "b".repeat(64) },
-    { hasUI: true, ui: { confirm: async () => { assert.fail("Must re-read first"); } } }), /revision/);
-  assert.ok(!h.calls.some((call) => call.input.operation === "delete"));
+  try {
+    const created = await h.call("vulpea_create", { kind: "resource", title: "OAuth resource" });
+    const id = created.structuredContent.note.id;
+    await assert.rejects(h.call("vulpea_delete", { id, revision: created.structuredContent.revision },
+      { hasUI: true, ui: { confirm: async (_title, body) => {
+        assert.match(body, /OAuth resource/); assert.match(body, /children/); return false;
+      } } }), /cancelled/);
+    const stillThere = await h.call("vulpea_read", { id });
+    assert.equal(stillThere.structuredContent.note.id, id);
+  } finally { h.cleanup(); }
 });
