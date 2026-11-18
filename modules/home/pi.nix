@@ -56,7 +56,6 @@ in
       ./pi-extensions/commands.ts
       ./pi-extensions/extensions.ts
       ./pi-extensions/permission-gate.ts
-      "${./pi-extensions/pi-vulpea}/index.ts"
       "${xlsxExtension}/index.ts"
       "${inputs.self.packages.${pkgs.stdenv.hostPlatform.system}.pi-web-access}/index.ts"
       "${inputs.pi-memory}/index.ts"

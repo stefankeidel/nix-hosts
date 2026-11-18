@@ -110,6 +110,7 @@
       {
         # agent skills
         ".agents/skills/gccli/SKILL.md".source = ./agent-skills/gccli/SKILL.md;
+        ".agents/skills/stefan-notes/SKILL.md".source = ./agent-skills/stefan-notes/SKILL.md;
 
         # emacs config
         ".config/doom" = {
