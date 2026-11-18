@@ -46,6 +46,12 @@ in
         exposure = "direct";
         oauth.clientRegistration = "dcr";
       };
+      mcpServers.airflow-prod = {
+        url = "https://airflow-mcp.lichtblick.app/mcp";
+        description = "Production Airflow MCP";
+        exposure = "direct";
+        oauth.clientRegistration = "dcr";
+      };
     };
 
     promptTemplates = [
