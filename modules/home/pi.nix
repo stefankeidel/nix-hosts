@@ -13,11 +13,6 @@ let
     cp ${./pi-extensions/xlsx.ts} $out/index.ts
     ln -s ${xlsxPackage}/lib/node_modules/pi-xlsx/node_modules $out/node_modules
   '';
-  airflowExtension = pkgs.runCommand "pi-airflow-extension" { } ''
-    mkdir -p $out
-    cp ${./pi-extensions/pi-airflow/index.ts} $out/index.ts
-    cp ${./pi-extensions/pi-airflow/client.ts} $out/client.ts
-  '';
 in
 {
   imports = [
@@ -40,12 +35,14 @@ in
     };
 
     mcp = lib.optionalAttrs (host == "lichtblick") {
+      /*
       mcpServers.airflow-dev = {
         url = "https://airflow-mcp.lichtblick-devapps.de/mcp";
         description = "Dev Airflow MCP identity test (whoami only)";
         exposure = "direct";
         oauth.clientRegistration = "dcr";
       };
+      */
       mcpServers.airflow-prod = {
         url = "https://airflow-mcp.lichtblick.app/mcp";
         description = "Production Airflow MCP";
@@ -74,7 +71,6 @@ in
       "${inputs.pi-confluence.packages.${pkgs.stdenv.hostPlatform.system}.pi-confluence}/index.ts"
       "${inputs.self.packages.${pkgs.stdenv.hostPlatform.system}.pi-snowflake}/index.ts"
       ./pi-extensions/jira.ts
-      "${airflowExtension}/index.ts"
     ]
     ++ [
       # Keep the boundary last so it checks commands after RTK rewrites them.
