@@ -35,14 +35,12 @@ in
     };
 
     mcp = lib.optionalAttrs (host == "lichtblick") {
-      /*
       mcpServers.airflow-dev = {
         url = "https://airflow-mcp.lichtblick-devapps.de/mcp";
         description = "Dev Airflow MCP identity test (whoami only)";
         exposure = "direct";
         oauth.clientRegistration = "dcr";
       };
-      */
       mcpServers.airflow-prod = {
         url = "https://airflow-mcp.lichtblick.app/mcp";
         description = "Production Airflow MCP";
