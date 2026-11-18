@@ -10,6 +10,16 @@
 }:
 {
   imports = [
+    # Disable HTTP/2 on every vhost sharing the public HTTPS listener.
+    {
+      options.services.nginx.virtualHosts = lib.mkOption {
+        type = lib.types.attrsOf (
+          lib.types.submodule {
+            http2 = lib.mkForce false;
+          }
+        );
+      };
+    }
     # the default agenix module
     inputs.agenix.nixosModules.default
     # our shared stuff
