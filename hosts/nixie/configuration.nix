@@ -35,6 +35,7 @@
     ./website.nix
     ./backup.nix
     ./navidrome.nix
+    ./audiomuse.nix
     ./immich.nix
     ./auth.nix
     ./actualbudget.nix
