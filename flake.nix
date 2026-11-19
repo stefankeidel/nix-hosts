@@ -24,8 +24,10 @@
       flake = false;
     };
 
-    agenix.url = "github:ryantm/agenix";
+    agenix.url = "github:ryantm/agenix/b027ee29d959fda4b60b57566d64c98a202e0feb";
     agenix.inputs.nixpkgs.follows = "nixpkgs";
+    agenix.inputs.darwin.follows = "nix-darwin";
+    agenix.inputs.home-manager.follows = "home-manager";
 
     comin.url = "github:nlewo/comin";
     comin.inputs.nixpkgs.follows = "nixpkgs";
