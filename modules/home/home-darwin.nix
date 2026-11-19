@@ -44,6 +44,7 @@
       docker-buildx
       docker-client
       emacs-lsp-booster
+      age
       feishin
       gh
       imagemagick
