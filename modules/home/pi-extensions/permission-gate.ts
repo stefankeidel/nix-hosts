@@ -1,7 +1,8 @@
 /**
  * Permission Gate Extension
  *
- * Prompts for confirmation before running potentially dangerous bash commands.
+ * Blocks fnox/pass-cli invocations outright and prompts before running other
+ * potentially dangerous bash commands.
  * Based on the upstream example:
  * https://github.com/earendil-works/pi/blob/main/packages/coding-agent/examples/extensions/permission-gate.ts
  *
@@ -12,6 +13,7 @@
 import type { ExtensionAPI } from "@earendil-works/pi-coding-agent";
 
 export default function (pi: ExtensionAPI) {
+	const prohibitedCommandPattern = /(?:^|[^A-Za-z0-9_])(?:fnox|pass-cli)(?=$|[^A-Za-z0-9_-])/i;
 	const dangerousPatterns = [
 		/\brm\s+(-[a-z]*r[a-z]*f?|-[a-z]*f[a-z]*r|--recursive)/i,
 		/\bsudo\b/i,
@@ -26,7 +28,11 @@ export default function (pi: ExtensionAPI) {
 	pi.on("tool_call", async (event, ctx) => {
 		if (event.toolName !== "bash") return undefined;
 
-		const command = event.input.command as string;
+		const command = String(event.input.command ?? "");
+		if (prohibitedCommandPattern.test(command)) {
+			return { block: true, reason: "Commands invoking fnox or pass-cli are prohibited." };
+		}
+
 		const isDangerous = dangerousPatterns.some((p) => p.test(command));
 
 		if (isDangerous) {

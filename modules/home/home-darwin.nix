@@ -50,7 +50,6 @@
       imagemagick
       lazydocker
       mise
-      fnox
       nixd
       nodejs
       nvd
