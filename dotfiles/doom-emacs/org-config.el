@@ -37,6 +37,7 @@
   (setq org-todo-keywords '((sequence "TODO(t)" "|" "DONE(d!)" "CANCELLED(c@/!)"))
         org-tag-alist '(("FOCUS" . ?f) ("WAITING" . ?w) ("HOLD" . ?h) ("REFILE" . ?r))
         org-agenda-files nil
+        org-agenda-start-day "0d"
         org-default-notes-file (expand-file-name "inbox.org" org-directory)
         org-archive-location "::* Archive"
         org-agenda-skip-deadline-if-done t
