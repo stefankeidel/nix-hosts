@@ -9,7 +9,9 @@ let
     GITHUB_COPILOT_TOKEN_DIR = "${stateDir}/github-copilot";
     GITHUB_COPILOT_DEVICE_CODE_URL = "https://lichtblick-se.ghe.com/login/device/code";
     GITHUB_COPILOT_ACCESS_TOKEN_URL = "https://lichtblick-se.ghe.com/login/oauth/access_token";
-    GITHUB_COPILOT_API_KEY_URL = "https://lichtblick-se.ghe.com/api/v3/copilot_internal/v2/token";
+    # LiteLLM 1.110 uses the stored GitHub token directly. Its default endpoint
+    # discovery queries github.com, so pin the inference API for this GHE tenant.
+    GITHUB_COPILOT_API_BASE = "https://copilot-api.lichtblick-se.ghe.com";
     GENERIC_CLIENT_ID = "litellm";
     GENERIC_AUTHORIZATION_ENDPOINT = "https://auth.keidel.me/api/oidc/authorization";
     GENERIC_TOKEN_ENDPOINT = "https://auth.keidel.me/api/oidc/token";
