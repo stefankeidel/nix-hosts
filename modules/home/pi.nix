@@ -19,6 +19,11 @@ in
     inputs.pi.homeModules.default
   ];
 
+  # Avoid auto-routing searches through the current model's OpenAI credentials.
+  home.file.".pi/agent/web-search.json".text = builtins.toJSON {
+    searchProvider = "exa";
+  };
+
   programs.pi.coding-agent = {
     enable = true;
 
