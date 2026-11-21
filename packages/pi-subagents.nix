@@ -7,7 +7,7 @@ pkgs.buildNpmPackage {
   pname = package.name;
   version = package.version;
   src = inputs.pi-subagents;
-  npmDepsHash = "sha256-Fx47aupm5P6xV3Fq8kQxs0u7gYNADTnbIZcmpQRdG28=";
+  npmDepsHash = "sha256-Rx+IzIc1+iv5RoUfc23KmF884D7bd+522qr9I28gu6Q=";
 
   dontNpmBuild = true;
   npmInstallFlags = [ "--omit=dev" "--legacy-peer-deps" ];
