@@ -103,6 +103,9 @@
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.stefan = {
     isNormalUser = true;
+    openssh.authorizedKeys.keys = [
+      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIE+k2Y/jt225MXR8Sg9oTwVmyckqKyIYnE6S36EP/gsO"
+    ];
     extraGroups = [
       "wheel"
       "podman"
