@@ -224,6 +224,8 @@
         k = "kubectl";
         h = "helm";
         dl = "cd ~/Downloads";
+        ssh-copy-pub = "pass-cli item view --vault-name Personal --item-title \"ssh_ed25519\" --field \"public key\" | pbcopy";
+        ssh-add-proton = "pass-cli ssh-agent load --vault-name Personal";
         lazypodman = "DOCKER_HOST=\"unix://$(podman machine inspect --format '{{.ConnectionInfo.PodmanSocket.Path}}')\" lazydocker";
       };
 
