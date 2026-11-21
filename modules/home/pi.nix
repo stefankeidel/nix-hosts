@@ -39,12 +39,11 @@ in
       };
     };
 
-    mcp.mcpServers = {
+    mcp.mcpServers = lib.optionalAttrs (host == "lichtblick") {
       fnox = {
         command = "fnox";
         args = [ "mcp" ];
       };
-    } // lib.optionalAttrs (host == "lichtblick") {
       airflow-dev = {
         url = "https://airflow-mcp.lichtblick-devapps.de/mcp";
         description = "Dev Airflow MCP identity test (whoami only)";
