@@ -119,6 +119,7 @@
       "proton-drive"
       "tinycast"
       "transmission"
+      "protonvpn"
     ];
 
     # Optional: Mac App Store apps
