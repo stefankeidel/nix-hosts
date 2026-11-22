@@ -59,7 +59,6 @@
       postgresql
       pre-commit
       proton-pass-cli
-      proton-vpn
       pwgen
       python314
       starship
