@@ -24,13 +24,23 @@ contain machine-specific usernames, paths, storage locations, and network settin
 | `mini` | Apple Silicon macOS | Personal Mac mini with nix-darwin, Home Manager, desktop/media applications, and backup tooling. |
 | `nixie` | x86_64 NixOS | Server running Nextcloud, Immich, Navidrome, Actual Budget, the `keidel.me` website, centralized authentication, reverse proxying, and backups. |
 
-The macOS hosts follow unstable nixpkgs. `nixie` is intentionally built from the
-stable nixpkgs input.
+`mini` uses `nixos-26.05` with `nix-darwin-26.05` and Home Manager's
+`release-26.05`. `lichtblick` still uses `nixos-unstable` as its default package
+set. `nixie` shares the `nixos-26.05` nixpkgs pin with `mini`.
+
+To pull a package from the pinned unstable input on `mini`, add its top-level
+nixpkgs attribute name to `unstablePackages` in
+[`hosts/mini/darwin-configuration.nix`](hosts/mini/darwin-configuration.nix), for
+example `unstablePackages = [ "yt-dlp" ];`. No entries are enabled by default.
+The list affects packages selected through `pkgs` in nix-darwin and its
+integrated Home Manager. Doom Emacs separately takes Ghostel and its Evil
+integration from unstable because the 26.05 Ghostel build cannot find the
+Darwin SDK. Packages supplied directly by other flake inputs keep their own pins.
 
 ## Repository layout
 
 ```text
-flake.nix          Flake inputs and top-level Darwin configuration wiring
+flake.nix          Flake inputs and Blueprint entry point
 hosts/             Per-machine system and Home Manager configuration
 modules/darwin/    Reusable nix-darwin modules
 modules/home/      Shared Home Manager modules, including editor and Pi tooling
@@ -41,9 +51,9 @@ secrets/           Agenix-encrypted values and their recipient manifest
 persistent/        Placeholder for explicitly retained long-lived state
 ```
 
-Blueprint discovers the reusable modules, packages, and the `nixie` host from the
-repository structure. The two Darwin systems are wired explicitly in `flake.nix`
-because they use different local usernames and Home Manager configurations.
+Blueprint discovers the reusable modules, packages, and hosts from the
+repository structure. `mini` and `nixie` have explicit host entry points in
+`hosts/<name>/default.nix` to select their stable inputs.
 
 ## Build and switch
 
@@ -96,7 +106,14 @@ Inputs are pinned in `flake.lock`. Update all inputs with:
 nix flake update
 ```
 
-A scheduled GitHub Actions workflow also opens automated lock-file update pull
+To update just the 26.05 inputs, without advancing the unstable pin:
+
+```shell
+nix flake update nix-stable nix-darwin-stable home-manager-stable
+```
+
+Updating `nix-stable` also updates the base package set for `nixie`.
+A scheduled GitHub Actions workflow opens automated lock-file update pull
 requests.
 
 ## Secrets

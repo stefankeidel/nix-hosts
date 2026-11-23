@@ -312,6 +312,27 @@
         "type": "github"
       }
     },
+    "home-manager-stable": {
+      "inputs": {
+        "nixpkgs": [
+          "nix-stable"
+        ]
+      },
+      "locked": {
+        "lastModified": 1795325060,
+        "narHash": "sha256-XYoMPsqRFZ6jOaYI1KAAu8fzqif4tkCX8mhEKrViDXQ=",
+        "owner": "nix-community",
+        "repo": "home-manager",
+        "rev": "6480d7d8533b88c78cc6dcda395ab89cd546e450",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nix-community",
+        "ref": "release-26.05",
+        "repo": "home-manager",
+        "type": "github"
+      }
+    },
     "jail-nix": {
       "locked": {
         "lastModified": 1776230864,
@@ -365,6 +386,27 @@
       },
       "original": {
         "owner": "LnL7",
+        "repo": "nix-darwin",
+        "type": "github"
+      }
+    },
+    "nix-darwin-stable": {
+      "inputs": {
+        "nixpkgs": [
+          "nix-stable"
+        ]
+      },
+      "locked": {
+        "lastModified": 1792800221,
+        "narHash": "sha256-53jIZEWNh96irEXhsMZFoNhLJgGSU3nYl1i4wFQHAsU=",
+        "owner": "nix-darwin",
+        "repo": "nix-darwin",
+        "rev": "d31953cf55f9027a56e9be938daf5db8c5655663",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nix-darwin",
+        "ref": "nix-darwin-26.05",
         "repo": "nix-darwin",
         "type": "github"
       }
@@ -647,8 +689,10 @@
         "blueprint": "blueprint",
         "comin": "comin",
         "home-manager": "home-manager",
+        "home-manager-stable": "home-manager-stable",
         "llm-agents": "llm-agents",
         "nix-darwin": "nix-darwin",
+        "nix-darwin-stable": "nix-darwin-stable",
         "nix-doom-emacs-unstraightened": "nix-doom-emacs-unstraightened",
         "nix-stable": "nix-stable",
         "nixpkgs": "nixpkgs_3",

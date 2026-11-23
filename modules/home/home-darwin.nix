@@ -248,7 +248,6 @@
 
   launchd.agents.zsh-history-backup = {
     enable = true;
-    domain = "gui";
     config = {
       ProgramArguments = [
         (toString (pkgs.writeShellScript "zsh-history-backup" ''

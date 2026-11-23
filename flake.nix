@@ -5,8 +5,14 @@
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs?ref=nixos-unstable";
 
-    # some of my "hosted" systems are on stable :shrug:
+    # Stable package set for nixie and mini.
     nix-stable.url = "github:NixOS/nixpkgs/nixos-26.05";
+
+    home-manager-stable.url = "github:nix-community/home-manager/release-26.05";
+    home-manager-stable.inputs.nixpkgs.follows = "nix-stable";
+
+    nix-darwin-stable.url = "github:nix-darwin/nix-darwin/nix-darwin-26.05";
+    nix-darwin-stable.inputs.nixpkgs.follows = "nix-stable";
 
     blueprint.url = "github:numtide/blueprint";
     blueprint.inputs.nixpkgs.follows = "nixpkgs";
