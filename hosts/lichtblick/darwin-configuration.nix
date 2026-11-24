@@ -102,6 +102,7 @@
     brews = [
       "duckdb"
       "llama.cpp"
+      "snowflake-cli"
     ];
 
     # Casks = `brew install --cask`
