@@ -15,16 +15,15 @@
       #(callPackage ../../../../packages/squad-cli.nix { })
       # Use the stable Python closure so Azure CLI comes from the binary cache.
       inputs.nix-stable.legacyPackages.${pkgs.stdenv.hostPlatform.system}.azure-cli
-      #datadog-pup
-      appcleaner
       azure-storage-azcopy
+      #datadog-pup
       glab
       k9s
       kubectl
       kubectx
       kubelogin
       kubernetes-helm
-      snowflake-cli
+      appcleaner
       (writeShellScriptBin "do_bak" ''
         #!/usr/bin/env zsh
         set -e
