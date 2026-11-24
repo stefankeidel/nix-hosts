@@ -6,8 +6,8 @@ export type QueryRule = {
 /**
  * Policy for SQL submitted through pi.
  *
- * The built-in structural checks in index.ts always reject multiple statements
- * and non-read-only SQL. Add organization-specific rules here. Deny rules win;
+ * The built-in structural checks in query.ts always reject multiple statements,
+ * CLI directives, and non-read-only SQL. Add organization-specific rules here. Deny rules win;
  * when allowQueryPatterns is non-empty, a query must also match one of them.
  * Patterns are tested against the original SQL, including object names.
  */
