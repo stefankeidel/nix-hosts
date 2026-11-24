@@ -49,7 +49,7 @@ export default function piSnowflake(pi: ExtensionAPI) {
         timer = setTimeout(() => timeout.abort(), snowflakePolicy.timeoutSeconds * 1_000);
         const executionSignal = signal ? AbortSignal.any([signal, timeout.signal]) : timeout.signal;
         const startedAt = Date.now();
-        const execution = await ctx.executeTool(
+        const outcome = await ctx.executeTool(
           FNOX_EXEC_TOOL,
           { command: buildCommand(sql, primaryRole, maxRows) },
           { signal: executionSignal },
@@ -58,10 +58,13 @@ export default function piSnowflake(pi: ExtensionAPI) {
         if (timeout.signal.aborted) {
           throw new Error(`Query exceeded the ${snowflakePolicy.timeoutSeconds}-second policy timeout.`);
         }
-        // MCP's structured result retains full content, unlike its truncated display text.
+        // executeTool returns an AgentToolCallOutcome; the nested tool result carries
+        // content and structuredContent. MCP's structured result retains full content,
+        // unlike its truncated display text.
+        const execution = outcome.result;
         const raw = execution.structuredContent as { content?: unknown; isError?: boolean } | undefined;
         const text = resultText(raw?.content ?? execution.content);
-        if (execution.isError || raw?.isError) {
+        if (outcome.isError || execution.isError || raw?.isError) {
           throw new Error(text || "fnox MCP exec failed. Ensure its server is enabled and Proton is logged in.");
         }
         const rows = parseRows(text);

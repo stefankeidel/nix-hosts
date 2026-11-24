@@ -72,8 +72,9 @@ function context(exec: (name: string, args: any, options: any) => Promise<unknow
 }
 
 function success(rows: unknown[]) {
-  return { content: [{ type: "text", text: "truncated display" }], structuredContent: {
-    content: [{ type: "text", text: JSON.stringify(rows) }],
+  return { isError: false, result: {
+    content: [{ type: "text", text: "truncated display" }],
+    structuredContent: { content: [{ type: "text", text: JSON.stringify(rows) }] },
   } };
 }
 
@@ -118,9 +119,9 @@ test("rejects invalid SQL, invalid limits, empty roles, and pre-cancellation bef
 test("propagates MCP errors and malformed JSON without returning rows", async () => {
   const tool = registeredTool();
   for (const response of [
-    { content: [{ type: "text", text: "Unknown tool" }], isError: true },
-    { structuredContent: { content: [{ type: "text", text: "Proton logged out" }], isError: true } },
-    { content: [{ type: "text", text: "truncated JSON" }] },
+    { isError: true, result: { content: [{ type: "text", text: "Unknown tool" }] } },
+    { isError: false, result: { isError: true, structuredContent: { content: [{ type: "text", text: "Proton logged out" }] } } },
+    { isError: false, result: { content: [{ type: "text", text: "truncated JSON" }] } },
   ]) {
     const result = await tool.execute("1", { sql: "select 1" }, undefined, undefined, context(async () => response));
     assert.equal(result.isError, true);
