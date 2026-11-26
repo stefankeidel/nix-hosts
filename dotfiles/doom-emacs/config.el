@@ -2,8 +2,8 @@
 ;;; Personal settings and entry points for the topic-specific configuration.
 ;; Keep settings that must be in place before packages load above the load! calls.
 
-(setq doom-font (font-spec :family "Hack Nerd Font" :size 19 :weight 'semi-light)
-      doom-variable-pitch-font (font-spec :family "Hack Nerd Font" :size 19)
+(setq doom-font (font-spec :family "Iosevka" :width 'expanded :size 19.3)
+      doom-variable-pitch-font (font-spec :family "Iosevka" :width 'expanded :size 19.3)
       doom-theme 'doom-one
       display-line-numbers-type nil
       org-directory (file-name-as-directory (expand-file-name "~/Proton/orgmode/para/")))
