@@ -118,5 +118,6 @@
 
   fonts.packages = with pkgs; [
     nerd-fonts.hack
+    iosevka
   ];
 }
