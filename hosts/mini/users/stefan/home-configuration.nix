@@ -57,6 +57,7 @@ in
     packages = with pkgs; [
       yt-dlp
       ffmpeg
+      teams
       immich-go
       immichBackup
       immichBackupCheck
