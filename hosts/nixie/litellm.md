@@ -66,6 +66,20 @@ protected `proxy.env` on nixie, then restart `podman-litellm`. This grants that
 identity proxy-admin access. Keep the master key as the break-glass/API admin
 credential; do not use it for routine UI login.
 
+## Upgrading to 1.111.0
+
+Back up first (below). After switching, sign in through Authelia and verify
+that the existing account still has its expected role and virtual keys. LiteLLM
+now links by email only for an unlinked account with an exact, verified match.
+If the wrong account appears, check the OIDC subject, email and `email_verified`
+claim rather than enabling `LITELLM_EMAIL_FALLBACK_LINKS_ANY_USER`.
+
+Test both provider routes with an existing virtual key. For Chat Completions,
+include a `role` on every message; missing roles now return HTTP 400. Management
+clients must omit unknown customer fields and reference existing guardrails.
+The declared routes use neither Vertex AI nor Bedrock, and this configuration
+does not provision clientless MCP bridges, so no compatibility flags are set.
+
 ## Back up before upgrades
 
 The image version is pinned in `litellm.nix`. Upgrades can run database migrations.
