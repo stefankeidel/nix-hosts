@@ -24,18 +24,19 @@ contain machine-specific usernames, paths, storage locations, and network settin
 | `mini` | Apple Silicon macOS | Personal Mac mini with nix-darwin, Home Manager, desktop/media applications, and backup tooling. |
 | `nixie` | x86_64 NixOS | Server running Nextcloud, Immich, Navidrome, Actual Budget, the `keidel.me` website, centralized authentication, reverse proxying, and backups. |
 
-`mini` uses `nixos-26.05` with `nix-darwin-26.05` and Home Manager's
-`release-26.05`. `lichtblick` still uses `nixos-unstable` as its default package
-set. `nixie` shares the `nixos-26.05` nixpkgs pin with `mini`.
+`mini` and `lichtblick` default to `nixos-26.11` for system and Home Manager
+packages, with nix-darwin on `nix-darwin-26.05` and Home Manager on `release-26.05`.
+nix-darwin's evaluation library and uninstaller use 26.05 to satisfy its release
+check. Home Manager still warns about the mixed releases. `nixie` stays on
+`nixos-26.05`.
 
-To pull a package from the pinned unstable input on `mini`, add its top-level
-nixpkgs attribute name to `unstablePackages` in
-[`hosts/mini/darwin-configuration.nix`](hosts/mini/darwin-configuration.nix), for
-example `unstablePackages = [ "yt-dlp" ];`. No entries are enabled by default.
-The list affects packages selected through `pkgs` in nix-darwin and its
-integrated Home Manager. Doom Emacs separately takes Ghostel and its Evil
-integration from unstable because the 26.05 Ghostel build cannot find the
-Darwin SDK. Packages supplied directly by other flake inputs keep their own pins.
+Packages in the shared list in [`modules/home/home-darwin.nix`](modules/home/home-darwin.nix)
+come from 26.11 unless a host's `home-configuration.nix` opts in with, for example,
+`home.darwinUnstablePackages = [ "gh" ];`. For packages listed directly in a host's
+Home Manager config, use `pkgsUnstable` explicitly, e.g. `pkgsUnstable.yt-dlp`.
+On `mini`, Doom Emacs still takes Ghostel and its Evil integration from unstable
+as a Darwin SDK workaround. Packages supplied by other flake inputs keep their
+own pins.
 
 ## Repository layout
 
@@ -52,8 +53,9 @@ persistent/        Placeholder for explicitly retained long-lived state
 ```
 
 Blueprint discovers the reusable modules, packages, and hosts from the
-repository structure. `mini` and `nixie` have explicit host entry points in
-`hosts/<name>/default.nix` to select their stable inputs.
+repository structure. All hosts have explicit entry points in
+`hosts/<name>/default.nix` to select their stable inputs. Both Macs use the same
+helper in [`support/mk-darwin-host.nix`](support/mk-darwin-host.nix).
 
 ## Build and switch
 
@@ -106,13 +108,15 @@ Inputs are pinned in `flake.lock`. Update all inputs with:
 nix flake update
 ```
 
-To update just the 26.05 inputs, without advancing the unstable pin:
+To update the Mac hosts' package set and companion inputs, without advancing
+the shared 26.05 nixpkgs or unstable pin:
 
 ```shell
-nix flake update nix-stable nix-darwin-stable home-manager-stable
+nix flake update nixpkgs-darwin nix-darwin-stable home-manager-stable
 ```
 
-Updating `nix-stable` also updates the base package set for `nixie`.
+Updating `nix-stable` separately also updates `nixie`'s 26.05 base package set
+and the nix-darwin evaluation library and uninstaller.
 A scheduled GitHub Actions workflow opens automated lock-file update pull
 requests.
 

@@ -1,5 +1,7 @@
 {
+  config,
   pkgs,
+  pkgsUnstable,
   inputs,
   ...
 }:
@@ -53,7 +55,13 @@ in
     inputs.self.homeModules.home-darwin
   ];
 
+  # Keep the existing Darwin SDK workaround and its matching Evil integration together.
+  programs.doom-emacs.emacsPackageOverrides = _final: _prev: {
+    inherit (pkgsUnstable.emacsPackagesFor config.programs.doom-emacs.emacs) ghostel evil-ghostel;
+  };
+
   home = {
+    # To opt into unstable, use pkgsUnstable explicitly, e.g. pkgsUnstable.yt-dlp.
     packages = with pkgs; [
       yt-dlp
       ffmpeg

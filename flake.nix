@@ -5,11 +5,13 @@
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs?ref=nixos-unstable";
 
-    # Stable package set for nixie and mini.
+    # Use 26.11 packages on Darwin while nixie stays on 26.05.
     nix-stable.url = "github:NixOS/nixpkgs/nixos-26.05";
+    nixpkgs-darwin.url = "github:NixOS/nixpkgs/nixos-26.11";
 
+    # Keep the companion modules on their stable 26.05 branches for now.
     home-manager-stable.url = "github:nix-community/home-manager/release-26.05";
-    home-manager-stable.inputs.nixpkgs.follows = "nix-stable";
+    home-manager-stable.inputs.nixpkgs.follows = "nixpkgs-darwin";
 
     nix-darwin-stable.url = "github:nix-darwin/nix-darwin/nix-darwin-26.05";
     nix-darwin-stable.inputs.nixpkgs.follows = "nix-stable";

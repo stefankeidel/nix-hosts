@@ -8,8 +8,6 @@
     inputs.self.darwinModules.desktop
   ];
 
-  nixpkgs.hostPlatform = "aarch64-darwin";
-
   networking.hostName = "Stefan-Keidel-MacBook-Pro";
 
   nix.settings.trusted-users = ["root" "stefan.keidel@lichtblick.de"];

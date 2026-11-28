@@ -1,35 +1,7 @@
-{
-  config,
-  inputs,
-  lib,
-  ...
-}: let
-  # Add top-level nixpkgs package names here to opt them into unstable.
-  unstablePackages = [ ];
-  unstable = import inputs.nixpkgs {
-    system = config.nixpkgs.hostPlatform.system;
-    inherit (config.nixpkgs) config;
-  };
-in {
+{ inputs, ... }: {
   imports = [
     inputs.self.nixosModules.host-shared
     inputs.self.darwinModules.desktop
-  ];
-
-  nixpkgs = {
-    hostPlatform = "aarch64-darwin";
-    overlays = [
-      (_final: _prev: lib.genAttrs unstablePackages (name: unstable.${name}))
-    ];
-  };
-
-  home-manager.sharedModules = [
-    ({ config, ... }: {
-      # The 26.05 Ghostel build cannot find the Darwin SDK. Keep its Evil integration in sync.
-      programs.doom-emacs.emacsPackageOverrides = _final: _prev: {
-        inherit (unstable.emacsPackagesFor config.programs.doom-emacs.emacs) ghostel evil-ghostel;
-      };
-    })
   ];
 
   networking.hostName = "mini";

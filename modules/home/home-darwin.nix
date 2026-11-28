@@ -4,8 +4,47 @@
   inputs,
   lib,
   pkgs,
+  pkgsUnstable,
   ...
 }:
+let
+  sharedPackageNames = [
+    "acli"
+    "alejandra"
+    "colima"
+    "copilot-language-server"
+    "docker-buildx"
+    "docker-client"
+    "emacs-lsp-booster"
+    "age"
+    "feishin"
+    "gh"
+    "imagemagick"
+    "lazydocker"
+    "mise"
+    "nixd"
+    "nodejs"
+    "nvd"
+    "podman"
+    "podman-compose"
+    "poppler-utils"
+    "postgresql"
+    "pre-commit"
+    "proton-pass-cli"
+    "pwgen"
+    "python314"
+    "starship"
+    "tree-sitter"
+    "ty"
+    "uv"
+    "yarn"
+    "yq-go"
+  ];
+  selectPackage = name:
+    if builtins.elem name config.home.darwinUnstablePackages
+    then pkgsUnstable.${name}
+    else pkgs.${name};
+in
 {
   imports = [
     inputs.self.homeModules.ghostty
@@ -13,62 +52,37 @@
     inputs.self.homeModules.zellij
     inputs.self.homeModules.pi
     inputs.nix-doom-emacs-unstraightened.homeModule
+    {
+      options.home.darwinUnstablePackages = lib.mkOption {
+        type = lib.types.listOf (lib.types.enum sharedPackageNames);
+        default = [ ];
+        example = [ "gh" ];
+        description = "Shared Darwin Home Manager packages to take from the pinned unstable nixpkgs input.";
+      };
+    }
   ];
+
+  _module.args.pkgsUnstable = import inputs.nixpkgs {
+    inherit (pkgs) config;
+    inherit (pkgs.stdenv.hostPlatform) system;
+  };
 
   # Replace only the GUI launcher; retain the upstream Doom CLI package.
   programs.doom-emacs.provideEmacs = false;
 
   home = {
-    # enableNixpkgsReleaseCheck = false;
-
-    # common darwin pkgs
-    # they're all somewhat dev machines, right!?
-    # install the heavier stuff we may not need
-    # on minimal boxes here
     packages = (with inputs.llm-agents.packages.${pkgs.stdenv.hostPlatform.system}; [
       copilot-cli
       codex
       rtk
       qmd
       skills
-    ]) ++ (with pkgs; [
-      (callPackage ../../support/doom-emacs-darwin-gui.nix {
+    ]) ++ [
+      (pkgs.callPackage ../../support/doom-emacs-darwin-gui.nix {
         emacsWithDoom = config.programs.doom-emacs.finalEmacsPackage;
       })
-      #(callPackage ../../packages/garmin-cli.nix { })
-      (callPackage ../../packages/gccli.nix { })
-      acli
-      alejandra
-      colima
-      copilot-language-server
-      docker-buildx
-      docker-client
-      emacs-lsp-booster
-      age
-      feishin
-      gh
-      imagemagick
-      lazydocker
-      mise
-      nixd
-      nodejs
-      nvd
-      podman
-      podman-compose
-      poppler-utils
-      postgresql
-      pre-commit
-      proton-pass-cli
-      pwgen
-      python314
-      starship
-      #tidy-viewer
-      tree-sitter
-      ty
-      uv
-      yarn
-      yq-go
-    ]);
+      (pkgs.callPackage ../../packages/gccli.nix { })
+    ] ++ map selectPackage sharedPackageNames;
 
     sessionVariables = {
       EDITOR = "hx";
