@@ -1,9 +1,12 @@
 {
   "name": "pi-snowflake",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "private": true,
   "type": "module",
-  "dependencies": {
-    "snowflake-sdk": "3.3.0"
+  "scripts": {
+    "test": "node --test *.test.ts"
+  },
+  "devDependencies": {
+    "typebox": "1.3.27"
   }
 }

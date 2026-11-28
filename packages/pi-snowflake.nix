@@ -1,26 +1,26 @@
 { pkgs }:
 
-pkgs.buildNpmPackage {
+pkgs.stdenvNoCC.mkDerivation {
   pname = "pi-snowflake";
-  version = "0.1.0";
+  version = "0.2.0";
 
-  src = ../modules/home/pi-extensions/pi-snowflake;
-  npmDepsHash = "sha256-zD1fMudl7WN81kJWiq1VXERAY6o2uw0G/htxLNdkZSs=";
-
-  dontNpmBuild = true;
+  src = pkgs.lib.cleanSourceWith {
+    src = ../modules/home/pi-extensions/pi-snowflake;
+    filter = path: _type: builtins.baseNameOf path != "node_modules";
+  };
+  dontBuild = true;
 
   installPhase = ''
     runHook preInstall
 
-    npm prune --omit=dev --no-audit --no-fund
     mkdir -p $out
-    cp -r index.ts policy.ts package.json node_modules $out/
+    cp index.ts query.ts policy.ts package.json README.md $out/
 
     runHook postInstall
   '';
 
   meta = with pkgs.lib; {
-    description = "Policy-controlled Snowflake query extension for pi";
+    description = "Policy-controlled Snowflake CLI query tool for pi via fnox MCP";
     license = licenses.mit;
     platforms = platforms.all;
   };

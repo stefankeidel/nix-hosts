@@ -10,7 +10,7 @@
     settings = {
       theme = "Catppuccin Frappe";
 
-      "font-family" = "Hack Nerd Font";
+      "font-family" = "Iosevka Extended";
       "font-size" = 19.0;
       "scrollback-limit" = 1000000;
       "window-decoration" = "none";

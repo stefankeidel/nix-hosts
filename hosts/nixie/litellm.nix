@@ -1,7 +1,13 @@
 { lib, pkgs, ... }:
 let
   stateDir = "/var/lib/litellm";
-  image = "ghcr.io/berriai/litellm:v1.110.2";
+  image = "ghcr.io/berriai/litellm:v1.111.0";
+  # Mount only writable provider state; the image ships its UI in stateDir/ui.
+  stateVolumes = map (dir: "${stateDir}/${dir}:${stateDir}/${dir}") [
+    "chatgpt"
+    "github-copilot"
+    "cache"
+  ];
   uid = "65532";
   gid = "65532";
   providerEnvironment = {
@@ -88,7 +94,7 @@ let
             ) providerEnvironment
           )
         } \
-        --volume ${stateDir}:${stateDir} \
+        ${lib.concatMapStringsSep " " (volume: "--volume ${lib.escapeShellArg volume}") stateVolumes} \
         --entrypoint python ${image} -c \
         "from litellm.llms.$module.authenticator import Authenticator; Authenticator().get_access_token(); print('Login saved.')"
     '';
@@ -200,13 +206,13 @@ in
       ];
       # Only nginx may reach the published port; remote access uses HTTPS.
       ports = [ "127.0.0.1:4000:4000" ];
-      volumes = [
+      volumes = stateVolumes ++ [
         "${proxyConfig}:/etc/litellm/config.yaml:ro"
-        "${stateDir}:${stateDir}"
         "/run/postgresql:/run/postgresql:ro"
         "/run/redis-litellm:/run/redis-litellm:ro"
       ];
       cmd = [
+        "proxy"
         "--config"
         "/etc/litellm/config.yaml"
         "--host"

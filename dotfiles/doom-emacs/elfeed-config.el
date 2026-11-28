@@ -39,6 +39,7 @@
           ("https://frogandtoadai.substack.com/feed" blog)
           ("https://www.theclimatebrink.com/feed" blog)
           ("https://www.carbonbrief.org/feed" blog)
+          ("https://paulkrugman.substack.com/feed" blog)
 
           ;; Economics and other reading
           ("https://www.lesswrong.com/feed.xml?view=curated-rss" blog)

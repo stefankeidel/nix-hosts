@@ -7,11 +7,14 @@ description: >-
 
 # Data Platform dbt maintenance
 
-Use the connected MCP tools for Jira, Airflow, Snowflake, and GitLab service
-operations. Use shell, Git, and `uv`/dbt commands only for local repository
-work. Do not call service APIs directly with `curl`, scripts, or provider CLIs.
-For Airflow, use the production MCP (`airflow-prod`); do not use a custom Airflow
-extension or direct Airflow API/CLI access.
+Use the connected MCP tools for Jira, Airflow, Snowflake, GitLab, and dbt
+operations. Use shell and Git only for local repository work. Run every `dbt`
+command, including commands launched through `uv`, via the fnox MCP tool
+(`mcp__fnox__exec`) so required secrets are injected. Do not run dbt directly in
+a shell or through another CLI/tool. Do not call service APIs directly with
+`curl`, scripts, or provider CLIs. For Airflow, use the production MCP
+(`airflow-prod`); do not use a custom Airflow extension or direct Airflow
+API/CLI access.
 
 1. **Find the DM ticket first.** Use Jira MCP search tools (`search_issues` or
    `search_issues_jql`) to search project `DM` for both summary/text patterns:
@@ -69,11 +72,14 @@ extension or direct Airflow API/CLI access.
    errors.
 4. **Reproduce in the dbt repository.** Assume the clone to shared
    `DATA_PLATFORM_DEV` has run. Run only the relevant tests first, using the
-   `DATA_PLATFORM_DEV` target:
-   `uv run dbt test --select <failed-test-selector> --target dev`
-   Never target production. If the clone appears missing/stale or the failure
-   cannot be reproduced, report that rather than changing test logic to silence
-   the alert.
+   `DATA_PLATFORM_DEV` target, by calling `mcp__fnox__exec` with the command
+   as an argument array (for example:
+   `command: ["uv", "run", "dbt", "test", "--select", <failed-test-selector>, "--target", "dev"]`).
+   If a working-directory change is needed, pass a shell command through the
+   MCP, such as `command: ["sh", "-c", "cd <dbt-repo> && uv run dbt test ..."]`;
+   do not run the command locally instead. Never target production. If the clone
+   appears missing/stale or the failure cannot be reproduced, report that rather
+   than changing test logic to silence the alert.
 5. **Fix and validate.** Check the repo status before editing; preserve unrelated
    work. Create `fix/DM-XXXX/<description-stub>` for the selected ticket. Make
    the smallest correct fix, then rerun the failing tests and relevant checks.
