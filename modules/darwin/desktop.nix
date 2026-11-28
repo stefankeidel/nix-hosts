@@ -3,6 +3,7 @@
 # including system-wide packages (rare, basically just emacs and fonts)
 #
 {
+  config,
   pkgs,
   lib,
   inputs,
@@ -23,6 +24,17 @@
 #     treesit-grammars.with-all-grammars
 #   ]);
 # in
+let
+  # Let each nixpkgs release elaborate its own platform settings.
+  importPkgs = source: import source {
+    localSystem.system = config.nixpkgs.hostPlatform.system;
+    config = {
+      allowUnfree = true;
+      # Upstream marks Fabric broken with Invoke >= 3; allow it explicitly.
+      problems.handlers.fabric.broken = "warn";
+    };
+  };
+in
 {
   imports = [
     # the default agenix module
@@ -32,16 +44,20 @@
   # Necessary for using flakes on this system.
   nix.settings.experimental-features = "nix-command flakes";
 
-  # terraform is unfree :-/
   nixpkgs = {
-    config = {
-      allowUnfree = true;
-      # Upstream marks Fabric broken with Invoke >= 3; allow it explicitly.
-      problems.handlers.fabric.broken = "warn";
-    };
+    # Keep nix-darwin's evaluator on 26.05 but use 26.11 for host packages.
+    source = inputs.nix-26-11;
+    flake.source = inputs.nix-26-11.outPath;
+    pkgs = importPkgs inputs.nix-26-11;
   };
 
-  home-manager.extraSpecialArgs.host = hostName;
+  home-manager.extraSpecialArgs = {
+    host = hostName;
+    pkgsUnstable = importPkgs inputs.nixpkgs;
+  };
+
+  # The 26.05 HTML manual uses a flag removed by the 26.11 docs renderer.
+  documentation.doc.enable = false;
 
   # Disable auto-start, use 'sudo launchctl start org.nixos.linux-builder'
   launchd.daemons.linux-builder.serviceConfig = {
@@ -111,7 +127,10 @@
   # Create /etc/zshrc that loads the nix-darwin environment.
   programs.zsh.enable = true;
 
+  # The 26.05 uninstaller evaluates its own system and requires a matching nixpkgs.
+  system.tools.darwin-uninstaller.enable = false;
   environment.systemPackages = with pkgs; [
+    inputs.nix-darwin.packages.${stdenv.hostPlatform.system}.darwin-uninstaller
     #emacs-with-packages
     inputs.agenix.packages.${stdenv.hostPlatform.system}.default
   ];

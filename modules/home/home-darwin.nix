@@ -4,6 +4,7 @@
   inputs,
   lib,
   pkgs,
+  pkgsUnstable,
   ...
 }:
 {
@@ -15,11 +16,15 @@
     inputs.nix-doom-emacs-unstraightened.homeModule
   ];
 
+  # The 26.05 option docs cannot evaluate the 26.11 service module types.
+  manual.manpages.enable = false;
+
   # Replace only the GUI launcher; retain the upstream Doom CLI package.
   programs.doom-emacs.provideEmacs = false;
 
   home = {
-    # enableNixpkgsReleaseCheck = false;
+    # Home Manager intentionally trails the hosts' package set.
+    enableNixpkgsReleaseCheck = false;
 
     # common darwin pkgs
     # they're all somewhat dev machines, right!?
@@ -249,7 +254,6 @@
 
   launchd.agents.zsh-history-backup = {
     enable = true;
-    domain = "gui";
     config = {
       ProgramArguments = [
         (toString (pkgs.writeShellScript "zsh-history-backup" ''
