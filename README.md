@@ -24,13 +24,15 @@ contain machine-specific usernames, paths, storage locations, and network settin
 | `mini` | Apple Silicon macOS | Personal Mac mini with nix-darwin, Home Manager, desktop/media applications, and backup tooling. |
 | `nixie` | x86_64 NixOS | Server running Nextcloud, Immich, Navidrome, Actual Budget, the `keidel.me` website, centralized authentication, reverse proxying, and backups. |
 
-The macOS hosts follow unstable nixpkgs. `nixie` is intentionally built from the
-stable nixpkgs input.
+The macOS hosts use `nixos-26.11` for packages and the 26.05 release branches of
+nix-darwin and Home Manager. In the shared or per-host Darwin Home Manager
+configuration, use `pkgsUnstable.<package>` in place of the default package to
+opt into unstable. `nixie` still uses the stable nixpkgs input.
 
 ## Repository layout
 
 ```text
-flake.nix          Flake inputs and top-level Darwin configuration wiring
+flake.nix          Flake inputs and Blueprint entry point
 hosts/             Per-machine system and Home Manager configuration
 modules/darwin/    Reusable nix-darwin modules
 modules/home/      Shared Home Manager modules, including editor and Pi tooling
@@ -41,9 +43,8 @@ secrets/           Agenix-encrypted values and their recipient manifest
 persistent/        Placeholder for explicitly retained long-lived state
 ```
 
-Blueprint discovers the reusable modules, packages, and the `nixie` host from the
-repository structure. The two Darwin systems are wired explicitly in `flake.nix`
-because they use different local usernames and Home Manager configurations.
+Blueprint discovers the hosts, their Home Manager users, reusable modules, and
+packages from the repository structure.
 
 ## Build and switch
 
